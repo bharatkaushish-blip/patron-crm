@@ -37,6 +37,7 @@ export async function createClientAction(formData: FormData) {
       phone: (formData.get("phone") as string) || null,
       email: (formData.get("email") as string) || null,
       location: (formData.get("location") as string) || null,
+      country: (formData.get("country") as string) || null,
       age_range: (formData.get("age_range") as string) || null,
       tags: parsedTags,
     })
@@ -66,6 +67,7 @@ export async function updateClientAction(formData: FormData) {
       phone: (formData.get("phone") as string) || null,
       email: (formData.get("email") as string) || null,
       location: (formData.get("location") as string) || null,
+      country: (formData.get("country") as string) || null,
       age_range: (formData.get("age_range") as string) || null,
       tags: parsedTags,
     })

@@ -93,7 +93,7 @@ export async function exportData() {
 }
 
 export async function importClients(
-  rows: { name: string; phone?: string; email?: string; location?: string; tags?: string }[]
+  rows: { name: string; phone?: string; email?: string; location?: string; country?: string; tags?: string }[]
 ) {
   const { supabase, orgId } = await getProfile();
 
@@ -116,6 +116,7 @@ export async function importClients(
       phone: row.phone?.trim() || null,
       email: row.email?.trim() || null,
       location: row.location?.trim() || null,
+      country: row.country?.trim() || null,
       tags,
     });
 

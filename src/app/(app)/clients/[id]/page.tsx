@@ -1,12 +1,14 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Pencil, Phone, Mail, MapPin } from "lucide-react";
+import { ArrowLeft, Pencil, Phone, Mail, MapPin, Globe } from "lucide-react";
 import { DeleteClientButton } from "@/components/clients/delete-client-button";
 import { NoteInput } from "@/components/notes/note-input";
 import { NoteCard } from "@/components/notes/note-card";
 import { SaleForm } from "@/components/sales/sale-form";
 import { SaleCard } from "@/components/sales/sale-card";
+import { EnquiryForm } from "@/components/enquiries/enquiry-form";
+import { EnquiryCard } from "@/components/enquiries/enquiry-card";
 
 export default async function ClientProfilePage({
   params,
@@ -41,6 +43,14 @@ export default async function ClientProfilePage({
   // Fetch notes for this client
   const { data: notes } = await supabase
     .from("notes")
+    .select("*")
+    .eq("client_id", id)
+    .eq("organization_id", profile.organization_id)
+    .order("created_at", { ascending: false });
+
+  // Fetch enquiries for this client
+  const { data: enquiries } = await supabase
+    .from("enquiries")
     .select("*")
     .eq("client_id", id)
     .eq("organization_id", profile.organization_id)
@@ -123,6 +133,12 @@ export default async function ClientProfilePage({
             {client.location}
           </div>
         ) : null}
+        {client.country ? (
+          <div className="flex items-center gap-2 text-neutral-600">
+            <Globe className="h-4 w-4 text-neutral-400" />
+            {client.country}
+          </div>
+        ) : null}
         {client.age_range ? (
           <div className="text-neutral-400 text-xs">Age: {client.age_range}</div>
         ) : null}
@@ -169,6 +185,41 @@ export default async function ClientProfilePage({
           ) : (
             <p className="text-sm text-neutral-400 py-4 text-center">
               No notes yet. Add your first note above.
+            </p>
+          )}
+        </div>
+      </section>
+
+      {/* Enquiries section */}
+      <section className="mt-8">
+        <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-wide mb-3">
+          Enquiries
+          {enquiries && enquiries.length > 0 ? (
+            <span className="ml-2 text-neutral-400">({enquiries.length})</span>
+          ) : null}
+        </h2>
+
+        <EnquiryForm clientId={id} />
+
+        <div className="mt-3 space-y-2">
+          {enquiries && enquiries.length > 0 ? (
+            enquiries.map((enq) => (
+              <EnquiryCard
+                key={enq.id}
+                id={enq.id}
+                clientId={id}
+                size={enq.size}
+                budget={enq.budget}
+                artist={enq.artist}
+                timeline={enq.timeline}
+                workType={enq.work_type}
+                notes={enq.notes}
+                createdAt={enq.created_at}
+              />
+            ))
+          ) : (
+            <p className="text-sm text-neutral-400 py-4 text-center">
+              No enquiries yet.
             </p>
           )}
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition, useRef } from "react";
-import { Download, Upload, FileSpreadsheet, AlertCircle, Check } from "lucide-react";
+import { Download, Upload, FileSpreadsheet, FileDown, AlertCircle, Check } from "lucide-react";
 import { exportData, importClients } from "@/lib/actions/settings";
 
 export function DataSection() {
@@ -18,6 +18,22 @@ export function DataSection() {
   } | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
+  function handleDownloadTemplate() {
+    const template = [
+      "Name,Phone,Email,Location,Country,Age Range,Tags",
+      "Priya Sharma,+91 9876543210,priya@example.com,Mumbai,India,30-40,\"abstract, contemporary\"",
+      "John Smith,+1 5551234567,john@example.com,New York,United States,40-50,\"figurative, oil painting\"",
+    ].join("\n");
+
+    const blob = new Blob([template], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "patron-import-template.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   function handleExport() {
     startTransition(async () => {
       const data = await exportData();
@@ -28,6 +44,7 @@ export function DataSection() {
         "Phone",
         "Email",
         "Location",
+        "Country",
         "Age Range",
         "Tags",
       ];
@@ -36,6 +53,7 @@ export function DataSection() {
         c.phone || "",
         c.email || "",
         c.location || "",
+        c.country || "",
         c.age_range || "",
         (c.tags || []).join(", "),
       ]);
@@ -109,7 +127,7 @@ export function DataSection() {
 
       // Auto-map columns
       const autoMap: Record<string, string> = {};
-      const fields = ["name", "phone", "email", "location", "tags"];
+      const fields = ["name", "phone", "email", "location", "country", "tags"];
       for (const header of lines[0]) {
         const lower = header.toLowerCase().trim();
         for (const field of fields) {
@@ -142,7 +160,7 @@ export function DataSection() {
     setImportState("importing");
     startTransition(async () => {
       const result = await importClients(
-        validRows as { name: string; phone?: string; email?: string; location?: string; tags?: string }[]
+        validRows as { name: string; phone?: string; email?: string; location?: string; country?: string; tags?: string }[]
       );
       setImportResult(result);
       setImportState("done");
@@ -187,26 +205,36 @@ export function DataSection() {
         {/* Import */}
         <div className="rounded-lg border border-neutral-200 bg-white p-4">
           {importState === "idle" ? (
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-neutral-700">
-                  Import clients
-                </p>
-                <p className="text-xs text-neutral-400">
-                  Upload a CSV file with client data
-                </p>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-neutral-700">
+                    Import clients
+                  </p>
+                  <p className="text-xs text-neutral-400">
+                    Upload a CSV file with client data
+                  </p>
+                </div>
+                <label className="flex cursor-pointer items-center gap-1.5 rounded-md border border-neutral-300 px-3 py-1.5 text-sm text-neutral-600 hover:bg-neutral-50">
+                  <Upload className="h-4 w-4" />
+                  Upload CSV
+                  <input
+                    ref={fileRef}
+                    type="file"
+                    accept=".csv"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                </label>
               </div>
-              <label className="flex cursor-pointer items-center gap-1.5 rounded-md border border-neutral-300 px-3 py-1.5 text-sm text-neutral-600 hover:bg-neutral-50">
-                <Upload className="h-4 w-4" />
-                Upload CSV
-                <input
-                  ref={fileRef}
-                  type="file"
-                  accept=".csv"
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-              </label>
+              <button
+                type="button"
+                onClick={handleDownloadTemplate}
+                className="flex items-center gap-1.5 text-xs text-neutral-400 hover:text-neutral-600 transition-colors"
+              >
+                <FileDown className="h-3.5 w-3.5" />
+                Download template CSV
+              </button>
             </div>
           ) : importState === "mapping" ? (
             <div className="space-y-4">
@@ -246,6 +274,7 @@ export function DataSection() {
                       <option value="phone">Phone</option>
                       <option value="email">Email</option>
                       <option value="location">Location</option>
+                      <option value="country">Country</option>
                       <option value="tags">Tags (comma-separated)</option>
                     </select>
                   </div>

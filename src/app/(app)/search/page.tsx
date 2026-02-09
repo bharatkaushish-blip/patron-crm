@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { SearchInput } from "@/components/search/search-input";
 import { SearchResults } from "@/components/search/search-results";
+import { getOrgCurrency } from "@/lib/actions/settings";
 
 export default async function SearchPage({
   searchParams,
@@ -28,6 +29,7 @@ export default async function SearchPage({
   if (!profile?.organization_id) redirect("/onboarding");
 
   const orgId = profile.organization_id;
+  const currency = await getOrgCurrency();
 
   let clients: any[] = [];
   let notes: any[] = [];
@@ -111,6 +113,7 @@ export default async function SearchPage({
           notes={notes}
           sales={sales}
           totalResults={totalResults}
+          currency={currency}
         />
       ) : query.length > 0 && query.length < 2 ? (
         <p className="mt-8 text-center text-sm text-neutral-400">

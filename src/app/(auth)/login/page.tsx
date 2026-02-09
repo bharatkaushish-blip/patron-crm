@@ -1,12 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { signIn, signInWithGoogle } from "@/lib/actions/auth";
 
-export default function LoginPage() {
+function LoginForm() {
+  const searchParams = useSearchParams();
+  const inviteToken = searchParams.get("invite") || "";
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -22,7 +25,7 @@ export default function LoginPage() {
 
   async function handleGoogle() {
     setIsLoading(true);
-    const result = await signInWithGoogle();
+    const result = await signInWithGoogle(inviteToken || undefined);
     if (result?.error) {
       setError(result.error);
       setIsLoading(false);
@@ -41,6 +44,9 @@ export default function LoginPage() {
       </div>
 
       <form action={handleSubmit} className="space-y-4">
+        {inviteToken && (
+          <input type="hidden" name="invite_token" value={inviteToken} />
+        )}
         <Input
           name="email"
           type="email"
@@ -94,11 +100,22 @@ export default function LoginPage() {
         </Link>
         <p className="text-neutral-500">
           Don&apos;t have an account?{" "}
-          <Link href="/signup" className="font-medium text-neutral-900 hover:underline">
+          <Link
+            href={inviteToken ? `/signup?invite=${inviteToken}` : "/signup"}
+            className="font-medium text-neutral-900 hover:underline"
+          >
             Sign up
           </Link>
         </p>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }

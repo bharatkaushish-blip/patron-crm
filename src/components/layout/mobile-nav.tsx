@@ -2,19 +2,37 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarDays, ClipboardList, Users, Search, Settings } from "lucide-react";
+import { CalendarDays, ClipboardList, Package, Users, BarChart3, Search, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { Role } from "@/lib/permissions";
 
-const navItems = [
+const allNavItems = [
   { href: "/today", label: "Today", icon: CalendarDays },
   { href: "/enquiries", label: "Enquiries", icon: ClipboardList },
+  { href: "/inventory", label: "Inventory", icon: Package },
   { href: "/clients", label: "Clients", icon: Users },
+  { href: "/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/search", label: "Search", icon: Search },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
-export function MobileNav() {
+interface MobileNavProps {
+  role?: Role;
+  isSuperadmin?: boolean;
+  canAccessSettings?: boolean;
+}
+
+export function MobileNav({
+  role,
+  isSuperadmin,
+  canAccessSettings = true,
+}: MobileNavProps) {
   const pathname = usePathname();
+
+  const navItems = allNavItems.filter((item) => {
+    if (item.href === "/settings" && !canAccessSettings) return false;
+    return true;
+  });
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-neutral-200 bg-white md:hidden">

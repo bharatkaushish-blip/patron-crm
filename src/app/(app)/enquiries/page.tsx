@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { EnquirySearchInput } from "@/components/enquiries/enquiry-search-input";
 import { EnquiryCard } from "@/components/enquiries/enquiry-card";
+import { AddEnquiryForm } from "@/components/enquiries/add-enquiry-form";
 
 export default async function EnquiriesPage({
   searchParams,
@@ -26,6 +27,18 @@ export default async function EnquiriesPage({
     .single();
 
   if (!profile?.organization_id) redirect("/onboarding");
+
+  const { data: roleProfile } = await supabase
+    .from("profiles")
+    .select("role, permissions")
+    .eq("id", user.id)
+    .single()
+    .then((res: any) => (res.error ? { data: null } : res));
+
+  const { extractRoleData, canMutate, canDelete } = await import("@/lib/permissions");
+  const { role, permissions: perms } = extractRoleData(roleProfile);
+  const userCanMutate = canMutate(role, perms);
+  const userCanDelete = canDelete(role, perms);
 
   let enquiries: any[] = [];
 
@@ -82,6 +95,12 @@ export default async function EnquiriesPage({
         </Suspense>
       </div>
 
+      {userCanMutate && (
+        <div className="mt-4">
+          <AddEnquiryForm />
+        </div>
+      )}
+
       <div className="mt-4 space-y-2">
         {enquiries && enquiries.length > 0 ? (
           enquiries.map((enq) => (
@@ -98,6 +117,8 @@ export default async function EnquiriesPage({
               notes={enq.notes}
               createdAt={enq.created_at}
               showClientName
+              canEdit={userCanMutate}
+              canDelete={userCanDelete}
             />
           ))
         ) : (

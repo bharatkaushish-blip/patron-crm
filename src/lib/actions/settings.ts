@@ -1,28 +1,13 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-
-async function getProfile() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("organization_id")
-    .eq("id", user.id)
-    .single();
-
-  if (!profile?.organization_id) redirect("/onboarding");
-  return { supabase, userId: user.id, orgId: profile.organization_id };
-}
+import { requireWriteAccess } from "@/lib/subscription";
+import { getAuthContext, requireMutationAccess, requireAdminRole } from "@/lib/auth-context";
 
 export async function updateProfile(formData: FormData) {
-  const { supabase, userId } = await getProfile();
+  await requireWriteAccess();
+  await requireMutationAccess();
+  const { supabase, userId } = await getAuthContext();
 
   const fullName = formData.get("full_name") as string;
   const timezone = formData.get("timezone") as string;
@@ -45,14 +30,18 @@ export async function updateProfile(formData: FormData) {
 }
 
 export async function updateOrganization(formData: FormData) {
-  const { supabase, orgId } = await getProfile();
+  await requireWriteAccess();
+  await requireAdminRole();
+  const { supabase, orgId } = await getAuthContext();
 
   const name = formData.get("name") as string;
   if (!name?.trim()) return { error: "Gallery name is required" };
 
+  const currency = (formData.get("currency") as string) || "INR";
+
   const { error } = await supabase
     .from("organizations")
-    .update({ name: name.trim() })
+    .update({ name: name.trim(), currency })
     .eq("id", orgId);
 
   if (error) {
@@ -61,10 +50,27 @@ export async function updateOrganization(formData: FormData) {
 
   revalidatePath("/settings");
   revalidatePath("/today");
+  revalidatePath("/inventory");
+  revalidatePath("/clients");
+  revalidatePath("/analytics");
+  revalidatePath("/search");
+}
+
+export async function getOrgCurrency(): Promise<string> {
+  const { supabase, orgId } = await getAuthContext();
+
+  const { data } = await supabase
+    .from("organizations")
+    .select("currency")
+    .eq("id", orgId)
+    .single();
+
+  return data?.currency || "INR";
 }
 
 export async function exportData() {
-  const { supabase, orgId } = await getProfile();
+  await requireAdminRole();
+  const { supabase, orgId } = await getAuthContext();
 
   const [clientsRes, notesRes, salesRes] = await Promise.all([
     supabase
@@ -95,7 +101,9 @@ export async function exportData() {
 export async function importClients(
   rows: { name: string; phone?: string; email?: string; location?: string; country?: string; tags?: string }[]
 ) {
-  const { supabase, orgId } = await getProfile();
+  await requireWriteAccess();
+  await requireAdminRole();
+  const { supabase, orgId } = await getAuthContext();
 
   let imported = 0;
   let errors: string[] = [];

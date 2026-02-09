@@ -29,6 +29,17 @@ export default async function ClientsPage({
 
   if (!profile?.organization_id) redirect("/onboarding");
 
+  const { data: roleProfile } = await supabase
+    .from("profiles")
+    .select("role, permissions")
+    .eq("id", user.id)
+    .single()
+    .then((res: any) => (res.error ? { data: null } : res));
+
+  const { extractRoleData, canMutate } = await import("@/lib/permissions");
+  const { role, permissions: perms } = extractRoleData(roleProfile);
+  const userCanMutate = canMutate(role, perms);
+
   let query = supabase
     .from("clients")
     .select("*")
@@ -62,13 +73,15 @@ export default async function ClientsPage({
         <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
           Clients
         </h1>
-        <Link
-          href="/clients/new"
-          className="flex h-9 items-center gap-1.5 rounded-lg bg-neutral-900 px-3 text-sm font-medium text-white hover:bg-neutral-800 transition-colors"
-        >
-          <Plus className="h-4 w-4" />
-          Add
-        </Link>
+        {userCanMutate && (
+          <Link
+            href="/clients/new"
+            className="flex h-9 items-center gap-1.5 rounded-lg bg-neutral-900 px-3 text-sm font-medium text-white hover:bg-neutral-800 transition-colors"
+          >
+            <Plus className="h-4 w-4" />
+            Add
+          </Link>
+        )}
       </div>
 
       <div className="mt-4 space-y-3">

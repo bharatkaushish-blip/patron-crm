@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Check, CalendarClock } from "lucide-react";
 import { markFollowUpDone, rescheduleFollowUp } from "@/lib/actions/notes";
 import { cn } from "@/lib/utils";
+import { SpotlightCard } from "@/components/ui/spotlight-card-simple";
 
 interface FollowUpItemProps {
   noteId: string;
@@ -13,6 +14,7 @@ interface FollowUpItemProps {
   content: string;
   followUpDate: string;
   isOverdue: boolean;
+  canMutate?: boolean;
 }
 
 export function FollowUpItem({
@@ -22,6 +24,7 @@ export function FollowUpItem({
   content,
   followUpDate,
   isOverdue,
+  canMutate = true,
 }: FollowUpItemProps) {
   const [isPending, startTransition] = useTransition();
   const [showReschedule, setShowReschedule] = useState(false);
@@ -47,9 +50,10 @@ export function FollowUpItem({
   );
 
   return (
-    <div
+    <SpotlightCard
+      spotlightColor={isOverdue ? "#ff000020" : "#6300ff20"}
       className={cn(
-        "rounded-lg border bg-white p-4 transition-opacity",
+        "border bg-white p-4 transition-opacity",
         isOverdue ? "border-red-200 bg-red-50/50" : "border-neutral-200",
         isPending && "opacity-50"
       )}
@@ -75,24 +79,26 @@ export function FollowUpItem({
           </p>
         </div>
 
-        <div className="flex shrink-0 gap-1.5">
-          <button
-            onClick={() => setShowReschedule(!showReschedule)}
-            disabled={isPending}
-            className="rounded-md p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600"
-            title="Reschedule"
-          >
-            <CalendarClock className="h-4 w-4" />
-          </button>
-          <button
-            onClick={handleDone}
-            disabled={isPending}
-            className="rounded-md p-1.5 text-neutral-400 hover:bg-green-50 hover:text-green-600"
-            title="Mark done"
-          >
-            <Check className="h-4 w-4" />
-          </button>
-        </div>
+        {canMutate && (
+          <div className="flex shrink-0 gap-1.5">
+            <button
+              onClick={() => setShowReschedule(!showReschedule)}
+              disabled={isPending}
+              className="rounded-md p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600"
+              title="Reschedule"
+            >
+              <CalendarClock className="h-4 w-4" />
+            </button>
+            <button
+              onClick={handleDone}
+              disabled={isPending}
+              className="rounded-md p-1.5 text-neutral-400 hover:bg-green-50 hover:text-green-600"
+              title="Mark done"
+            >
+              <Check className="h-4 w-4" />
+            </button>
+          </div>
+        )}
       </div>
 
       {showReschedule ? (
@@ -113,6 +119,6 @@ export function FollowUpItem({
           </button>
         </div>
       ) : null}
-    </div>
+    </SpotlightCard>
   );
 }

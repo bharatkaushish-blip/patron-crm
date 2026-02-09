@@ -1,30 +1,13 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { requireWriteAccess } from "@/lib/subscription";
-
-async function getProfile() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("organization_id")
-    .eq("id", user.id)
-    .single();
-
-  if (!profile?.organization_id) redirect("/onboarding");
-  return { supabase, orgId: profile.organization_id };
-}
+import { getAuthContext, requireMutationAccess, requireDeleteAccess } from "@/lib/auth-context";
 
 export async function createNote(formData: FormData) {
   await requireWriteAccess();
-  const { supabase, orgId } = await getProfile();
+  await requireMutationAccess();
+  const { supabase, orgId } = await getAuthContext();
 
   const clientId = formData.get("client_id") as string;
   const content = formData.get("content") as string;
@@ -55,7 +38,8 @@ export async function createNote(formData: FormData) {
 
 export async function updateNote(noteId: string, content: string, clientId: string) {
   await requireWriteAccess();
-  const { supabase } = await getProfile();
+  await requireMutationAccess();
+  const { supabase } = await getAuthContext();
 
   const { error } = await supabase
     .from("notes")
@@ -71,7 +55,8 @@ export async function updateNote(noteId: string, content: string, clientId: stri
 
 export async function deleteNote(noteId: string, clientId: string) {
   await requireWriteAccess();
-  const { supabase } = await getProfile();
+  await requireDeleteAccess();
+  const { supabase } = await getAuthContext();
 
   const { error } = await supabase.from("notes").delete().eq("id", noteId);
 
@@ -84,7 +69,9 @@ export async function deleteNote(noteId: string, clientId: string) {
 }
 
 export async function markFollowUpDone(noteId: string, clientId?: string) {
-  const supabase = (await getProfile()).supabase;
+  await requireWriteAccess();
+  await requireMutationAccess();
+  const { supabase } = await getAuthContext();
 
   const { error } = await supabase
     .from("notes")
@@ -100,7 +87,9 @@ export async function markFollowUpDone(noteId: string, clientId?: string) {
 }
 
 export async function rescheduleFollowUp(noteId: string, newDate: string, clientId?: string) {
-  const supabase = (await getProfile()).supabase;
+  await requireWriteAccess();
+  await requireMutationAccess();
+  const { supabase } = await getAuthContext();
 
   const { error } = await supabase
     .from("notes")

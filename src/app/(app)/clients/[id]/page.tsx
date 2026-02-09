@@ -9,6 +9,10 @@ import { SaleForm } from "@/components/sales/sale-form";
 import { SaleCard } from "@/components/sales/sale-card";
 import { EnquiryForm } from "@/components/enquiries/enquiry-form";
 import { EnquiryCard } from "@/components/enquiries/enquiry-card";
+import { getAvailableInventoryItems } from "@/lib/actions/inventory";
+import { getOrgCurrency } from "@/lib/actions/settings";
+import { formatCurrency } from "@/lib/format-currency";
+import { extractRoleData, canMutate as canMutateCheck, canDelete as canDeleteCheck } from "@/lib/permissions";
 
 export default async function ClientProfilePage({
   params,
@@ -30,6 +34,17 @@ export default async function ClientProfilePage({
     .single();
 
   if (!profile?.organization_id) redirect("/onboarding");
+
+  const { data: roleProfile } = await supabase
+    .from("profiles")
+    .select("role, permissions")
+    .eq("id", user.id)
+    .single()
+    .then((res) => (res.error ? { data: null } : res));
+
+  const { role, permissions: perms } = extractRoleData(roleProfile);
+  const userCanMutate = canMutateCheck(role, perms);
+  const userCanDelete = canDeleteCheck(role, perms);
 
   const { data: client } = await supabase
     .from("clients")
@@ -64,6 +79,12 @@ export default async function ClientProfilePage({
     .eq("organization_id", profile.organization_id)
     .order("sale_date", { ascending: false });
 
+  // Fetch available inventory items for linking and org currency
+  const [inventoryItems, currency] = await Promise.all([
+    getAvailableInventoryItems(),
+    getOrgCurrency(),
+  ]);
+
   // Active follow-up banner
   const activeFollowUp = notes?.find(
     (n) => n.follow_up_date && n.follow_up_status === "pending"
@@ -85,14 +106,16 @@ export default async function ClientProfilePage({
           </h1>
         </div>
         <div className="flex items-center gap-1">
-          <Link
-            href={`/clients/${id}/edit`}
-            className="rounded-md p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600"
-            title="Edit client"
-          >
-            <Pencil className="h-4 w-4" />
-          </Link>
-          <DeleteClientButton clientId={id} />
+          {userCanMutate && (
+            <Link
+              href={`/clients/${id}/edit`}
+              className="rounded-md p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600"
+              title="Edit client"
+            >
+              <Pencil className="h-4 w-4" />
+            </Link>
+          )}
+          {userCanDelete && <DeleteClientButton clientId={id} />}
         </div>
       </div>
 
@@ -167,7 +190,7 @@ export default async function ClientProfilePage({
           ) : null}
         </h2>
 
-        <NoteInput clientId={id} />
+        {userCanMutate && <NoteInput clientId={id} />}
 
         <div className="mt-4 space-y-2">
           {notes && notes.length > 0 ? (
@@ -180,6 +203,8 @@ export default async function ClientProfilePage({
                 createdAt={note.created_at}
                 followUpDate={note.follow_up_date}
                 followUpStatus={note.follow_up_status}
+                canEdit={userCanMutate}
+                canDelete={userCanDelete}
               />
             ))
           ) : (
@@ -199,7 +224,7 @@ export default async function ClientProfilePage({
           ) : null}
         </h2>
 
-        <EnquiryForm clientId={id} />
+        {userCanMutate && <EnquiryForm clientId={id} inventoryItems={inventoryItems} />}
 
         <div className="mt-3 space-y-2">
           {enquiries && enquiries.length > 0 ? (
@@ -215,6 +240,8 @@ export default async function ClientProfilePage({
                 workType={enq.work_type}
                 notes={enq.notes}
                 createdAt={enq.created_at}
+                canEdit={userCanMutate}
+                canDelete={userCanDelete}
               />
             ))
           ) : (
@@ -233,13 +260,13 @@ export default async function ClientProfilePage({
             <span className="ml-2 text-neutral-400">
               ({sales.length}
               {sales.length > 0 ? (
-                <> &middot; ₹{sales.reduce((sum, s) => sum + (Number(s.amount) || 0), 0).toLocaleString("en-IN")}</>
+                <> &middot; {formatCurrency(sales.reduce((sum, s) => sum + (Number(s.amount) || 0), 0), currency)}</>
               ) : null})
             </span>
           ) : null}
         </h2>
 
-        <SaleForm clientId={id} />
+        {userCanMutate && <SaleForm clientId={id} inventoryItems={inventoryItems} />}
 
         <div className="mt-3 space-y-2">
           {sales && sales.length > 0 ? (
@@ -252,6 +279,9 @@ export default async function ClientProfilePage({
                 amount={sale.amount}
                 saleDate={sale.sale_date}
                 notes={sale.notes}
+                currency={currency}
+                canEdit={userCanMutate}
+                canDelete={userCanDelete}
               />
             ))
           ) : (

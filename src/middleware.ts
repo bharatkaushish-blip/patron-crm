@@ -71,6 +71,28 @@ export async function middleware(request: NextRequest) {
     if (!profile?.organization_id) {
       return NextResponse.redirect(new URL("/onboarding", request.url));
     }
+
+    // Role-based route blocking (only for paths that need it)
+    if (path.startsWith("/admin") || path.startsWith("/settings")) {
+      const { data: roleProfile } = await supabase
+        .from("profiles")
+        .select("role, is_superadmin, permissions")
+        .eq("id", user.id)
+        .single();
+
+      // Block /admin for non-superadmin
+      if (path.startsWith("/admin") && !roleProfile?.is_superadmin) {
+        return NextResponse.redirect(new URL("/today", request.url));
+      }
+
+      // Block /settings for users without can_access_settings
+      if (path.startsWith("/settings") && roleProfile?.role === "user") {
+        const perms = roleProfile.permissions as { can_access_settings?: boolean } | null;
+        if (!perms?.can_access_settings) {
+          return NextResponse.redirect(new URL("/today", request.url));
+        }
+      }
+    }
   }
 
   return response;

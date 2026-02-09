@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { User, StickyNote, IndianRupee } from "lucide-react";
+import { formatCurrency } from "@/lib/format-currency";
 
 interface SearchResultsProps {
   query: string;
@@ -7,6 +8,7 @@ interface SearchResultsProps {
   notes: any[];
   sales: any[];
   totalResults: number;
+  currency: string;
 }
 
 export function SearchResults({
@@ -15,6 +17,7 @@ export function SearchResults({
   notes,
   sales,
   totalResults,
+  currency,
 }: SearchResultsProps) {
   if (totalResults === 0) {
     return (
@@ -138,7 +141,7 @@ export function SearchResults({
                   </div>
                   {sale.amount ? (
                     <span className="text-sm font-medium text-neutral-900">
-                      ₹{Number(sale.amount).toLocaleString("en-IN")}
+                      {formatCurrency(Number(sale.amount), currency)}
                     </span>
                   ) : null}
                 </Link>

@@ -1,8 +1,49 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+interface FuzzyResult {
+  text: string;
+  score: number;
+  matches: number[]; // indices of matched characters
+}
+
+function fuzzyMatch(input: string, target: string): FuzzyResult | null {
+  const inputLower = input.toLowerCase();
+  const targetLower = target.toLowerCase();
+  const matches: number[] = [];
+  let score = 0;
+  let targetIdx = 0;
+
+  for (let i = 0; i < inputLower.length; i++) {
+    const ch = inputLower[i];
+    const found = targetLower.indexOf(ch, targetIdx);
+    if (found === -1) return null;
+
+    matches.push(found);
+
+    // Bonus for consecutive matches
+    if (found === targetIdx) {
+      score += 2;
+    } else {
+      score += 1;
+    }
+
+    // Bonus for matching at start of word (after space/hyphen or at index 0)
+    if (found === 0 || targetLower[found - 1] === " " || targetLower[found - 1] === "-") {
+      score += 3;
+    }
+
+    targetIdx = found + 1;
+  }
+
+  // Prefer shorter targets (closer match to input length)
+  score -= (target.length - input.length) * 0.1;
+
+  return { text: target, score, matches };
+}
 
 interface TagInputProps {
   value: string[];
@@ -21,10 +62,13 @@ export function TagInput({
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const filtered = suggestions.filter(
-    (s) =>
-      s.toLowerCase().includes(input.toLowerCase()) && !value.includes(s)
-  );
+  const filtered: FuzzyResult[] = input
+    ? suggestions
+        .filter((s) => !value.includes(s))
+        .map((s) => fuzzyMatch(input, s))
+        .filter((r): r is FuzzyResult => r !== null)
+        .sort((a, b) => b.score - a.score)
+    : [];
 
   function addTag(tag: string) {
     const trimmed = tag.trim().toLowerCase();
@@ -93,15 +137,23 @@ export function TagInput({
 
         {showSuggestions && input && filtered.length > 0 ? (
           <div className="absolute left-0 right-0 top-full z-10 mt-1 max-h-40 overflow-y-auto rounded-lg border border-neutral-200 bg-white shadow-lg">
-            {filtered.slice(0, 8).map((tag) => (
+            {filtered.slice(0, 8).map(({ text, matches }) => (
               <button
-                key={tag}
+                key={text}
                 type="button"
                 onMouseDown={(e) => e.preventDefault()}
-                onClick={() => addTag(tag)}
+                onClick={() => addTag(text)}
                 className="block w-full px-3 py-2 text-left text-sm text-neutral-700 hover:bg-neutral-50"
               >
-                {tag}
+                {text.split("").map((ch, i) =>
+                  matches.includes(i) ? (
+                    <span key={i} className="font-semibold text-neutral-900">
+                      {ch}
+                    </span>
+                  ) : (
+                    <span key={i}>{ch}</span>
+                  )
+                )}
               </button>
             ))}
           </div>

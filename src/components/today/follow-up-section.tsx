@@ -14,12 +14,14 @@ interface FollowUpSectionProps {
   title: string;
   items: FollowUp[];
   isOverdue?: boolean;
+  canMutate?: boolean;
 }
 
 export function FollowUpSection({
   title,
   items,
   isOverdue = false,
+  canMutate = true,
 }: FollowUpSectionProps) {
   if (items.length === 0) return null;
 
@@ -43,6 +45,7 @@ export function FollowUpSection({
             content={item.content}
             followUpDate={item.follow_up_date}
             isOverdue={isOverdue}
+            canMutate={canMutate}
           />
         ))}
       </div>

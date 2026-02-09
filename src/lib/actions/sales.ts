@@ -1,33 +1,18 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { requireWriteAccess } from "@/lib/subscription";
-
-async function getProfile() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("organization_id")
-    .eq("id", user.id)
-    .single();
-
-  if (!profile?.organization_id) redirect("/onboarding");
-  return { supabase, orgId: profile.organization_id };
-}
+import { getAuthContext, requireMutationAccess, requireDeleteAccess } from "@/lib/auth-context";
 
 export async function createSale(formData: FormData) {
   await requireWriteAccess();
-  const { supabase, orgId } = await getProfile();
+  await requireMutationAccess();
+  const { supabase, orgId } = await getAuthContext();
 
   const clientId = formData.get("client_id") as string;
   const amountStr = formData.get("amount") as string;
+  const inventoryItemId =
+    (formData.get("inventory_item_id") as string) || null;
 
   const { error } = await supabase.from("sales").insert({
     client_id: clientId,
@@ -38,10 +23,20 @@ export async function createSale(formData: FormData) {
       (formData.get("sale_date") as string) ||
       new Date().toISOString().split("T")[0],
     notes: (formData.get("notes") as string) || null,
+    inventory_item_id: inventoryItemId,
   });
 
   if (error) {
     return { error: error.message };
+  }
+
+  // Mark linked inventory item as sold
+  if (inventoryItemId) {
+    await supabase
+      .from("inventory")
+      .update({ status: "sold" })
+      .eq("id", inventoryItemId);
+    revalidatePath("/inventory");
   }
 
   // Touch client's updated_at
@@ -56,11 +51,14 @@ export async function createSale(formData: FormData) {
 
 export async function updateSale(formData: FormData) {
   await requireWriteAccess();
-  const { supabase } = await getProfile();
+  await requireMutationAccess();
+  const { supabase } = await getAuthContext();
 
   const saleId = formData.get("id") as string;
   const clientId = formData.get("client_id") as string;
   const amountStr = formData.get("amount") as string;
+  const inventoryItemId =
+    (formData.get("inventory_item_id") as string) || null;
 
   const { error } = await supabase
     .from("sales")
@@ -71,6 +69,7 @@ export async function updateSale(formData: FormData) {
         (formData.get("sale_date") as string) ||
         new Date().toISOString().split("T")[0],
       notes: (formData.get("notes") as string) || null,
+      inventory_item_id: inventoryItemId,
     })
     .eq("id", saleId);
 
@@ -83,7 +82,8 @@ export async function updateSale(formData: FormData) {
 
 export async function deleteSale(saleId: string, clientId: string) {
   await requireWriteAccess();
-  const { supabase } = await getProfile();
+  await requireDeleteAccess();
+  const { supabase } = await getAuthContext();
 
   const { error } = await supabase.from("sales").delete().eq("id", saleId);
 

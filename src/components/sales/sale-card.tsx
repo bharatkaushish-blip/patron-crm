@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { MoreHorizontal, Pencil, Trash2, X } from "lucide-react";
 import { updateSale, deleteSale } from "@/lib/actions/sales";
+import { formatCurrency } from "@/lib/format-currency";
 
 interface SaleCardProps {
   id: string;
@@ -11,6 +12,9 @@ interface SaleCardProps {
   amount: number | null;
   saleDate: string;
   notes: string | null;
+  currency: string;
+  canEdit?: boolean;
+  canDelete?: boolean;
 }
 
 export function SaleCard({
@@ -20,6 +24,9 @@ export function SaleCard({
   amount,
   saleDate,
   notes,
+  currency,
+  canEdit = true,
+  canDelete = true,
 }: SaleCardProps) {
   const [showMenu, setShowMenu] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -29,6 +36,8 @@ export function SaleCard({
   const [editAmount, setEditAmount] = useState(amount?.toString() || "");
   const [editDate, setEditDate] = useState(saleDate);
   const [editNotes, setEditNotes] = useState(notes || "");
+
+  const showMenuButton = canEdit || canDelete;
 
   function handleSaveEdit(e: React.FormEvent) {
     e.preventDefault();
@@ -132,7 +141,7 @@ export function SaleCard({
             </p>
             {amount ? (
               <p className="text-sm font-medium text-neutral-900 shrink-0 ml-2">
-                ₹{Number(amount).toLocaleString("en-IN")}
+                {formatCurrency(Number(amount), currency)}
               </p>
             ) : null}
           </div>
@@ -144,38 +153,44 @@ export function SaleCard({
           <p className="mt-1 text-xs text-neutral-400">{dateLabel}</p>
         </div>
 
-        <div className="relative shrink-0">
-          <button
-            onClick={() => setShowMenu(!showMenu)}
-            className="rounded-md p-1 text-neutral-300 hover:bg-neutral-100 hover:text-neutral-500"
-          >
-            <MoreHorizontal className="h-4 w-4" />
-          </button>
-          {showMenu ? (
-            <div className="absolute right-0 top-full z-10 mt-1 w-32 rounded-lg border border-neutral-200 bg-white py-1 shadow-lg">
-              <button
-                onClick={() => {
-                  setIsEditing(true);
-                  setShowMenu(false);
-                }}
-                className="flex w-full items-center gap-2 px-3 py-1.5 text-xs text-neutral-600 hover:bg-neutral-50"
-              >
-                <Pencil className="h-3 w-3" />
-                Edit
-              </button>
-              <button
-                onClick={() => {
-                  handleDelete();
-                  setShowMenu(false);
-                }}
-                className="flex w-full items-center gap-2 px-3 py-1.5 text-xs text-red-600 hover:bg-red-50"
-              >
-                <Trash2 className="h-3 w-3" />
-                Delete
-              </button>
-            </div>
-          ) : null}
-        </div>
+        {showMenuButton && (
+          <div className="relative shrink-0">
+            <button
+              onClick={() => setShowMenu(!showMenu)}
+              className="rounded-md p-1 text-neutral-300 hover:bg-neutral-100 hover:text-neutral-500"
+            >
+              <MoreHorizontal className="h-4 w-4" />
+            </button>
+            {showMenu ? (
+              <div className="absolute right-0 top-full z-10 mt-1 w-32 rounded-lg border border-neutral-200 bg-white py-1 shadow-lg">
+                {canEdit && (
+                  <button
+                    onClick={() => {
+                      setIsEditing(true);
+                      setShowMenu(false);
+                    }}
+                    className="flex w-full items-center gap-2 px-3 py-1.5 text-xs text-neutral-600 hover:bg-neutral-50"
+                  >
+                    <Pencil className="h-3 w-3" />
+                    Edit
+                  </button>
+                )}
+                {canDelete && (
+                  <button
+                    onClick={() => {
+                      handleDelete();
+                      setShowMenu(false);
+                    }}
+                    className="flex w-full items-center gap-2 px-3 py-1.5 text-xs text-red-600 hover:bg-red-50"
+                  >
+                    <Trash2 className="h-3 w-3" />
+                    Delete
+                  </button>
+                )}
+              </div>
+            ) : null}
+          </div>
+        )}
       </div>
     </div>
   );

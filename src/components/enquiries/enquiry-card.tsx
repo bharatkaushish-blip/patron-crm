@@ -16,6 +16,8 @@ interface EnquiryCardProps {
   notes: string | null;
   createdAt: string;
   showClientName?: boolean;
+  canEdit?: boolean;
+  canDelete?: boolean;
 }
 
 export function EnquiryCard({
@@ -30,6 +32,8 @@ export function EnquiryCard({
   notes,
   createdAt,
   showClientName = false,
+  canEdit = true,
+  canDelete = true,
 }: EnquiryCardProps) {
   const [showMenu, setShowMenu] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -41,6 +45,8 @@ export function EnquiryCard({
   const [editTimeline, setEditTimeline] = useState(timeline || "");
   const [editWorkType, setEditWorkType] = useState(workType || "");
   const [editNotes, setEditNotes] = useState(notes || "");
+
+  const showMenuButton = canEdit || canDelete;
 
   function handleSaveEdit(e: React.FormEvent) {
     e.preventDefault();
@@ -199,38 +205,44 @@ export function EnquiryCard({
           <p className="mt-1 text-[10px] text-neutral-400">{dateLabel}</p>
         </div>
 
-        <div className="relative shrink-0">
-          <button
-            onClick={() => setShowMenu(!showMenu)}
-            className="rounded-md p-1 text-neutral-300 hover:bg-neutral-100 hover:text-neutral-500"
-          >
-            <MoreHorizontal className="h-4 w-4" />
-          </button>
-          {showMenu ? (
-            <div className="absolute right-0 top-full z-10 mt-1 w-32 rounded-lg border border-neutral-200 bg-white py-1 shadow-lg">
-              <button
-                onClick={() => {
-                  setIsEditing(true);
-                  setShowMenu(false);
-                }}
-                className="flex w-full items-center gap-2 px-3 py-1.5 text-xs text-neutral-600 hover:bg-neutral-50"
-              >
-                <Pencil className="h-3 w-3" />
-                Edit
-              </button>
-              <button
-                onClick={() => {
-                  handleDelete();
-                  setShowMenu(false);
-                }}
-                className="flex w-full items-center gap-2 px-3 py-1.5 text-xs text-red-600 hover:bg-red-50"
-              >
-                <Trash2 className="h-3 w-3" />
-                Delete
-              </button>
-            </div>
-          ) : null}
-        </div>
+        {showMenuButton && (
+          <div className="relative shrink-0">
+            <button
+              onClick={() => setShowMenu(!showMenu)}
+              className="rounded-md p-1 text-neutral-300 hover:bg-neutral-100 hover:text-neutral-500"
+            >
+              <MoreHorizontal className="h-4 w-4" />
+            </button>
+            {showMenu ? (
+              <div className="absolute right-0 top-full z-10 mt-1 w-32 rounded-lg border border-neutral-200 bg-white py-1 shadow-lg">
+                {canEdit && (
+                  <button
+                    onClick={() => {
+                      setIsEditing(true);
+                      setShowMenu(false);
+                    }}
+                    className="flex w-full items-center gap-2 px-3 py-1.5 text-xs text-neutral-600 hover:bg-neutral-50"
+                  >
+                    <Pencil className="h-3 w-3" />
+                    Edit
+                  </button>
+                )}
+                {canDelete && (
+                  <button
+                    onClick={() => {
+                      handleDelete();
+                      setShowMenu(false);
+                    }}
+                    className="flex w-full items-center gap-2 px-3 py-1.5 text-xs text-red-600 hover:bg-red-50"
+                  >
+                    <Trash2 className="h-3 w-3" />
+                    Delete
+                  </button>
+                )}
+              </div>
+            ) : null}
+          </div>
+        )}
       </div>
     </div>
   );

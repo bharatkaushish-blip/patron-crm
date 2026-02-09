@@ -222,7 +222,7 @@ returns table(tag text, usage_count bigint) as $$
   where organization_id = org_id and is_deleted = false
   group by tag
   order by usage_count desc;
-$$ language sql security definer;
+$$ language sql security invoker;
 
 -- ===================
 -- TRIGGER: auto-update updated_at

@@ -25,6 +25,17 @@ export default async function TodayPage() {
     redirect("/onboarding");
   }
 
+  const { data: roleProfile } = await supabase
+    .from("profiles")
+    .select("role, permissions")
+    .eq("id", user.id)
+    .single()
+    .then((res: any) => (res.error ? { data: null } : res));
+
+  const { extractRoleData, canMutate } = await import("@/lib/permissions");
+  const { role, permissions: perms } = extractRoleData(roleProfile);
+  const userCanMutate = canMutate(role, perms);
+
   const today = new Date().toISOString().split("T")[0];
 
   const { data: overdue } = await supabase
@@ -65,25 +76,29 @@ export default async function TodayPage() {
               title="Overdue"
               items={(overdue as never[]) ?? []}
               isOverdue
+              canMutate={userCanMutate}
             />
             <FollowUpSection
               title="Due today"
               items={(dueToday as never[]) ?? []}
+              canMutate={userCanMutate}
             />
           </>
         )}
       </div>
 
       {/* Quick action buttons */}
-      <div className="fixed bottom-20 right-4 flex flex-col gap-2 md:bottom-6">
-        <Link
-          href="/clients/new"
-          className="flex h-12 w-12 items-center justify-center rounded-full bg-neutral-900 text-white shadow-lg hover:bg-neutral-800 transition-colors"
-          title="Add client"
-        >
-          <UserPlus className="h-5 w-5" />
-        </Link>
-      </div>
+      {userCanMutate && (
+        <div className="fixed bottom-20 right-4 flex flex-col gap-2 md:bottom-6">
+          <Link
+            href="/clients/new"
+            className="flex h-12 w-12 items-center justify-center rounded-full bg-neutral-900 text-white shadow-lg hover:bg-neutral-800 transition-colors"
+            title="Add client"
+          >
+            <UserPlus className="h-5 w-5" />
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

@@ -4,20 +4,54 @@ import { useState, useTransition } from "react";
 import { createSale } from "@/lib/actions/sales";
 import { Plus, X } from "lucide-react";
 
-export function SaleForm({ clientId }: { clientId: string }) {
+interface InventoryItem {
+  id: string;
+  title: string;
+  artist: string | null;
+  asking_price: number | null;
+}
+
+export function SaleForm({
+  clientId,
+  inventoryItems = [],
+}: {
+  clientId: string;
+  inventoryItems?: InventoryItem[];
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [selectedItemId, setSelectedItemId] = useState("");
+  const [artworkName, setArtworkName] = useState("");
+  const [amount, setAmount] = useState("");
+
+  function handleInventorySelect(e: React.ChangeEvent<HTMLSelectElement>) {
+    const itemId = e.target.value;
+    setSelectedItemId(itemId);
+    if (itemId) {
+      const item = inventoryItems.find((i) => i.id === itemId);
+      if (item) {
+        setArtworkName(item.title);
+        if (item.asking_price) setAmount(item.asking_price.toString());
+      }
+    }
+  }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);
     formData.set("client_id", clientId);
+    if (selectedItemId) {
+      formData.set("inventory_item_id", selectedItemId);
+    }
 
     startTransition(async () => {
       await createSale(formData);
       form.reset();
       setIsOpen(false);
+      setSelectedItemId("");
+      setArtworkName("");
+      setAmount("");
     });
   }
 
@@ -49,11 +83,31 @@ export function SaleForm({ clientId }: { clientId: string }) {
         </button>
       </div>
 
+      {inventoryItems.length > 0 && (
+        <div>
+          <select
+            value={selectedItemId}
+            onChange={handleInventorySelect}
+            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-700 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+          >
+            <option value="">Link artwork (optional)</option>
+            {inventoryItems.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.title}
+                {item.artist ? ` — ${item.artist}` : ""}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
       <div>
         <input
           name="artwork_name"
           type="text"
           placeholder="Artwork name"
+          value={artworkName}
+          onChange={(e) => setArtworkName(e.target.value)}
           className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
         />
       </div>
@@ -64,6 +118,8 @@ export function SaleForm({ clientId }: { clientId: string }) {
           type="number"
           step="0.01"
           placeholder="Amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
           className="flex-1 rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
         />
         <input

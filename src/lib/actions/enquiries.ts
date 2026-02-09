@@ -1,32 +1,18 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { requireWriteAccess } from "@/lib/subscription";
-
-async function getProfile() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("organization_id")
-    .eq("id", user.id)
-    .single();
-
-  if (!profile?.organization_id) redirect("/onboarding");
-  return { supabase, orgId: profile.organization_id };
-}
+import { getAuthContext, requireMutationAccess, requireDeleteAccess } from "@/lib/auth-context";
 
 export async function createEnquiry(formData: FormData) {
   await requireWriteAccess();
-  const { supabase, orgId } = await getProfile();
+  await requireMutationAccess();
+  const { supabase, orgId } = await getAuthContext();
 
   const clientId = formData.get("client_id") as string;
+
+  const inventoryItemId =
+    (formData.get("inventory_item_id") as string) || null;
 
   const { error } = await supabase.from("enquiries").insert({
     client_id: clientId,
@@ -37,6 +23,7 @@ export async function createEnquiry(formData: FormData) {
     timeline: (formData.get("timeline") as string) || null,
     work_type: (formData.get("work_type") as string) || null,
     notes: (formData.get("notes") as string) || null,
+    inventory_item_id: inventoryItemId,
   });
 
   if (error) {
@@ -56,10 +43,14 @@ export async function createEnquiry(formData: FormData) {
 
 export async function updateEnquiry(formData: FormData) {
   await requireWriteAccess();
-  const { supabase } = await getProfile();
+  await requireMutationAccess();
+  const { supabase } = await getAuthContext();
 
   const enquiryId = formData.get("id") as string;
   const clientId = formData.get("client_id") as string;
+
+  const inventoryItemId =
+    (formData.get("inventory_item_id") as string) || null;
 
   const { error } = await supabase
     .from("enquiries")
@@ -70,6 +61,7 @@ export async function updateEnquiry(formData: FormData) {
       timeline: (formData.get("timeline") as string) || null,
       work_type: (formData.get("work_type") as string) || null,
       notes: (formData.get("notes") as string) || null,
+      inventory_item_id: inventoryItemId,
     })
     .eq("id", enquiryId);
 
@@ -83,7 +75,8 @@ export async function updateEnquiry(formData: FormData) {
 
 export async function deleteEnquiry(enquiryId: string, clientId: string) {
   await requireWriteAccess();
-  const { supabase } = await getProfile();
+  await requireDeleteAccess();
+  const { supabase } = await getAuthContext();
 
   const { error } = await supabase.from("enquiries").delete().eq("id", enquiryId);
 

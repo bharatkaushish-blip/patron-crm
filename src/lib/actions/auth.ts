@@ -9,6 +9,7 @@ export async function signUp(formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
   const fullName = formData.get("full_name") as string;
+  const inviteToken = (formData.get("invite_token") as string) || null;
 
   const { error } = await supabase.auth.signUp({
     email,
@@ -22,6 +23,10 @@ export async function signUp(formData: FormData) {
     return { error: error.message };
   }
 
+  if (inviteToken) {
+    redirect(`/invite/${inviteToken}`);
+  }
+
   redirect("/onboarding");
 }
 
@@ -30,6 +35,7 @@ export async function signIn(formData: FormData) {
 
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
+  const inviteToken = (formData.get("invite_token") as string) || null;
 
   const { error } = await supabase.auth.signInWithPassword({
     email,
@@ -40,16 +46,24 @@ export async function signIn(formData: FormData) {
     return { error: error.message };
   }
 
+  if (inviteToken) {
+    redirect(`/invite/${inviteToken}`);
+  }
+
   redirect("/today");
 }
 
-export async function signInWithGoogle() {
+export async function signInWithGoogle(inviteToken?: string) {
   const supabase = await createClient();
+
+  const redirectUrl = inviteToken
+    ? `${process.env.NEXT_PUBLIC_APP_URL}/callback?invite=${inviteToken}`
+    : `${process.env.NEXT_PUBLIC_APP_URL}/callback`;
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/callback`,
+      redirectTo: redirectUrl,
     },
   });
 
@@ -122,13 +136,21 @@ export async function createOrganization(formData: FormData) {
     return { error: orgError.message };
   }
 
-  const { error: profileError } = await adminClient
+  const { data: updatedProfile, error: profileError } = await adminClient
     .from("profiles")
     .update({ organization_id: org.id })
-    .eq("id", user.id);
+    .eq("id", user.id)
+    .select("organization_id")
+    .single();
 
   if (profileError) {
+    console.error("Profile update error:", profileError);
     return { error: profileError.message };
+  }
+
+  if (!updatedProfile?.organization_id) {
+    console.error("Profile update returned no data:", updatedProfile);
+    return { error: "Failed to link organization to your profile." };
   }
 
   redirect("/today");

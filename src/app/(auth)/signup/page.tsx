@@ -1,12 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { signUp, signInWithGoogle } from "@/lib/actions/auth";
 
-export default function SignUpPage() {
+function SignUpForm() {
+  const searchParams = useSearchParams();
+  const inviteToken = searchParams.get("invite") || "";
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -22,7 +25,7 @@ export default function SignUpPage() {
 
   async function handleGoogle() {
     setIsLoading(true);
-    const result = await signInWithGoogle();
+    const result = await signInWithGoogle(inviteToken || undefined);
     if (result?.error) {
       setError(result.error);
       setIsLoading(false);
@@ -36,11 +39,14 @@ export default function SignUpPage() {
           Patron
         </h1>
         <p className="mt-2 text-sm text-neutral-500">
-          Start your 14-day free trial
+          {inviteToken ? "Create your account to join" : "Start your 14-day free trial"}
         </p>
       </div>
 
       <form action={handleSubmit} className="space-y-4">
+        {inviteToken && (
+          <input type="hidden" name="invite_token" value={inviteToken} />
+        )}
         <Input
           name="full_name"
           type="text"
@@ -96,10 +102,21 @@ export default function SignUpPage() {
 
       <p className="text-center text-sm text-neutral-500">
         Already have an account?{" "}
-        <Link href="/login" className="font-medium text-neutral-900 hover:underline">
+        <Link
+          href={inviteToken ? `/login?invite=${inviteToken}` : "/login"}
+          className="font-medium text-neutral-900 hover:underline"
+        >
           Sign in
         </Link>
       </p>
     </div>
+  );
+}
+
+export default function SignUpPage() {
+  return (
+    <Suspense>
+      <SignUpForm />
+    </Suspense>
   );
 }

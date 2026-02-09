@@ -4,20 +4,54 @@ import { useState, useTransition } from "react";
 import { createEnquiry } from "@/lib/actions/enquiries";
 import { Plus, X } from "lucide-react";
 
-export function EnquiryForm({ clientId }: { clientId: string }) {
+interface InventoryItem {
+  id: string;
+  title: string;
+  artist: string | null;
+  dimensions: string | null;
+}
+
+export function EnquiryForm({
+  clientId,
+  inventoryItems = [],
+}: {
+  clientId: string;
+  inventoryItems?: InventoryItem[];
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [selectedItemId, setSelectedItemId] = useState("");
+  const [artist, setArtist] = useState("");
+  const [size, setSize] = useState("");
+
+  function handleInventorySelect(e: React.ChangeEvent<HTMLSelectElement>) {
+    const itemId = e.target.value;
+    setSelectedItemId(itemId);
+    if (itemId) {
+      const item = inventoryItems.find((i) => i.id === itemId);
+      if (item) {
+        if (item.artist) setArtist(item.artist);
+        if (item.dimensions) setSize(item.dimensions);
+      }
+    }
+  }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);
     formData.set("client_id", clientId);
+    if (selectedItemId) {
+      formData.set("inventory_item_id", selectedItemId);
+    }
 
     startTransition(async () => {
       await createEnquiry(formData);
       form.reset();
       setIsOpen(false);
+      setSelectedItemId("");
+      setArtist("");
+      setSize("");
     });
   }
 
@@ -49,11 +83,31 @@ export function EnquiryForm({ clientId }: { clientId: string }) {
         </button>
       </div>
 
+      {inventoryItems.length > 0 && (
+        <div>
+          <select
+            value={selectedItemId}
+            onChange={handleInventorySelect}
+            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-700 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+          >
+            <option value="">Suggest artwork (optional)</option>
+            {inventoryItems.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.title}
+                {item.artist ? ` — ${item.artist}` : ""}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
       <div className="grid grid-cols-2 gap-3">
         <input
           name="size"
           type="text"
           placeholder="Size (e.g. 4x6 ft)"
+          value={size}
+          onChange={(e) => setSize(e.target.value)}
           className="rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
         />
         <input
@@ -69,6 +123,8 @@ export function EnquiryForm({ clientId }: { clientId: string }) {
           name="artist"
           type="text"
           placeholder="Artist preference"
+          value={artist}
+          onChange={(e) => setArtist(e.target.value)}
           className="rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
         />
         <div>

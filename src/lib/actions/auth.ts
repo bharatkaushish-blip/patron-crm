@@ -152,31 +152,51 @@ export async function createOrganization(formData: FormData) {
   const { createAdminClient } = await import("@/lib/supabase/admin");
   const adminClient = createAdminClient();
 
-  const { data: org, error: orgError } = await adminClient
+  const { data: orgs, error: orgError } = await adminClient
     .from("organizations")
     .insert({ name })
-    .select()
-    .single();
+    .select();
 
   if (orgError) {
+    console.error("Org creation error:", orgError);
     return { error: orgError.message };
   }
 
-  const { data: updatedProfile, error: profileError } = await adminClient
-    .from("profiles")
-    .update({ organization_id: org.id })
-    .eq("id", user.id)
-    .select("organization_id")
-    .single();
-
-  if (profileError) {
-    console.error("Profile update error:", profileError);
-    return { error: profileError.message };
+  const org = orgs?.[0];
+  if (!org) {
+    return { error: "Failed to create organization. Please try again." };
   }
 
-  if (!updatedProfile?.organization_id) {
-    console.error("Profile update returned no data:", updatedProfile);
-    return { error: "Failed to link organization to your profile." };
+  // Ensure profile exists (trigger may not have fired for OAuth users)
+  const { data: existingProfile } = await adminClient
+    .from("profiles")
+    .select("id")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if (!existingProfile) {
+    const { error: insertError } = await adminClient
+      .from("profiles")
+      .insert({
+        id: user.id,
+        full_name: user.user_metadata?.full_name || user.user_metadata?.name || "",
+        organization_id: org.id,
+      });
+
+    if (insertError) {
+      console.error("Profile insert error:", insertError);
+      return { error: insertError.message };
+    }
+  } else {
+    const { error: profileError } = await adminClient
+      .from("profiles")
+      .update({ organization_id: org.id })
+      .eq("id", user.id);
+
+    if (profileError) {
+      console.error("Profile update error:", profileError);
+      return { error: profileError.message };
+    }
   }
 
   redirect("/today");

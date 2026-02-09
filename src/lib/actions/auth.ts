@@ -11,7 +11,7 @@ export async function signUp(formData: FormData) {
   const fullName = formData.get("full_name") as string;
   const inviteToken = (formData.get("invite_token") as string) || null;
 
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
@@ -23,11 +23,37 @@ export async function signUp(formData: FormData) {
     return { error: error.message };
   }
 
+  // If email verification is required, session will be null
+  // and user.identities may be empty (if email already exists)
+  if (data.user && !data.session) {
+    // Check if this email is already registered
+    if (data.user.identities && data.user.identities.length === 0) {
+      return { error: "An account with this email already exists. Try signing in instead." };
+    }
+    // Email verification required — show check-email page
+    redirect(`/check-email?email=${encodeURIComponent(email)}`);
+  }
+
   if (inviteToken) {
     redirect(`/invite/${inviteToken}`);
   }
 
   redirect("/onboarding");
+}
+
+export async function resendVerificationEmail(email: string) {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.resend({
+    type: "signup",
+    email,
+  });
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  return { success: true };
 }
 
 export async function signIn(formData: FormData) {

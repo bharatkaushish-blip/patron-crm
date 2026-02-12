@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { createServerClient } from "@supabase/ssr";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -7,16 +7,45 @@ export async function GET(request: Request) {
   const invite = searchParams.get("invite");
 
   if (code) {
-    const supabase = await createClient();
+    // Default redirect destination
+    let redirectTo = `${origin}/onboarding`;
+
+    // Create a redirect response first — cookies will be set on it directly
+    const response = NextResponse.redirect(redirectTo);
+
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return request.headers.get("cookie")
+              ? request.headers
+                  .get("cookie")!
+                  .split("; ")
+                  .map((c) => {
+                    const [name, ...rest] = c.split("=");
+                    return { name, value: rest.join("=") };
+                  })
+              : [];
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              response.cookies.set(name, value, options);
+            });
+          },
+        },
+      }
+    );
+
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
-      // If there's an invite token, redirect to invite page
       if (invite) {
-        return NextResponse.redirect(`${origin}/invite/${invite}`);
+        response.headers.set("Location", `${origin}/invite/${invite}`);
+        return response;
       }
 
-      // Check if user has an organization
       const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -29,13 +58,14 @@ export async function GET(request: Request) {
           .single();
 
         if (profile?.organization_id) {
-          return NextResponse.redirect(`${origin}/today`);
+          response.headers.set("Location", `${origin}/today`);
+        } else {
+          response.headers.set("Location", `${origin}/onboarding`);
         }
-        return NextResponse.redirect(`${origin}/onboarding`);
+        return response;
       }
     }
   }
 
-  // Something went wrong, redirect to login
   return NextResponse.redirect(`${origin}/login`);
 }

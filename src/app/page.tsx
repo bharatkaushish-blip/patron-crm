@@ -1,6 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import { ArrowRight, ChevronDown, Mail } from "lucide-react";
 import { HeroSparkles } from "@/components/landing/hero-sparkles";
 import { GlowFeatureGrid } from "@/components/landing/glow-feature-grid";
@@ -37,18 +36,18 @@ export default async function LandingPage() {
           </div>
 
           <div className="flex items-center gap-3">
-            <Link
+            <a
               href="/login"
               className="text-sm text-neutral-400 hover:text-white transition-colors"
             >
               Login
-            </Link>
-            <Link
+            </a>
+            <a
               href="/signup"
               className="rounded-full bg-white px-5 py-2 text-sm font-medium text-black hover:bg-neutral-200 transition-colors"
             >
               Sign up
-            </Link>
+            </a>
           </div>
         </div>
       </nav>
@@ -86,13 +85,13 @@ export default async function LandingPage() {
             Remember every detail. Never miss a follow-up.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
+            <a
               href="/signup"
               className="group flex items-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-black hover:bg-neutral-200 transition-all"
             >
               Start free trial
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
+            </a>
             <a
               href="#about"
               className="flex items-center gap-2 rounded-full border border-white/10 px-8 py-3.5 text-sm text-neutral-300 hover:border-white/25 hover:text-white transition-all"
@@ -230,13 +229,13 @@ export default async function LandingPage() {
           <p className="mt-6 text-neutral-400 text-lg">
             Start your 14-day free trial today. No credit card required.
           </p>
-          <Link
+          <a
             href="/signup"
             className="group mt-10 inline-flex items-center gap-2 rounded-full bg-white px-10 py-4 text-sm font-semibold text-black hover:bg-neutral-200 transition-all"
           >
             Get started
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-          </Link>
+          </a>
         </div>
       </section>
 

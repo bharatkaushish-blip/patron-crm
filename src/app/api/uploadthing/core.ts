@@ -5,7 +5,7 @@ const f = createUploadthing();
 
 export const ourFileRouter = {
   inventoryImage: f({
-    image: { maxFileSize: "10MB", maxFileCount: 1 },
+    image: { maxFileSize: "16MB", maxFileCount: 1 },
   })
     .middleware(async () => {
       const supabase = await createClient();
@@ -22,7 +22,7 @@ export const ourFileRouter = {
     }),
 
   clientPhoto: f({
-    image: { maxFileSize: "10MB", maxFileCount: 1 },
+    image: { maxFileSize: "16MB", maxFileCount: 1 },
   })
     .middleware(async () => {
       const supabase = await createClient();

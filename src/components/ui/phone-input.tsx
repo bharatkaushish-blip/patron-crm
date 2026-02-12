@@ -50,7 +50,7 @@ export function PhoneInput({ name, label, defaultValue }: PhoneInputProps) {
         <select
           value={prefix}
           onChange={(e) => setPrefix(e.target.value)}
-          className="w-24 shrink-0 rounded-lg border border-neutral-300 bg-white px-2 py-2.5 text-sm text-neutral-700 focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-1"
+          className="w-24 shrink-0 rounded-lg border border-neutral-300 bg-white px-2 py-2.5 text-sm text-neutral-700 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-1"
         >
           {COUNTRY_CODES.map((c) => (
             <option key={c.code} value={c.code}>
@@ -63,7 +63,7 @@ export function PhoneInput({ name, label, defaultValue }: PhoneInputProps) {
           value={number}
           onChange={(e) => setNumber(e.target.value)}
           placeholder="Phone number"
-          className="flex-1 rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-1"
+          className="flex-1 rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-1"
         />
       </div>
     </div>

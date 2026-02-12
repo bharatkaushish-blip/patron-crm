@@ -29,7 +29,7 @@ export function InventorySearchInput() {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Search by title, artist, medium..."
-        className="w-full rounded-lg border border-neutral-300 bg-white py-2.5 pl-10 pr-10 text-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+        className="w-full rounded-lg border border-neutral-300 bg-white py-2.5 pl-10 pr-10 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
       />
       {value ? (
         <button

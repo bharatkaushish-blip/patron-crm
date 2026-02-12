@@ -39,7 +39,7 @@ export function TagFilter({ tags }: TagFilterProps) {
           className={cn(
             "rounded-full px-3 py-1 text-xs font-medium transition-colors",
             activeTags.includes(tag)
-              ? "bg-neutral-900 text-white"
+              ? "bg-indigo-600 text-white"
               : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
           )}
         >

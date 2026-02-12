@@ -4,6 +4,7 @@ interface FollowUp {
   id: string;
   content: string;
   follow_up_date: string;
+  type?: "note" | "enquiry";
   clients: {
     id: string;
     name: string;
@@ -46,6 +47,7 @@ export function FollowUpSection({
             followUpDate={item.follow_up_date}
             isOverdue={isOverdue}
             canMutate={canMutate}
+            type={item.type ?? "note"}
           />
         ))}
       </div>

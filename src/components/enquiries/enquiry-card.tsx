@@ -92,13 +92,13 @@ function EnquiryRow({ enquiry, canEdit, canDelete, isLast }: EnquiryRowProps) {
             value={editSize}
             onChange={(e) => setEditSize(e.target.value)}
             placeholder="Size"
-            className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+            className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
           />
           <input
             value={editBudget}
             onChange={(e) => setEditBudget(e.target.value)}
             placeholder="Budget"
-            className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+            className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
           />
         </div>
         <div className="grid grid-cols-2 gap-2">
@@ -106,33 +106,33 @@ function EnquiryRow({ enquiry, canEdit, canDelete, isLast }: EnquiryRowProps) {
             value={editArtist}
             onChange={(e) => setEditArtist(e.target.value)}
             placeholder="Artist"
-            className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+            className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
           />
           <input
             value={editTimeline}
             onChange={(e) => setEditTimeline(e.target.value)}
             type="date"
-            className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+            className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
           />
         </div>
         <input
           value={editWorkType}
           onChange={(e) => setEditWorkType(e.target.value)}
           placeholder="Type of work"
-          className="w-full rounded-md border border-neutral-300 px-3 py-1.5 text-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+          className="w-full rounded-md border border-neutral-300 px-3 py-1.5 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
         />
         <textarea
           value={editNotes}
           onChange={(e) => setEditNotes(e.target.value)}
           placeholder="Notes"
           rows={2}
-          className="w-full resize-none rounded-md border border-neutral-300 px-3 py-1.5 text-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+          className="w-full resize-none rounded-md border border-neutral-300 px-3 py-1.5 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
         />
         <div className="flex gap-2">
           <button
             type="submit"
             disabled={isPending}
-            className="rounded-md bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-neutral-800 disabled:opacity-50"
+            className="rounded-md bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
           >
             Save
           </button>

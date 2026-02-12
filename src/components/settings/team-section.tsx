@@ -128,7 +128,7 @@ export function TeamSection({
         <h2 className="text-lg font-semibold text-neutral-900">Team</h2>
         <button
           onClick={() => setShowInviteForm(!showInviteForm)}
-          className="flex items-center gap-1.5 rounded-lg bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-neutral-800 transition-colors"
+          className="flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700 transition-colors"
         >
           <Mail className="h-3.5 w-3.5" />
           Invite
@@ -144,7 +144,7 @@ export function TeamSection({
               value={inviteEmail}
               onChange={(e) => setInviteEmail(e.target.value)}
               placeholder="Email address"
-              className="flex-1 rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+              className="flex-1 rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
             />
             <button
               onClick={() => setShowInviteForm(false)}
@@ -179,7 +179,7 @@ export function TeamSection({
           <button
             onClick={handleInvite}
             disabled={isPending || !inviteEmail.trim()}
-            className="rounded-md bg-neutral-900 px-4 py-1.5 text-xs font-medium text-white hover:bg-neutral-800 disabled:opacity-50"
+            className="rounded-md bg-indigo-600 px-4 py-1.5 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
           >
             {isPending ? "Sending..." : "Send invite"}
           </button>
@@ -256,7 +256,7 @@ export function TeamSection({
                     disabled={isPending}
                     className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium transition-colors ${
                       m.permissions[key]
-                        ? "bg-neutral-900 text-white"
+                        ? "bg-indigo-600 text-white"
                         : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200"
                     } ${isPending ? "opacity-50" : ""}`}
                   >

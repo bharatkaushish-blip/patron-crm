@@ -72,7 +72,7 @@ export function NoteInput({ clientId }: NoteInputProps) {
           className={cn(
             "flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors",
             content.trim()
-              ? "bg-neutral-900 text-white hover:bg-neutral-800"
+              ? "bg-indigo-600 text-white hover:bg-indigo-700"
               : "bg-neutral-100 text-neutral-300"
           )}
         >
@@ -101,7 +101,7 @@ export function NoteInput({ clientId }: NoteInputProps) {
                 setFollowUpDate(e.target.value);
                 setShowDatePicker(false);
               }}
-              className="rounded-md border border-neutral-300 px-2 py-1 text-xs focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+              className="rounded-md border border-neutral-300 px-2 py-1 text-xs focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
               autoFocus
             />
             <button

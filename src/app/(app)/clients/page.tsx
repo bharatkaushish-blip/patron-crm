@@ -76,7 +76,7 @@ export default async function ClientsPage({
         {userCanMutate && (
           <Link
             href="/clients/new"
-            className="flex h-9 items-center gap-1.5 rounded-lg bg-neutral-900 px-3 text-sm font-medium text-white hover:bg-neutral-800 transition-colors"
+            className="flex h-9 items-center gap-1.5 rounded-lg bg-indigo-600 px-3 text-sm font-medium text-white hover:bg-indigo-700 transition-colors"
           >
             <Plus className="h-4 w-4" />
             Add

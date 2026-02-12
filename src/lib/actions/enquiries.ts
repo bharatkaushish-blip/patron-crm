@@ -14,13 +14,16 @@ export async function createEnquiry(formData: FormData) {
   const inventoryItemId =
     (formData.get("inventory_item_id") as string) || null;
 
+  const timeline = (formData.get("timeline") as string) || null;
+
   const { error } = await supabase.from("enquiries").insert({
     client_id: clientId,
     organization_id: orgId,
     size: (formData.get("size") as string) || null,
     budget: (formData.get("budget") as string) || null,
     artist: (formData.get("artist") as string) || null,
-    timeline: (formData.get("timeline") as string) || null,
+    timeline,
+    timeline_status: timeline ? "pending" : null,
     work_type: (formData.get("work_type") as string) || null,
     notes: (formData.get("notes") as string) || null,
     inventory_item_id: inventoryItemId,
@@ -39,6 +42,7 @@ export async function createEnquiry(formData: FormData) {
   revalidatePath(`/clients/${clientId}`);
   revalidatePath("/enquiries");
   revalidatePath("/clients");
+  revalidatePath("/today");
 }
 
 export async function updateEnquiry(formData: FormData) {
@@ -52,13 +56,16 @@ export async function updateEnquiry(formData: FormData) {
   const inventoryItemId =
     (formData.get("inventory_item_id") as string) || null;
 
+  const timeline = (formData.get("timeline") as string) || null;
+
   const { error } = await supabase
     .from("enquiries")
     .update({
       size: (formData.get("size") as string) || null,
       budget: (formData.get("budget") as string) || null,
       artist: (formData.get("artist") as string) || null,
-      timeline: (formData.get("timeline") as string) || null,
+      timeline,
+      timeline_status: timeline ? "pending" : null,
       work_type: (formData.get("work_type") as string) || null,
       notes: (formData.get("notes") as string) || null,
       inventory_item_id: inventoryItemId,
@@ -71,6 +78,41 @@ export async function updateEnquiry(formData: FormData) {
 
   revalidatePath(`/clients/${clientId}`);
   revalidatePath("/enquiries");
+  revalidatePath("/today");
+}
+
+export async function markEnquiryTimelineDone(enquiryId: string) {
+  await requireWriteAccess();
+  await requireMutationAccess();
+  const { supabase } = await getAuthContext();
+
+  const { error } = await supabase
+    .from("enquiries")
+    .update({ timeline_status: "done" })
+    .eq("id", enquiryId);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/today");
+}
+
+export async function rescheduleEnquiryTimeline(enquiryId: string, newDate: string) {
+  await requireWriteAccess();
+  await requireMutationAccess();
+  const { supabase } = await getAuthContext();
+
+  const { error } = await supabase
+    .from("enquiries")
+    .update({ timeline: newDate, timeline_status: "pending" })
+    .eq("id", enquiryId);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/today");
 }
 
 export async function deleteEnquiry(enquiryId: string, clientId: string) {

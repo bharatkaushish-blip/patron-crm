@@ -35,7 +35,7 @@ export function InventoryStatusFilter() {
           className={cn(
             "shrink-0 rounded-full px-3 py-1 text-xs font-medium transition-colors",
             current === s.value
-              ? "bg-neutral-900 text-white"
+              ? "bg-indigo-600 text-white"
               : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
           )}
         >

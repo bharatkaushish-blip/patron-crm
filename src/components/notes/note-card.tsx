@@ -93,7 +93,7 @@ export function NoteCard({
           <textarea
             value={editContent}
             onChange={(e) => setEditContent(e.target.value)}
-            className="w-full resize-none rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+            className="w-full resize-none rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
             rows={3}
             autoFocus
           />
@@ -101,7 +101,7 @@ export function NoteCard({
             <button
               onClick={handleSaveEdit}
               disabled={isPending}
-              className="rounded-md bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-neutral-800"
+              className="rounded-md bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
             >
               Save
             </button>
@@ -217,12 +217,12 @@ export function NoteCard({
                 value={newDate}
                 onChange={(e) => setNewDate(e.target.value)}
                 min={new Date().toISOString().split("T")[0]}
-                className="rounded-md border border-neutral-300 px-2 py-1 text-xs focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+                className="rounded-md border border-neutral-300 px-2 py-1 text-xs focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
               />
               <button
                 onClick={handleReschedule}
                 disabled={!newDate || isPending}
-                className="rounded-md bg-neutral-900 px-2.5 py-1 text-xs font-medium text-white hover:bg-neutral-800 disabled:opacity-50"
+                className="rounded-md bg-indigo-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
               >
                 Save
               </button>

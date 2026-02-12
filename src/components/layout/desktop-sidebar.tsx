@@ -60,7 +60,7 @@ export function DesktopSidebar({
                   className={cn(
                     "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
                     isActive
-                      ? "bg-neutral-100 font-medium text-neutral-900"
+                      ? "bg-indigo-50 font-medium text-indigo-700"
                       : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-700"
                   )}
                 >
@@ -75,7 +75,7 @@ export function DesktopSidebar({
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
                   pathname.startsWith("/admin")
-                    ? "bg-neutral-100 font-medium text-neutral-900"
+                    ? "bg-indigo-50 font-medium text-indigo-700"
                     : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-700"
                 )}
               >

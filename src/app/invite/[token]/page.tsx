@@ -97,7 +97,7 @@ export default async function InvitePage({
         <div className="space-y-3">
           <Link
             href={`/signup?invite=${token}`}
-            className="block w-full rounded-lg bg-neutral-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-neutral-800 transition-colors"
+            className="block w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-indigo-700 transition-colors"
           >
             Create account
           </Link>

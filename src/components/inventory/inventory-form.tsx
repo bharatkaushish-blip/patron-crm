@@ -141,7 +141,7 @@ export function InventoryForm({ item, artistSuggestions = [], mediumSuggestions 
           <select
             name="status"
             defaultValue={item?.status ?? "available"}
-            className="block w-full rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm text-neutral-900 focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-1"
+            className="block w-full rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm text-neutral-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-1"
           >
             <option value="available">Available</option>
             <option value="reserved">Reserved</option>
@@ -158,7 +158,7 @@ export function InventoryForm({ item, artistSuggestions = [], mediumSuggestions 
             name="source"
             value={source}
             onChange={(e) => setSource(e.target.value)}
-            className="block w-full rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm text-neutral-900 focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-1"
+            className="block w-full rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm text-neutral-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-1"
           >
             <option value="owned">Owned</option>
             <option value="consignment">Consignment</option>
@@ -184,7 +184,7 @@ export function InventoryForm({ item, artistSuggestions = [], mediumSuggestions 
           placeholder="Additional notes"
           rows={3}
           defaultValue={item?.notes ?? ""}
-          className="block w-full resize-none rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-1"
+          className="block w-full resize-none rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-1"
         />
       </div>
 

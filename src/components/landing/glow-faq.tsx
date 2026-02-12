@@ -1,8 +1,3 @@
-"use client";
-
-import React from "react";
-import { GlowCard } from "@/components/ui/spotlight-card";
-
 const faqs = [
   {
     q: "Who is Patron built for?",
@@ -30,23 +25,24 @@ const faqs = [
   },
 ];
 
-export function GlowFAQ() {
+export function FaqSection() {
   return (
-    <div className="mt-16 space-y-6">
+    <div className="mt-16 space-y-3 max-w-2xl mx-auto">
       {faqs.map((item) => (
-        <GlowCard
+        <details
           key={item.q}
-          glowColor="blue"
-          customSize
-          className="!aspect-auto !grid-rows-none !p-6 !gap-0"
+          className="group border border-neutral-200 bg-white rounded-xl overflow-hidden"
         >
-          <div className="relative z-10">
-            <h3 className="text-base font-semibold text-white">{item.q}</h3>
-            <p className="mt-3 text-sm text-neutral-400 leading-relaxed">
-              {item.a}
-            </p>
+          <summary className="flex cursor-pointer items-center justify-between px-6 py-4 text-sm font-semibold text-neutral-900 marker:[content:''] [&::-webkit-details-marker]:hidden">
+            {item.q}
+            <span className="ml-4 shrink-0 text-neutral-400 transition-transform group-open:rotate-45 text-lg leading-none">
+              +
+            </span>
+          </summary>
+          <div className="px-6 pb-5 text-sm text-neutral-600 leading-relaxed">
+            {item.a}
           </div>
-        </GlowCard>
+        </details>
       ))}
     </div>
   );

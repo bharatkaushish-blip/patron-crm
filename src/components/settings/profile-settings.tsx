@@ -40,7 +40,7 @@ export function ProfileSettings({
             name="full_name"
             type="text"
             defaultValue={fullName}
-            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
           />
         </div>
 
@@ -64,7 +64,7 @@ export function ProfileSettings({
             <select
               name="timezone"
               defaultValue={timezone}
-              className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+              className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
             >
               <option value="Asia/Kolkata">India (IST)</option>
               <option value="America/New_York">US Eastern</option>
@@ -85,7 +85,7 @@ export function ProfileSettings({
               name="reminder_time"
               type="time"
               defaultValue={reminderTime}
-              className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+              className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
             />
           </div>
         </div>
@@ -93,7 +93,7 @@ export function ProfileSettings({
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 disabled:opacity-50"
+          className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
         >
           {isPending ? "Saving…" : "Save profile"}
         </button>

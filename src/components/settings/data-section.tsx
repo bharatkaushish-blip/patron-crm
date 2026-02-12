@@ -267,7 +267,7 @@ export function DataSection() {
                           [header]: e.target.value,
                         }))
                       }
-                      className="flex-1 rounded-md border border-neutral-300 px-2 py-1 text-sm focus:border-neutral-500 focus:outline-none"
+                      className="flex-1 rounded-md border border-neutral-300 px-2 py-1 text-sm focus:border-indigo-500 focus:outline-none"
                     >
                       <option value="">Skip</option>
                       <option value="name">Name</option>
@@ -292,7 +292,7 @@ export function DataSection() {
                 <button
                   onClick={handleImport}
                   disabled={!Object.values(columnMap).includes("name") || isPending}
-                  className="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 disabled:opacity-50"
+                  className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
                 >
                   Import {csvRows.length} clients
                 </button>

@@ -41,7 +41,7 @@ export function GallerySettings({ name, currency }: { name: string; currency: st
             type="text"
             defaultValue={name}
             required
-            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
           />
         </div>
 
@@ -52,7 +52,7 @@ export function GallerySettings({ name, currency }: { name: string; currency: st
           <select
             name="currency"
             defaultValue={currency}
-            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
           >
             {currencies.map((c) => (
               <option key={c.code} value={c.code}>
@@ -65,7 +65,7 @@ export function GallerySettings({ name, currency }: { name: string; currency: st
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 disabled:opacity-50"
+          className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
         >
           {isPending ? "Saving…" : "Save"}
         </button>

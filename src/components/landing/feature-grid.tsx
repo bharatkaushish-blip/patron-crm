@@ -1,7 +1,3 @@
-"use client";
-
-import React from "react";
-import { GlowCard } from "@/components/ui/spotlight-card";
 import { Users, Bell, Search, BarChart3, Upload, Shield } from "lucide-react";
 
 const features = [
@@ -43,26 +39,24 @@ const features = [
   },
 ];
 
-export function GlowFeatureGrid() {
+export function FeatureGrid() {
   return (
     <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {features.map((feature) => (
-        <GlowCard
+        <div
           key={feature.title}
-          glowColor="blue"
-          customSize
-          className="!aspect-auto !grid-rows-none !p-6 !gap-0 group"
+          className="border border-neutral-200 bg-white rounded-xl p-6 hover:shadow-md transition-shadow"
         >
-          <div className="relative z-10">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5">
-              <feature.icon className="h-5 w-5 text-neutral-400 group-hover:text-white transition-colors" />
-            </div>
-            <h3 className="mt-4 text-base font-semibold text-white">{feature.title}</h3>
-            <p className="mt-2 text-sm text-neutral-500 leading-relaxed">
-              {feature.description}
-            </p>
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50">
+            <feature.icon className="h-5 w-5 text-indigo-600" />
           </div>
-        </GlowCard>
+          <h3 className="mt-4 text-base font-semibold text-neutral-900">
+            {feature.title}
+          </h3>
+          <p className="mt-2 text-sm text-neutral-600 leading-relaxed">
+            {feature.description}
+          </p>
+        </div>
       ))}
     </div>
   );

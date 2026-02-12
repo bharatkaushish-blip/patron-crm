@@ -22,6 +22,7 @@ export function SaleForm({
   const [isPending, startTransition] = useTransition();
   const [selectedItemId, setSelectedItemId] = useState("");
   const [artworkName, setArtworkName] = useState("");
+  const [artistName, setArtistName] = useState("");
   const [amount, setAmount] = useState("");
 
   function handleInventorySelect(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -31,6 +32,7 @@ export function SaleForm({
       const item = inventoryItems.find((i) => i.id === itemId);
       if (item) {
         setArtworkName(item.title);
+        setArtistName(item.artist || "");
         if (item.asking_price) setAmount(item.asking_price.toString());
       }
     }
@@ -51,6 +53,7 @@ export function SaleForm({
       setIsOpen(false);
       setSelectedItemId("");
       setArtworkName("");
+      setArtistName("");
       setAmount("");
     });
   }
@@ -101,14 +104,22 @@ export function SaleForm({
         </div>
       )}
 
-      <div>
+      <div className="flex gap-3">
         <input
           name="artwork_name"
           type="text"
           placeholder="Artwork name"
           value={artworkName}
           onChange={(e) => setArtworkName(e.target.value)}
-          className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+          className="flex-1 rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+        />
+        <input
+          name="artist_name"
+          type="text"
+          placeholder="Artist name"
+          value={artistName}
+          onChange={(e) => setArtistName(e.target.value)}
+          className="flex-1 rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
         />
       </div>
 

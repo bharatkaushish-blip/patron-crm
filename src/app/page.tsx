@@ -207,11 +207,11 @@ export default async function LandingPage() {
 
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="mailto:hello@patron.app"
+              href="mailto:hello@patroncollective.com"
               className="group flex items-center gap-2 rounded-full border border-white/10 px-8 py-3.5 text-sm text-neutral-300 hover:border-white/25 hover:text-white transition-all"
             >
               <Mail className="h-4 w-4" />
-              hello@patron.app
+              hello@patroncollective.com
             </a>
           </div>
         </div>

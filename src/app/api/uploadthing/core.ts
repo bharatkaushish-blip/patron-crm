@@ -5,7 +5,24 @@ const f = createUploadthing();
 
 export const ourFileRouter = {
   inventoryImage: f({
-    image: { maxFileSize: "4MB", maxFileCount: 1 },
+    image: { maxFileSize: "10MB", maxFileCount: 1 },
+  })
+    .middleware(async () => {
+      const supabase = await createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) throw new Error("Unauthorized");
+
+      return { userId: user.id };
+    })
+    .onUploadComplete(({ file }) => {
+      return { url: file.ufsUrl };
+    }),
+
+  clientPhoto: f({
+    image: { maxFileSize: "10MB", maxFileCount: 1 },
   })
     .middleware(async () => {
       const supabase = await createClient();

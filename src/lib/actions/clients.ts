@@ -13,6 +13,7 @@ export async function createClientAction(formData: FormData) {
   const tags = formData.get("tags") as string;
   const parsedTags = tags ? JSON.parse(tags) : [];
 
+  const photoUrl = (formData.get("photo_url") as string) || null;
   const { data, error } = await supabase
     .from("clients")
     .insert({
@@ -24,6 +25,7 @@ export async function createClientAction(formData: FormData) {
       country: (formData.get("country") as string) || null,
       age_range: (formData.get("age_range") as string) || null,
       tags: parsedTags,
+      ...(photoUrl ? { photo_url: photoUrl } : {}),
     })
     .select("id")
     .single();
@@ -45,6 +47,7 @@ export async function updateClientAction(formData: FormData) {
   const tags = formData.get("tags") as string;
   const parsedTags = tags ? JSON.parse(tags) : [];
 
+  const photoUrl = (formData.get("photo_url") as string) || null;
   const { error } = await supabase
     .from("clients")
     .update({
@@ -55,6 +58,7 @@ export async function updateClientAction(formData: FormData) {
       country: (formData.get("country") as string) || null,
       age_range: (formData.get("age_range") as string) || null,
       tags: parsedTags,
+      ...(photoUrl ? { photo_url: photoUrl } : {}),
     })
     .eq("id", id);
 
@@ -113,6 +117,7 @@ export async function createClientAndReturnId(formData: FormData) {
   await requireMutationAccess();
   const { supabase, orgId } = await getAuthContext();
 
+  const photoUrl = (formData.get("photo_url") as string) || null;
   const { data, error } = await supabase
     .from("clients")
     .insert({
@@ -120,6 +125,7 @@ export async function createClientAndReturnId(formData: FormData) {
       name: formData.get("name") as string,
       phone: (formData.get("phone") as string) || null,
       email: (formData.get("email") as string) || null,
+      ...(photoUrl ? { photo_url: photoUrl } : {}),
     })
     .select("id, name")
     .single();

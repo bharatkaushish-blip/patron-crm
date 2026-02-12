@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { Trash2, Mail, X } from "lucide-react";
+import { useState, useTransition, useEffect } from "react";
+import { Trash2, Mail, X, Check, Link } from "lucide-react";
 import {
   inviteUser,
   cancelInvitation,
@@ -40,12 +40,19 @@ export function TeamSection({
   const [showInviteForm, setShowInviteForm] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [inviteEmail, setInviteEmail] = useState("");
+  const [toast, setToast] = useState<string | null>(null);
   const [invitePerms, setInvitePerms] = useState<UserPermissions>({
     can_delete: false,
     can_access_settings: false,
     can_see_pricing: false,
     read_only: false,
   });
+
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 4000);
+    return () => clearTimeout(t);
+  }, [toast]);
 
   function handleInvite() {
     if (!inviteEmail.trim()) return;
@@ -57,7 +64,11 @@ export function TeamSection({
     formData.set("read_only", invitePerms.read_only.toString());
 
     startTransition(async () => {
-      await inviteUser(formData);
+      const result = await inviteUser(formData);
+      if (result?.error) {
+        setToast("Failed to create invitation.");
+        return;
+      }
       setInviteEmail("");
       setShowInviteForm(false);
       setInvitePerms({
@@ -66,6 +77,17 @@ export function TeamSection({
         can_see_pricing: false,
         read_only: false,
       });
+
+      if (result?.inviteUrl && !result.emailSent) {
+        try {
+          await navigator.clipboard.writeText(result.inviteUrl);
+          setToast("Invite link copied! Share it with your team member.");
+        } catch {
+          setToast("Invite created — copy the link from pending invitations.");
+        }
+      } else if (result?.emailSent) {
+        setToast("Invitation email sent!");
+      }
     });
   }
 
@@ -94,6 +116,14 @@ export function TeamSection({
 
   return (
     <section className="space-y-4">
+      {/* Toast notification */}
+      {toast && (
+        <div className="flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 px-4 py-2.5 text-sm text-green-800 animate-in fade-in slide-in-from-top-2">
+          <Check className="h-4 w-4 shrink-0" />
+          {toast}
+        </div>
+      )}
+
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-neutral-900">Team</h2>
         <button

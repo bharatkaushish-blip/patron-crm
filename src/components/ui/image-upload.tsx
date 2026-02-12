@@ -8,6 +8,8 @@ interface ImageUploadProps {
   currentUrl?: string | null;
   onUploaded: (url: string) => void;
   onRemoved?: () => void;
+  endpoint?: "inventoryImage" | "clientPhoto";
+  label?: string;
 }
 
 const MAX_SIZE = 4 * 1024 * 1024; // 4MB (matches UploadThing config)
@@ -16,6 +18,8 @@ export function ImageUpload({
   currentUrl,
   onUploaded,
   onRemoved,
+  endpoint = "inventoryImage",
+  label = "Image",
 }: ImageUploadProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -23,7 +27,7 @@ export function ImageUpload({
   const [dragOver, setDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { startUpload } = useUploadThing("inventoryImage",
+  const { startUpload } = useUploadThing(endpoint,
     {
       onClientUploadComplete: (res) => {
         setUploading(false);
@@ -84,7 +88,7 @@ export function ImageUpload({
   return (
     <div className="space-y-1.5">
       <label className="block text-sm font-medium text-neutral-700">
-        Image
+        {label}
       </label>
 
       {displayUrl ? (

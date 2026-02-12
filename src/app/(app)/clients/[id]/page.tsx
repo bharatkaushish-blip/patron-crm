@@ -8,7 +8,7 @@ import { NoteCard } from "@/components/notes/note-card";
 import { SaleForm } from "@/components/sales/sale-form";
 import { SaleCard } from "@/components/sales/sale-card";
 import { EnquiryForm } from "@/components/enquiries/enquiry-form";
-import { EnquiryCard } from "@/components/enquiries/enquiry-card";
+import { EnquiryGroupCard } from "@/components/enquiries/enquiry-card";
 import { getAvailableInventoryItems } from "@/lib/actions/inventory";
 import { getOrgCurrency } from "@/lib/actions/settings";
 import { formatCurrency } from "@/lib/format-currency";
@@ -101,6 +101,17 @@ export default async function ClientProfilePage({
           >
             <ArrowLeft className="h-5 w-5" />
           </Link>
+          {client.photo_url ? (
+            <img
+              src={client.photo_url}
+              alt={client.name}
+              className="h-10 w-10 rounded-full object-cover"
+            />
+          ) : (
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-200 text-sm font-semibold text-neutral-600">
+              {client.name.charAt(0).toUpperCase()}
+            </div>
+          )}
           <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
             {client.name}
           </h1>
@@ -226,24 +237,25 @@ export default async function ClientProfilePage({
 
         {userCanMutate && <EnquiryForm clientId={id} inventoryItems={inventoryItems} />}
 
-        <div className="mt-3 space-y-2">
+        <div className="mt-3">
           {enquiries && enquiries.length > 0 ? (
-            enquiries.map((enq) => (
-              <EnquiryCard
-                key={enq.id}
-                id={enq.id}
-                clientId={id}
-                size={enq.size}
-                budget={enq.budget}
-                artist={enq.artist}
-                timeline={enq.timeline}
-                workType={enq.work_type}
-                notes={enq.notes}
-                createdAt={enq.created_at}
-                canEdit={userCanMutate}
-                canDelete={userCanDelete}
-              />
-            ))
+            <EnquiryGroupCard
+              clientId={id}
+              clientName={client.name}
+              enquiries={enquiries.map((enq) => ({
+                id: enq.id,
+                clientId: id,
+                size: enq.size,
+                budget: enq.budget,
+                artist: enq.artist,
+                timeline: enq.timeline,
+                workType: enq.work_type,
+                notes: enq.notes,
+                createdAt: enq.created_at,
+              }))}
+              canEdit={userCanMutate}
+              canDelete={userCanDelete}
+            />
           ) : (
             <p className="text-sm text-neutral-400 py-4 text-center">
               No enquiries yet.
@@ -276,6 +288,7 @@ export default async function ClientProfilePage({
                 id={sale.id}
                 clientId={id}
                 artworkName={sale.artwork_name}
+                artistName={sale.artist_name ?? null}
                 amount={sale.amount}
                 saleDate={sale.sale_date}
                 notes={sale.notes}

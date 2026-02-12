@@ -75,7 +75,7 @@ export async function GET(request: NextRequest) {
 
       try {
         await resend.emails.send({
-          from: "Patron <reminders@patron.app>",
+          from: "Patron <reminders@patroncollective.com>",
           to: user.email,
           subject: `You have ${count} follow-up${count > 1 ? "s" : ""} today`,
           text: `Hi ${profile.full_name || "there"},\n\nYou have ${count} follow-up${count > 1 ? "s" : ""} due:\n\n${lines.join("\n")}\n\nOpen Patron to manage them: ${process.env.NEXT_PUBLIC_APP_URL}/today\n\n— Patron`,

@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { EnquirySearchInput } from "@/components/enquiries/enquiry-search-input";
-import { EnquiryCard } from "@/components/enquiries/enquiry-card";
+import { EnquiryGrid } from "@/components/enquiries/enquiry-grid";
 import { AddEnquiryForm } from "@/components/enquiries/add-enquiry-form";
 
 export default async function EnquiriesPage({
@@ -83,8 +83,22 @@ export default async function EnquiriesPage({
     enquiries = data || [];
   }
 
+  // Normalize enquiry data for the grid component
+  const normalizedEnquiries = enquiries.map((enq) => ({
+    id: enq.id,
+    client_id: enq.client_id,
+    clientName: (enq.clients as any)?.name,
+    size: enq.size,
+    budget: enq.budget,
+    artist: enq.artist,
+    timeline: enq.timeline,
+    work_type: enq.work_type,
+    notes: enq.notes,
+    created_at: enq.created_at,
+  }));
+
   return (
-    <div className="mx-auto max-w-2xl px-4 py-6">
+    <div className="mx-auto max-w-6xl px-4 py-6">
       <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
         Enquiries
       </h1>
@@ -101,26 +115,13 @@ export default async function EnquiriesPage({
         </div>
       )}
 
-      <div className="mt-4 space-y-2">
-        {enquiries && enquiries.length > 0 ? (
-          enquiries.map((enq) => (
-            <EnquiryCard
-              key={enq.id}
-              id={enq.id}
-              clientId={enq.client_id}
-              clientName={(enq.clients as any)?.name}
-              size={enq.size}
-              budget={enq.budget}
-              artist={enq.artist}
-              timeline={enq.timeline}
-              workType={enq.work_type}
-              notes={enq.notes}
-              createdAt={enq.created_at}
-              showClientName
-              canEdit={userCanMutate}
-              canDelete={userCanDelete}
-            />
-          ))
+      <div className="mt-4">
+        {normalizedEnquiries.length > 0 ? (
+          <EnquiryGrid
+            enquiries={normalizedEnquiries}
+            canEdit={userCanMutate}
+            canDelete={userCanDelete}
+          />
         ) : (
           <p className="text-sm text-neutral-400 py-8 text-center">
             {query ? `No enquiries matching "${query}"` : "No enquiries yet."}

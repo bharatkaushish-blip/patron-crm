@@ -51,26 +51,57 @@ export async function inviteUser(formData: FormData) {
     .eq("id", userId)
     .single();
 
+  const inviteUrl = `${process.env.NEXT_PUBLIC_APP_URL}/invite/${invitation.token}`;
+
   // Send invitation email via Resend
+  let emailSent = false;
   if (process.env.RESEND_API_KEY) {
     try {
       const { Resend } = await import("resend");
       const resend = new Resend(process.env.RESEND_API_KEY);
-      const inviteUrl = `${process.env.NEXT_PUBLIC_APP_URL}/invite/${invitation.token}`;
+
+      const inviterName = inviter?.full_name || "Someone";
+      const orgName = org?.name || "their gallery";
 
       await resend.emails.send({
-        from: "Patron <invites@patron.app>",
+        from: "Patron <invites@patroncollective.com>",
         to: email,
-        subject: `${inviter?.full_name || "Someone"} invited you to ${org?.name || "their gallery"} on Patron`,
-        text: `Hi,\n\n${inviter?.full_name || "Someone"} has invited you to join ${org?.name || "their gallery"} on Patron.\n\nClick the link below to accept:\n${inviteUrl}\n\nThis invitation expires in 7 days.\n\n— Patron`,
+        subject: `${inviterName} invited you to ${orgName} on Patron`,
+        text: `Hi,\n\n${inviterName} has invited you to join ${orgName} on Patron.\n\nAccept the invitation:\n${inviteUrl}\n\nThis invitation expires in 7 days.\n\n— Patron`,
+        html: `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background-color:#f9f9f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f9f9f9;padding:40px 20px;">
+    <tr><td align="center">
+      <table width="480" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:12px;border:1px solid #e5e5e5;padding:48px 40px;">
+        <tr><td>
+          <p style="margin:0 0 24px;font-size:14px;line-height:1.6;color:#171717;">
+            <strong>${inviterName}</strong> has invited you to join <strong>${orgName}</strong> on Patron.
+          </p>
+          <table cellpadding="0" cellspacing="0" style="margin:0 0 24px;"><tr><td>
+            <a href="${inviteUrl}" style="display:inline-block;background-color:#171717;color:#ffffff;font-size:14px;font-weight:500;text-decoration:none;padding:10px 24px;border-radius:8px;">
+              Accept invitation
+            </a>
+          </td></tr></table>
+          <p style="margin:0 0 4px;font-size:12px;color:#a3a3a3;">This invitation expires in 7 days.</p>
+          <p style="margin:0;font-size:12px;color:#a3a3a3;">If you didn't expect this, you can ignore this email.</p>
+        </td></tr>
+      </table>
+      <p style="margin:24px 0 0;font-size:11px;color:#a3a3a3;">Patron</p>
+    </td></tr>
+  </table>
+</body>
+</html>`,
       });
+      emailSent = true;
     } catch (err) {
       console.error("Failed to send invitation email:", err);
     }
   }
 
   revalidatePath("/settings");
-  return { success: true };
+  return { success: true, inviteUrl, emailSent };
 }
 
 export async function acceptInvitation(token: string) {

@@ -9,6 +9,7 @@ interface SaleCardProps {
   id: string;
   clientId: string;
   artworkName: string | null;
+  artistName: string | null;
   amount: number | null;
   saleDate: string;
   notes: string | null;
@@ -21,6 +22,7 @@ export function SaleCard({
   id,
   clientId,
   artworkName,
+  artistName,
   amount,
   saleDate,
   notes,
@@ -33,6 +35,7 @@ export function SaleCard({
   const [isPending, startTransition] = useTransition();
 
   const [editArtwork, setEditArtwork] = useState(artworkName || "");
+  const [editArtist, setEditArtist] = useState(artistName || "");
   const [editAmount, setEditAmount] = useState(amount?.toString() || "");
   const [editDate, setEditDate] = useState(saleDate);
   const [editNotes, setEditNotes] = useState(notes || "");
@@ -45,6 +48,7 @@ export function SaleCard({
     formData.set("id", id);
     formData.set("client_id", clientId);
     formData.set("artwork_name", editArtwork);
+    formData.set("artist_name", editArtist);
     formData.set("amount", editAmount);
     formData.set("sale_date", editDate);
     formData.set("notes", editNotes);
@@ -72,12 +76,20 @@ export function SaleCard({
         onSubmit={handleSaveEdit}
         className="rounded-lg border border-neutral-200 bg-white p-3 space-y-2"
       >
-        <input
-          value={editArtwork}
-          onChange={(e) => setEditArtwork(e.target.value)}
-          placeholder="Artwork name"
-          className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
-        />
+        <div className="flex gap-3">
+          <input
+            value={editArtwork}
+            onChange={(e) => setEditArtwork(e.target.value)}
+            placeholder="Artwork name"
+            className="flex-1 rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+          />
+          <input
+            value={editArtist}
+            onChange={(e) => setEditArtist(e.target.value)}
+            placeholder="Artist name"
+            className="flex-1 rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+          />
+        </div>
         <div className="flex gap-3">
           <input
             value={editAmount}
@@ -114,6 +126,7 @@ export function SaleCard({
             onClick={() => {
               setIsEditing(false);
               setEditArtwork(artworkName || "");
+              setEditArtist(artistName || "");
               setEditAmount(amount?.toString() || "");
               setEditDate(saleDate);
               setEditNotes(notes || "");
@@ -138,6 +151,9 @@ export function SaleCard({
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium text-neutral-700 truncate">
               {artworkName || "Untitled sale"}
+              {artistName ? (
+                <span className="font-normal text-neutral-400"> — {artistName}</span>
+              ) : null}
             </p>
             {amount ? (
               <p className="text-sm font-medium text-neutral-900 shrink-0 ml-2">

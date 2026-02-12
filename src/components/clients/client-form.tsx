@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TagInput } from "@/components/ui/tag-input";
 import { PhoneInput } from "@/components/ui/phone-input";
+import { ImageUpload } from "@/components/ui/image-upload";
 import { ContactsPicker } from "@/components/clients/contacts-picker";
 import { createClientAction, updateClientAction } from "@/lib/actions/clients";
 
@@ -17,6 +18,7 @@ interface ClientData {
   country: string | null;
   age_range: string | null;
   tags: string[];
+  photo_url: string | null;
 }
 
 interface ClientFormProps {
@@ -26,6 +28,7 @@ interface ClientFormProps {
 
 export function ClientForm({ client, existingTags = [] }: ClientFormProps) {
   const [tags, setTags] = useState<string[]>(client?.tags ?? []);
+  const [photoUrl, setPhotoUrl] = useState<string | null>(client?.photo_url ?? null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -62,6 +65,15 @@ export function ClientForm({ client, existingTags = [] }: ClientFormProps) {
   return (
     <form action={handleSubmit} className="space-y-4">
       {client ? <input type="hidden" name="id" value={client.id} /> : null}
+      <input type="hidden" name="photo_url" value={photoUrl ?? ""} />
+
+      <ImageUpload
+        currentUrl={photoUrl}
+        onUploaded={(url) => setPhotoUrl(url)}
+        onRemoved={() => setPhotoUrl(null)}
+        endpoint="clientPhoto"
+        label="Photo"
+      />
 
       {/* Contacts picker - only show on new client form */}
       {!isEdit ? (

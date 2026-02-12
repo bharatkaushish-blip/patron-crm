@@ -14,6 +14,7 @@ export async function createSale(formData: FormData) {
   const inventoryItemId =
     (formData.get("inventory_item_id") as string) || null;
 
+  const artistName = (formData.get("artist_name") as string) || null;
   const { error } = await supabase.from("sales").insert({
     client_id: clientId,
     organization_id: orgId,
@@ -24,6 +25,7 @@ export async function createSale(formData: FormData) {
       new Date().toISOString().split("T")[0],
     notes: (formData.get("notes") as string) || null,
     inventory_item_id: inventoryItemId,
+    ...(artistName ? { artist_name: artistName } : {}),
   });
 
   if (error) {
@@ -60,6 +62,7 @@ export async function updateSale(formData: FormData) {
   const inventoryItemId =
     (formData.get("inventory_item_id") as string) || null;
 
+  const artistName = (formData.get("artist_name") as string) || null;
   const { error } = await supabase
     .from("sales")
     .update({
@@ -70,6 +73,7 @@ export async function updateSale(formData: FormData) {
         new Date().toISOString().split("T")[0],
       notes: (formData.get("notes") as string) || null,
       inventory_item_id: inventoryItemId,
+      ...(artistName ? { artist_name: artistName } : {}),
     })
     .eq("id", saleId);
 

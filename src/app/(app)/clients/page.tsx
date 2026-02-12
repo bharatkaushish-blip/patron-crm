@@ -68,7 +68,7 @@ export default async function ClientsPage({
   });
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-6">
+    <div className="mx-auto max-w-6xl px-4 py-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
           Clients
@@ -94,7 +94,7 @@ export default async function ClientsPage({
         </Suspense>
       </div>
 
-      <div className="mt-4 space-y-2">
+      <div className="mt-4">
         {!clients || clients.length === 0 ? (
           <EmptyState
             title={params.q || params.tags ? "No clients found" : "No clients yet"}
@@ -110,16 +110,21 @@ export default async function ClientsPage({
             }
           />
         ) : (
-          clients.map((client) => (
-            <ClientCard
-              key={client.id}
-              id={client.id}
-              name={client.name}
-              location={client.location}
-              tags={client.tags ?? []}
-              updatedAt={client.updated_at}
-            />
-          ))
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {clients.map((client) => (
+              <ClientCard
+                key={client.id}
+                id={client.id}
+                name={client.name}
+                phone={client.phone}
+                email={client.email}
+                location={client.location}
+                photoUrl={client.photo_url}
+                tags={client.tags ?? []}
+                updatedAt={client.updated_at}
+              />
+            ))}
+          </div>
         )}
       </div>
     </div>

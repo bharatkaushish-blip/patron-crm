@@ -4,6 +4,13 @@ import { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { EnquiryGroupCard } from "./enquiry-card";
 import type { EnquiryItem } from "./enquiry-card";
 
+interface InventoryItem {
+  id: string;
+  title: string;
+  artist: string | null;
+  dimensions: string | null;
+}
+
 interface EnquiryData {
   id: string;
   client_id: string;
@@ -15,6 +22,8 @@ interface EnquiryData {
   work_type: string | null;
   notes: string | null;
   created_at: string;
+  inventory_item_id: string | null;
+  inventory_title: string | null;
 }
 
 interface ClientGroup {
@@ -28,6 +37,7 @@ interface EnquiryGridProps {
   enquiries: EnquiryData[];
   canEdit: boolean;
   canDelete: boolean;
+  inventoryItems?: InventoryItem[];
 }
 
 const STORAGE_KEY = "enquiry-group-order";
@@ -65,6 +75,8 @@ function groupByClient(enquiries: EnquiryData[]): ClientGroup[] {
       workType: enq.work_type,
       notes: enq.notes,
       createdAt: enq.created_at,
+      inventoryItemId: enq.inventory_item_id,
+      inventoryTitle: enq.inventory_title,
     };
 
     if (existing) {
@@ -107,7 +119,7 @@ function sortGroupsByStoredOrder(groups: ClientGroup[]): ClientGroup[] {
   });
 }
 
-export function EnquiryGrid({ enquiries, canEdit, canDelete }: EnquiryGridProps) {
+export function EnquiryGrid({ enquiries, canEdit, canDelete, inventoryItems = [] }: EnquiryGridProps) {
   const grouped = useMemo(() => groupByClient(enquiries), [enquiries]);
   const [items, setItems] = useState(() => sortGroupsByStoredOrder(grouped));
   const dragIdxRef = useRef<number | null>(null);
@@ -163,6 +175,7 @@ export function EnquiryGrid({ enquiries, canEdit, canDelete }: EnquiryGridProps)
             enquiries={group.enquiries}
             canEdit={canEdit}
             canDelete={canDelete}
+            inventoryItems={inventoryItems}
             draggable
             onDragStart={handleDragStart(idx)}
             onDragOver={handleDragOver(idx)}

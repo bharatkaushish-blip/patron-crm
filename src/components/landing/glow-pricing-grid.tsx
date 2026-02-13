@@ -41,12 +41,9 @@ export function PricingGrid() {
 
       {/* Pro */}
       <div className="relative border border-neutral-200 bg-white rounded-xl p-8">
-        <div className="absolute top-6 right-6 rounded-full bg-indigo-50 px-3 py-1 text-[10px] uppercase tracking-wider font-medium text-indigo-700">
-          Coming soon
-        </div>
         <p className="text-sm font-medium text-neutral-400">Pro</p>
         <p className="mt-4 text-4xl font-bold text-neutral-900">
-          TBD
+          &#8377;1,999
           <span className="text-base font-normal text-neutral-400">
             {" "}/ month
           </span>
@@ -69,9 +66,13 @@ export function PricingGrid() {
             <span className="text-indigo-600">&#10003;</span> Advanced analytics
           </li>
         </ul>
-        <div className="mt-8 block w-full rounded-full border border-neutral-200 py-3 text-center text-sm text-neutral-400">
-          Notify me
-        </div>
+        <a
+          href="/signup"
+          className="mt-8 flex items-center justify-center gap-2 w-full rounded-full border border-indigo-600 py-3 text-center text-sm font-medium text-indigo-600 hover:bg-indigo-50 transition-colors"
+        >
+          Get started
+          <ArrowRight className="h-4 w-4" />
+        </a>
       </div>
     </div>
   );

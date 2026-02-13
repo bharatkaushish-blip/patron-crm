@@ -1,9 +1,16 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { MoreHorizontal, Pencil, Trash2, X } from "lucide-react";
+import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { updateSale, deleteSale } from "@/lib/actions/sales";
 import { formatCurrency } from "@/lib/format-currency";
+
+interface InventoryItem {
+  id: string;
+  title: string;
+  artist: string | null;
+  asking_price: number | null;
+}
 
 interface SaleCardProps {
   id: string;
@@ -16,6 +23,8 @@ interface SaleCardProps {
   currency: string;
   canEdit?: boolean;
   canDelete?: boolean;
+  inventoryItems?: InventoryItem[];
+  inventoryItemId?: string | null;
 }
 
 export function SaleCard({
@@ -29,6 +38,8 @@ export function SaleCard({
   currency,
   canEdit = true,
   canDelete = true,
+  inventoryItems = [],
+  inventoryItemId = null,
 }: SaleCardProps) {
   const [showMenu, setShowMenu] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -39,8 +50,22 @@ export function SaleCard({
   const [editAmount, setEditAmount] = useState(amount?.toString() || "");
   const [editDate, setEditDate] = useState(saleDate);
   const [editNotes, setEditNotes] = useState(notes || "");
+  const [editInventoryItemId, setEditInventoryItemId] = useState(inventoryItemId || "");
 
   const showMenuButton = canEdit || canDelete;
+
+  function handleInventorySelect(e: React.ChangeEvent<HTMLSelectElement>) {
+    const itemId = e.target.value;
+    setEditInventoryItemId(itemId);
+    if (itemId) {
+      const item = inventoryItems.find((i) => i.id === itemId);
+      if (item) {
+        setEditArtwork(item.title);
+        setEditArtist(item.artist || "");
+        if (item.asking_price) setEditAmount(item.asking_price.toString());
+      }
+    }
+  }
 
   function handleSaveEdit(e: React.FormEvent) {
     e.preventDefault();
@@ -52,6 +77,9 @@ export function SaleCard({
     formData.set("amount", editAmount);
     formData.set("sale_date", editDate);
     formData.set("notes", editNotes);
+    if (editInventoryItemId) {
+      formData.set("inventory_item_id", editInventoryItemId);
+    }
 
     startTransition(async () => {
       await updateSale(formData);
@@ -70,12 +98,32 @@ export function SaleCard({
     { month: "short", day: "numeric", year: "numeric" }
   );
 
+  // Find the linked inventory item title for view mode
+  const linkedItem = inventoryItemId
+    ? inventoryItems.find((i) => i.id === inventoryItemId)
+    : null;
+
   if (isEditing) {
     return (
       <form
         onSubmit={handleSaveEdit}
         className="rounded-lg border border-neutral-200 bg-white p-3 space-y-2"
       >
+        {inventoryItems.length > 0 && (
+          <select
+            value={editInventoryItemId}
+            onChange={handleInventorySelect}
+            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+          >
+            <option value="">Link artwork (optional)</option>
+            {inventoryItems.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.title}
+                {item.artist ? ` — ${item.artist}` : ""}
+              </option>
+            ))}
+          </select>
+        )}
         <div className="flex gap-3">
           <input
             value={editArtwork}
@@ -130,6 +178,7 @@ export function SaleCard({
               setEditAmount(amount?.toString() || "");
               setEditDate(saleDate);
               setEditNotes(notes || "");
+              setEditInventoryItemId(inventoryItemId || "");
             }}
             className="rounded-md px-3 py-1.5 text-xs text-neutral-500 hover:bg-neutral-100"
           >
@@ -161,6 +210,11 @@ export function SaleCard({
               </p>
             ) : null}
           </div>
+          {linkedItem && (
+            <p className="mt-0.5 text-[10px] font-medium text-indigo-500">
+              Linked to inventory
+            </p>
+          )}
           {notes ? (
             <p className="mt-1 text-xs text-neutral-500 line-clamp-2">
               {notes}

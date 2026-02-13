@@ -63,10 +63,10 @@ export default async function ClientProfilePage({
     .eq("organization_id", profile.organization_id)
     .order("created_at", { ascending: false });
 
-  // Fetch enquiries for this client
+  // Fetch enquiries for this client (join inventory for linked artwork title)
   const { data: enquiries } = await supabase
     .from("enquiries")
-    .select("*")
+    .select("*, inventory(title)")
     .eq("client_id", id)
     .eq("organization_id", profile.organization_id)
     .order("created_at", { ascending: false });
@@ -252,9 +252,12 @@ export default async function ClientProfilePage({
                 workType: enq.work_type,
                 notes: enq.notes,
                 createdAt: enq.created_at,
+                inventoryItemId: enq.inventory_item_id ?? null,
+                inventoryTitle: (enq.inventory as any)?.title ?? null,
               }))}
               canEdit={userCanMutate}
               canDelete={userCanDelete}
+              inventoryItems={inventoryItems}
             />
           ) : (
             <p className="text-sm text-neutral-400 py-4 text-center">
@@ -295,6 +298,8 @@ export default async function ClientProfilePage({
                 currency={currency}
                 canEdit={userCanMutate}
                 canDelete={userCanDelete}
+                inventoryItems={inventoryItems}
+                inventoryItemId={sale.inventory_item_id ?? null}
               />
             ))
           ) : (

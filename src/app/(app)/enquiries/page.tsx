@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { EnquirySearchInput } from "@/components/enquiries/enquiry-search-input";
 import { EnquiryGrid } from "@/components/enquiries/enquiry-grid";
 import { AddEnquiryForm } from "@/components/enquiries/add-enquiry-form";
+import { getAvailableInventoryItems } from "@/lib/actions/inventory";
 
 export default async function EnquiriesPage({
   searchParams,
@@ -48,7 +49,7 @@ export default async function EnquiriesPage({
     // Search enquiry fields directly
     const { data: fieldResults } = await supabase
       .from("enquiries")
-      .select("*, clients!inner(name)")
+      .select("*, clients!inner(name), inventory(title)")
       .eq("organization_id", profile.organization_id)
       .or(
         `size.ilike.${pattern},budget.ilike.${pattern},artist.ilike.${pattern},timeline.ilike.${pattern},work_type.ilike.${pattern},notes.ilike.${pattern}`
@@ -59,7 +60,7 @@ export default async function EnquiriesPage({
     // Search by client name separately
     const { data: clientResults } = await supabase
       .from("enquiries")
-      .select("*, clients!inner(name)")
+      .select("*, clients!inner(name), inventory(title)")
       .eq("organization_id", profile.organization_id)
       .ilike("clients.name" as any, pattern)
       .order("created_at", { ascending: false })
@@ -76,12 +77,15 @@ export default async function EnquiriesPage({
   } else {
     const { data } = await supabase
       .from("enquiries")
-      .select("*, clients!inner(name)")
+      .select("*, clients!inner(name), inventory(title)")
       .eq("organization_id", profile.organization_id)
       .order("created_at", { ascending: false })
       .limit(50);
     enquiries = data || [];
   }
+
+  // Fetch available inventory items
+  const inventoryItems = await getAvailableInventoryItems();
 
   // Normalize enquiry data for the grid component
   const normalizedEnquiries = enquiries.map((enq) => ({
@@ -95,6 +99,8 @@ export default async function EnquiriesPage({
     work_type: enq.work_type,
     notes: enq.notes,
     created_at: enq.created_at,
+    inventory_item_id: enq.inventory_item_id ?? null,
+    inventory_title: (enq.inventory as any)?.title ?? null,
   }));
 
   return (
@@ -111,7 +117,7 @@ export default async function EnquiriesPage({
 
       {userCanMutate && (
         <div className="mt-4">
-          <AddEnquiryForm />
+          <AddEnquiryForm inventoryItems={inventoryItems} />
         </div>
       )}
 
@@ -121,6 +127,7 @@ export default async function EnquiriesPage({
             enquiries={normalizedEnquiries}
             canEdit={userCanMutate}
             canDelete={userCanDelete}
+            inventoryItems={inventoryItems}
           />
         ) : (
           <p className="text-sm text-neutral-400 py-8 text-center">

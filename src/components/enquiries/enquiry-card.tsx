@@ -4,6 +4,13 @@ import { useState, useTransition } from "react";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { updateEnquiry, deleteEnquiry } from "@/lib/actions/enquiries";
 
+interface InventoryItem {
+  id: string;
+  title: string;
+  artist: string | null;
+  dimensions: string | null;
+}
+
 export interface EnquiryItem {
   id: string;
   clientId: string;
@@ -14,6 +21,8 @@ export interface EnquiryItem {
   workType: string | null;
   notes: string | null;
   createdAt: string;
+  inventoryItemId: string | null;
+  inventoryTitle: string | null;
 }
 
 interface EnquiryRowProps {
@@ -21,9 +30,10 @@ interface EnquiryRowProps {
   canEdit: boolean;
   canDelete: boolean;
   isLast: boolean;
+  inventoryItems?: InventoryItem[];
 }
 
-function EnquiryRow({ enquiry, canEdit, canDelete, isLast }: EnquiryRowProps) {
+function EnquiryRow({ enquiry, canEdit, canDelete, isLast, inventoryItems = [] }: EnquiryRowProps) {
   const [showMenu, setShowMenu] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -34,8 +44,21 @@ function EnquiryRow({ enquiry, canEdit, canDelete, isLast }: EnquiryRowProps) {
   const [editTimeline, setEditTimeline] = useState(enquiry.timeline || "");
   const [editWorkType, setEditWorkType] = useState(enquiry.workType || "");
   const [editNotes, setEditNotes] = useState(enquiry.notes || "");
+  const [editInventoryItemId, setEditInventoryItemId] = useState(enquiry.inventoryItemId || "");
 
   const showMenuButton = canEdit || canDelete;
+
+  function handleInventorySelect(e: React.ChangeEvent<HTMLSelectElement>) {
+    const itemId = e.target.value;
+    setEditInventoryItemId(itemId);
+    if (itemId) {
+      const item = inventoryItems.find((i) => i.id === itemId);
+      if (item) {
+        if (item.artist) setEditArtist(item.artist);
+        if (item.dimensions) setEditSize(item.dimensions);
+      }
+    }
+  }
 
   function handleSaveEdit(e: React.FormEvent) {
     e.preventDefault();
@@ -48,6 +71,9 @@ function EnquiryRow({ enquiry, canEdit, canDelete, isLast }: EnquiryRowProps) {
     formData.set("timeline", editTimeline);
     formData.set("work_type", editWorkType);
     formData.set("notes", editNotes);
+    if (editInventoryItemId) {
+      formData.set("inventory_item_id", editInventoryItemId);
+    }
 
     startTransition(async () => {
       await updateEnquiry(formData);
@@ -87,6 +113,21 @@ function EnquiryRow({ enquiry, canEdit, canDelete, isLast }: EnquiryRowProps) {
         onSubmit={handleSaveEdit}
         className={`py-3 space-y-2 ${!isLast ? "border-b border-neutral-100" : ""}`}
       >
+        {inventoryItems.length > 0 && (
+          <select
+            value={editInventoryItemId}
+            onChange={handleInventorySelect}
+            className="w-full rounded-md border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+          >
+            <option value="">Link artwork (optional)</option>
+            {inventoryItems.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.title}
+                {item.artist ? ` — ${item.artist}` : ""}
+              </option>
+            ))}
+          </select>
+        )}
         <div className="grid grid-cols-2 gap-2">
           <input
             value={editSize}
@@ -146,6 +187,7 @@ function EnquiryRow({ enquiry, canEdit, canDelete, isLast }: EnquiryRowProps) {
               setEditTimeline(enquiry.timeline || "");
               setEditWorkType(enquiry.workType || "");
               setEditNotes(enquiry.notes || "");
+              setEditInventoryItemId(enquiry.inventoryItemId || "");
             }}
             className="rounded-md px-3 py-1.5 text-xs text-neutral-500 hover:bg-neutral-100"
           >
@@ -163,6 +205,12 @@ function EnquiryRow({ enquiry, canEdit, canDelete, isLast }: EnquiryRowProps) {
       } ${!isLast ? "border-b border-neutral-100" : ""}`}
     >
       <div className="min-w-0 flex-1">
+        {enquiry.inventoryTitle && (
+          <p className="text-xs font-medium text-indigo-600 mb-0.5">
+            <span className="text-neutral-400">Artwork:</span> {enquiry.inventoryTitle}
+          </p>
+        )}
+
         {fields.length > 0 ? (
           <div className="flex flex-wrap gap-x-3 gap-y-1">
             {fields.map((f) => (
@@ -260,6 +308,7 @@ interface EnquiryGroupCardProps {
   enquiries: EnquiryItem[];
   canEdit: boolean;
   canDelete: boolean;
+  inventoryItems?: InventoryItem[];
   draggable?: boolean;
   onDragStart?: (e: React.DragEvent) => void;
   onDragOver?: (e: React.DragEvent) => void;
@@ -273,6 +322,7 @@ export function EnquiryGroupCard({
   enquiries,
   canEdit,
   canDelete,
+  inventoryItems = [],
   draggable = false,
   onDragStart,
   onDragOver,
@@ -321,6 +371,7 @@ export function EnquiryGroupCard({
             canEdit={canEdit}
             canDelete={canDelete}
             isLast={idx === enquiries.length - 1}
+            inventoryItems={inventoryItems}
           />
         ))}
       </div>

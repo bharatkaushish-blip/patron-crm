@@ -1,4 +1,4 @@
-import { Users, Bell, Search, BarChart3, Upload, Shield } from "lucide-react";
+import { Users, Bell, Package, BarChart3, Upload, Shield } from "lucide-react";
 
 const features = [
   {
@@ -14,10 +14,10 @@ const features = [
       "Set follow-up dates on any note. Get a daily email digest of who needs attention today. Never let a warm lead go cold.",
   },
   {
-    icon: Search,
-    title: "Instant Search",
+    icon: Package,
+    title: "Inventory",
     description:
-      "Search across clients, notes, enquiries, and sales. Find that conversation from 6 months ago in seconds.",
+      "Catalog your artworks with photos, dimensions, pricing, and status. Always know what's available, sold, or on hold.",
   },
   {
     icon: BarChart3,

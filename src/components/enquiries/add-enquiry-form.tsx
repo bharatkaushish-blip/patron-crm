@@ -7,7 +7,18 @@ import { createEnquiry } from "@/lib/actions/enquiries";
 
 type ClientResult = { id: string; name: string; phone: string | null; location: string | null };
 
-export function AddEnquiryForm() {
+interface InventoryItem {
+  id: string;
+  title: string;
+  artist: string | null;
+  dimensions: string | null;
+}
+
+export function AddEnquiryForm({
+  inventoryItems = [],
+}: {
+  inventoryItems?: InventoryItem[];
+}) {
   const [step, setStep] = useState<"closed" | "select-client" | "create-client" | "enquiry">("closed");
   const [selectedClient, setSelectedClient] = useState<{ id: string; name: string } | null>(null);
 
@@ -23,6 +34,9 @@ export function AddEnquiryForm() {
 
   // Enquiry form state
   const [isPendingEnquiry, startEnquiryTransition] = useTransition();
+  const [selectedItemId, setSelectedItemId] = useState("");
+  const [artist, setArtist] = useState("");
+  const [size, setSize] = useState("");
 
   const doSearch = useCallback(async (q: string) => {
     if (q.length < 1) {
@@ -54,11 +68,26 @@ export function AddEnquiryForm() {
     setSelectedClient(null);
     setSearchQuery("");
     setResults([]);
+    setSelectedItemId("");
+    setArtist("");
+    setSize("");
   }
 
   function selectClient(client: { id: string; name: string }) {
     setSelectedClient(client);
     setStep("enquiry");
+  }
+
+  function handleInventorySelect(e: React.ChangeEvent<HTMLSelectElement>) {
+    const itemId = e.target.value;
+    setSelectedItemId(itemId);
+    if (itemId) {
+      const item = inventoryItems.find((i) => i.id === itemId);
+      if (item) {
+        if (item.artist) setArtist(item.artist);
+        if (item.dimensions) setSize(item.dimensions);
+      }
+    }
   }
 
   function handleCreateClient(e: React.FormEvent<HTMLFormElement>) {
@@ -77,6 +106,9 @@ export function AddEnquiryForm() {
     const form = e.currentTarget;
     const formData = new FormData(form);
     formData.set("client_id", selectedClient!.id);
+    if (selectedItemId) {
+      formData.set("inventory_item_id", selectedItemId);
+    }
     startEnquiryTransition(async () => {
       await createEnquiry(formData);
       reset();
@@ -222,11 +254,31 @@ export function AddEnquiryForm() {
             </button>
           </div>
 
+          {inventoryItems.length > 0 && (
+            <div>
+              <select
+                value={selectedItemId}
+                onChange={handleInventorySelect}
+                className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+              >
+                <option value="">Suggest artwork (optional)</option>
+                {inventoryItems.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.title}
+                    {item.artist ? ` — ${item.artist}` : ""}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           <div className="grid grid-cols-2 gap-3">
             <input
               name="size"
               type="text"
               placeholder="Size (e.g. 4x6 ft)"
+              value={size}
+              onChange={(e) => setSize(e.target.value)}
               className="rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
             />
             <input
@@ -242,6 +294,8 @@ export function AddEnquiryForm() {
               name="artist"
               type="text"
               placeholder="Artist preference"
+              value={artist}
+              onChange={(e) => setArtist(e.target.value)}
               className="rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
             />
             <div>

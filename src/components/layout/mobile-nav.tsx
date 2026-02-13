@@ -36,7 +36,7 @@ export function MobileNav({
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-neutral-200 bg-white md:hidden">
-      <div className="flex items-center justify-around pb-[env(safe-area-inset-bottom)]">
+      <div className="flex items-center overflow-x-auto pb-[env(safe-area-inset-bottom)] scrollbar-hide">
         {navItems.map((item) => {
           const isActive = pathname.startsWith(item.href);
           return (
@@ -44,14 +44,14 @@ export function MobileNav({
               key={item.href}
               href={item.href}
               className={cn(
-                "flex flex-col items-center gap-0.5 px-3 py-2.5 text-xs transition-colors",
+                "flex flex-1 min-w-[4rem] flex-col items-center gap-0.5 px-2 py-2.5 text-xs transition-colors shrink-0",
                 isActive
                   ? "text-indigo-600"
                   : "text-neutral-400 hover:text-neutral-600"
               )}
             >
               <item.icon className="h-5 w-5" strokeWidth={isActive ? 2.5 : 2} />
-              <span className={cn(isActive && "font-medium")}>{item.label}</span>
+              <span className={cn("truncate", isActive && "font-medium")}>{item.label}</span>
             </Link>
           );
         })}

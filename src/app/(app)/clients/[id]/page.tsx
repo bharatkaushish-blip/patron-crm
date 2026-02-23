@@ -29,20 +29,14 @@ export default async function ClientProfilePage({
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("organization_id")
-    .eq("id", user.id)
-    .single();
-
-  if (!profile?.organization_id) redirect("/onboarding");
-
-  const { data: roleProfile } = await supabase
-    .from("profiles")
-    .select("role, permissions")
+    .select("organization_id, role, permissions")
     .eq("id", user.id)
     .single()
     .then((res) => (res.error ? { data: null } : res));
 
-  const { role, permissions: perms } = extractRoleData(roleProfile);
+  if (!profile?.organization_id) redirect("/onboarding");
+
+  const { role, permissions: perms } = extractRoleData(profile);
   const userCanMutate = canMutateCheck(role, perms);
   const userCanDelete = canDeleteCheck(role, perms);
 
@@ -55,32 +49,32 @@ export default async function ClientProfilePage({
 
   if (!client) notFound();
 
-  // Fetch notes for this client
-  const { data: notes } = await supabase
-    .from("notes")
-    .select("*")
-    .eq("client_id", id)
-    .eq("organization_id", profile.organization_id)
-    .order("created_at", { ascending: false });
-
-  // Fetch enquiries for this client (join inventory for linked artwork title)
-  const { data: enquiries } = await supabase
-    .from("enquiries")
-    .select("*, inventory(title)")
-    .eq("client_id", id)
-    .eq("organization_id", profile.organization_id)
-    .order("created_at", { ascending: false });
-
-  // Fetch sales for this client
-  const { data: sales } = await supabase
-    .from("sales")
-    .select("*")
-    .eq("client_id", id)
-    .eq("organization_id", profile.organization_id)
-    .order("sale_date", { ascending: false });
-
-  // Fetch available inventory items for linking and org currency
-  const [inventoryItems, currency] = await Promise.all([
+  // Fetch all related data in parallel
+  const [
+    { data: notes },
+    { data: enquiries },
+    { data: sales },
+    inventoryItems,
+    currency,
+  ] = await Promise.all([
+    supabase
+      .from("notes")
+      .select("*")
+      .eq("client_id", id)
+      .eq("organization_id", profile.organization_id)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("enquiries")
+      .select("*, inventory(title)")
+      .eq("client_id", id)
+      .eq("organization_id", profile.organization_id)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("sales")
+      .select("*")
+      .eq("client_id", id)
+      .eq("organization_id", profile.organization_id)
+      .order("sale_date", { ascending: false }),
     getAvailableInventoryItems(),
     getOrgCurrency(),
   ]);

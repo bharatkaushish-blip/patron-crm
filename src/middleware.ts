@@ -43,54 +43,41 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // Authenticated user on login/signup pages → redirect based on org status
-  if (user && AUTH_ROUTES.some((r) => path.startsWith(r))) {
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("organization_id")
-      .eq("id", user.id)
-      .single();
-
-    if (!profile?.organization_id) {
-      return NextResponse.redirect(new URL("/onboarding", request.url));
-    }
-    return NextResponse.redirect(new URL("/today", request.url));
-  }
-
-  // Authenticated user on protected routes without org → onboarding
+  // Authenticated user — single profile query for all checks
   if (
     user &&
-    PROTECTED_ROUTES.some((r) => path.startsWith(r))
+    (AUTH_ROUTES.some((r) => path.startsWith(r)) ||
+      PROTECTED_ROUTES.some((r) => path.startsWith(r)))
   ) {
-    const { data: profile } = await supabase
+    const { data: prof } = await supabase
       .from("profiles")
-      .select("organization_id")
+      .select("organization_id, role, is_superadmin, permissions")
       .eq("id", user.id)
       .single();
 
-    if (!profile?.organization_id) {
+    const hasOrg = !!prof?.organization_id;
+
+    // Auth routes (login/signup) → redirect away
+    if (AUTH_ROUTES.some((r) => path.startsWith(r))) {
+      return NextResponse.redirect(
+        new URL(hasOrg ? "/today" : "/onboarding", request.url)
+      );
+    }
+
+    // Protected route without org → onboarding
+    if (!hasOrg) {
       return NextResponse.redirect(new URL("/onboarding", request.url));
     }
 
-    // Role-based route blocking (only for paths that need it)
-    if (path.startsWith("/admin") || path.startsWith("/settings")) {
-      const { data: roleProfile } = await supabase
-        .from("profiles")
-        .select("role, is_superadmin, permissions")
-        .eq("id", user.id)
-        .single();
+    // Role-based route blocking
+    if (path.startsWith("/admin") && !prof?.is_superadmin) {
+      return NextResponse.redirect(new URL("/today", request.url));
+    }
 
-      // Block /admin for non-superadmin
-      if (path.startsWith("/admin") && !roleProfile?.is_superadmin) {
+    if (path.startsWith("/settings") && prof?.role === "user") {
+      const perms = prof.permissions as { can_access_settings?: boolean } | null;
+      if (!perms?.can_access_settings) {
         return NextResponse.redirect(new URL("/today", request.url));
-      }
-
-      // Block /settings for users without can_access_settings
-      if (path.startsWith("/settings") && roleProfile?.role === "user") {
-        const perms = roleProfile.permissions as { can_access_settings?: boolean } | null;
-        if (!perms?.can_access_settings) {
-          return NextResponse.redirect(new URL("/today", request.url));
-        }
       }
     }
   }

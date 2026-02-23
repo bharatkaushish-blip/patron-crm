@@ -28,9 +28,10 @@ export default async function TodayPage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("organization_id")
+    .select("organization_id, role, permissions")
     .eq("id", user.id)
-    .single();
+    .single()
+    .then((res: any) => (res.error ? { data: null } : res));
 
   if (!profile?.organization_id) {
     redirect("/onboarding");
@@ -38,15 +39,8 @@ export default async function TodayPage() {
 
   const orgId = profile.organization_id;
 
-  const { data: roleProfile } = await supabase
-    .from("profiles")
-    .select("role, permissions")
-    .eq("id", user.id)
-    .single()
-    .then((res: any) => (res.error ? { data: null } : res));
-
   const { extractRoleData, canMutate } = await import("@/lib/permissions");
-  const { role, permissions: perms } = extractRoleData(roleProfile);
+  const { role, permissions: perms } = extractRoleData(profile);
   const userCanMutate = canMutate(role, perms);
 
   const today = new Date().toISOString().split("T")[0];

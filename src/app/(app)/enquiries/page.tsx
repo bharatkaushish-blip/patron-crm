@@ -23,21 +23,15 @@ export default async function EnquiriesPage({
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("organization_id")
-    .eq("id", user.id)
-    .single();
-
-  if (!profile?.organization_id) redirect("/onboarding");
-
-  const { data: roleProfile } = await supabase
-    .from("profiles")
-    .select("role, permissions")
+    .select("organization_id, role, permissions")
     .eq("id", user.id)
     .single()
     .then((res: any) => (res.error ? { data: null } : res));
 
+  if (!profile?.organization_id) redirect("/onboarding");
+
   const { extractRoleData, canMutate, canDelete } = await import("@/lib/permissions");
-  const { role, permissions: perms } = extractRoleData(roleProfile);
+  const { role, permissions: perms } = extractRoleData(profile);
   const userCanMutate = canMutate(role, perms);
   const userCanDelete = canDelete(role, perms);
 

@@ -19,17 +19,10 @@ export default async function AppLayout({
     redirect("/login");
   }
 
-  // First query: core fields that always exist
+  // Single query for all profile + org data
   const { data: profile } = await supabase
     .from("profiles")
-    .select("full_name, organization_id, organizations(name, subscription_status, trial_ends_at)")
-    .eq("id", user.id)
-    .single();
-
-  // Second query: role fields (may not exist before migration 007)
-  const { data: roleData } = await supabase
-    .from("profiles")
-    .select("role, is_superadmin, permissions")
+    .select("full_name, organization_id, role, is_superadmin, permissions, organizations(name, subscription_status, trial_ends_at)")
     .eq("id", user.id)
     .single()
     .then((res) => (res.error ? { data: null } : res));
@@ -49,7 +42,7 @@ export default async function AppLayout({
       org?.trial_ends_at &&
       new Date(org.trial_ends_at) < new Date());
 
-  const { role, isSuperadmin, permissions } = extractRoleData(roleData);
+  const { role, isSuperadmin, permissions } = extractRoleData(profile);
 
   return (
     <div className="flex h-dvh flex-col md:flex-row">

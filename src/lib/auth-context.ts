@@ -22,23 +22,17 @@ export async function getAuthContext(): Promise<AuthContext> {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
+  // Single query for all profile data (role fields may not exist pre-migration 007)
   const { data: profile } = await supabase
     .from("profiles")
-    .select("organization_id")
-    .eq("id", user.id)
-    .single();
-
-  if (!profile?.organization_id) redirect("/onboarding");
-
-  // Role fields may not exist before migration 007 is applied
-  const { data: roleProfile } = await supabase
-    .from("profiles")
-    .select("role, is_superadmin, permissions")
+    .select("organization_id, role, is_superadmin, permissions")
     .eq("id", user.id)
     .single()
     .then((res) => (res.error ? { data: null } : res));
 
-  const { role, isSuperadmin, permissions } = extractRoleData(roleProfile);
+  if (!profile?.organization_id) redirect("/onboarding");
+
+  const { role, isSuperadmin, permissions } = extractRoleData(profile);
 
   return {
     supabase,

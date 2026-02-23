@@ -18,18 +18,12 @@ export default async function SettingsPage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("full_name, timezone, reminder_time, organization_id")
-    .eq("id", user.id)
-    .single();
-
-  if (!profile?.organization_id) redirect("/onboarding");
-
-  const { data: roleProfile } = await supabase
-    .from("profiles")
-    .select("role, is_superadmin, permissions")
+    .select("full_name, timezone, reminder_time, organization_id, role, is_superadmin, permissions")
     .eq("id", user.id)
     .single()
     .then((res) => (res.error ? { data: null } : res));
+
+  if (!profile?.organization_id) redirect("/onboarding");
 
   const { data: org } = await supabase
     .from("organizations")
@@ -37,7 +31,7 @@ export default async function SettingsPage() {
     .eq("id", profile.organization_id)
     .single();
 
-  const { role } = extractRoleData(roleProfile);
+  const { role } = extractRoleData(profile);
   const isAdmin = role === "admin" || role === "superadmin";
 
   // Fetch team data only for admins

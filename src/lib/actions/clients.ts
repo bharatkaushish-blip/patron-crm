@@ -72,8 +72,13 @@ export async function updateClientAction(formData: FormData) {
 }
 
 export async function deleteClientAction(clientId: string) {
-  await requireWriteAccess();
-  await requireDeleteAccess();
+  try {
+    await requireWriteAccess();
+    await requireDeleteAccess();
+  } catch (e: unknown) {
+    return { error: e instanceof Error ? e.message : "Permission denied" };
+  }
+
   const { supabase } = await getAuthContext();
 
   const { error } = await supabase

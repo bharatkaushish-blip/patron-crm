@@ -1,21 +1,28 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { Trash2 } from "lucide-react";
 import { deleteClientAction } from "@/lib/actions/clients";
 import { Button } from "@/components/ui/button";
 
 export function DeleteClientButton({ clientId }: { clientId: string }) {
   const [showConfirm, setShowConfirm] = useState(false);
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
 
-  function handleDelete() {
-    startTransition(async () => {
+  async function handleDelete() {
+    setIsPending(true);
+    try {
       const result = await deleteClientAction(clientId);
-      if (!result?.error) {
-        window.location.href = "/clients";
+      if (result?.error) {
+        alert(result.error);
+        setIsPending(false);
+        return;
       }
-    });
+      window.location.href = "/clients";
+    } catch {
+      alert("Failed to delete client. Please try again.");
+      setIsPending(false);
+    }
   }
 
   if (showConfirm) {
@@ -33,6 +40,7 @@ export function DeleteClientButton({ clientId }: { clientId: string }) {
         <Button
           variant="ghost"
           onClick={() => setShowConfirm(false)}
+          disabled={isPending}
           className="text-xs px-3 py-1.5"
         >
           Cancel

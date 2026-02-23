@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireWriteAccess } from "@/lib/subscription";
 import { getAuthContext, requireMutationAccess, requireDeleteAccess } from "@/lib/auth-context";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export async function createClientAction(formData: FormData) {
   await requireWriteAccess();
@@ -79,12 +80,14 @@ export async function deleteClientAction(clientId: string) {
     return { error: e instanceof Error ? e.message : "Permission denied" };
   }
 
-  const { supabase } = await getAuthContext();
+  const { orgId } = await getAuthContext();
+  const admin = createAdminClient();
 
-  const { error } = await supabase
+  const { error } = await admin
     .from("clients")
     .update({ is_deleted: true })
-    .eq("id", clientId);
+    .eq("id", clientId)
+    .eq("organization_id", orgId);
 
   if (error) {
     return { error: error.message };

@@ -86,7 +86,6 @@ export async function deleteClientAction(clientId: string) {
   }
 
   revalidatePath("/clients");
-  redirect("/clients");
 }
 
 export async function getOrgTags() {

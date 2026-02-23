@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react";
 import { deleteClientAction } from "@/lib/actions/clients";
 import { Button } from "@/components/ui/button";
@@ -8,10 +9,14 @@ import { Button } from "@/components/ui/button";
 export function DeleteClientButton({ clientId }: { clientId: string }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   function handleDelete() {
     startTransition(async () => {
-      await deleteClientAction(clientId);
+      const result = await deleteClientAction(clientId);
+      if (!result?.error) {
+        router.push("/clients");
+      }
     });
   }
 

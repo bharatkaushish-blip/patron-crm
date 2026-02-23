@@ -1,17 +1,27 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState } from "react";
 import { Trash2 } from "lucide-react";
 import { deleteInventoryItem } from "@/lib/actions/inventory";
 
 export function DeleteInventoryButton({ itemId }: { itemId: string }) {
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
 
-  function handleDelete() {
+  async function handleDelete() {
     if (!confirm("Delete this artwork? This cannot be undone.")) return;
-    startTransition(async () => {
-      await deleteInventoryItem(itemId);
-    });
+    setIsPending(true);
+    try {
+      const result = await deleteInventoryItem(itemId);
+      if (result?.error) {
+        alert(result.error);
+        setIsPending(false);
+        return;
+      }
+      window.location.href = "/inventory";
+    } catch {
+      alert("Failed to delete artwork. Please try again.");
+      setIsPending(false);
+    }
   }
 
   return (

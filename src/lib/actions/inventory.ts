@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireWriteAccess } from "@/lib/subscription";
 import { getAuthContext, requireMutationAccess, requireDeleteAccess } from "@/lib/auth-context";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export async function createInventoryItem(formData: FormData) {
   await requireWriteAccess();
@@ -80,21 +81,27 @@ export async function updateInventoryItem(formData: FormData) {
 }
 
 export async function deleteInventoryItem(itemId: string) {
-  await requireWriteAccess();
-  await requireDeleteAccess();
-  const { supabase } = await getAuthContext();
+  try {
+    await requireWriteAccess();
+    await requireDeleteAccess();
+  } catch (e: unknown) {
+    return { error: e instanceof Error ? e.message : "Permission denied" };
+  }
 
-  const { error } = await supabase
+  const { orgId } = await getAuthContext();
+  const admin = createAdminClient();
+
+  const { error } = await admin
     .from("inventory")
     .update({ is_deleted: true })
-    .eq("id", itemId);
+    .eq("id", itemId)
+    .eq("organization_id", orgId);
 
   if (error) {
     return { error: error.message };
   }
 
   revalidatePath("/inventory");
-  redirect("/inventory");
 }
 
 export async function getInventoryItems(query?: string) {

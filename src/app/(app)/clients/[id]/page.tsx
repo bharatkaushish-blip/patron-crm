@@ -1,17 +1,13 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect, notFound } from "next/navigation";
+import { Suspense } from "react";
 import Link from "next/link";
 import { ArrowLeft, Pencil, Phone, Mail, MapPin, Globe } from "lucide-react";
 import { DeleteClientButton } from "@/components/clients/delete-client-button";
-import { NoteInput } from "@/components/notes/note-input";
-import { NoteCard } from "@/components/notes/note-card";
-import { SaleForm } from "@/components/sales/sale-form";
-import { SaleCard } from "@/components/sales/sale-card";
-import { EnquiryForm } from "@/components/enquiries/enquiry-form";
-import { EnquiryGroupCard } from "@/components/enquiries/enquiry-card";
-import { getAvailableInventoryItems } from "@/lib/actions/inventory";
-import { getOrgCurrency } from "@/lib/actions/settings";
-import { formatCurrency } from "@/lib/format-currency";
+import { ClientFollowUpBanner } from "@/components/clients/client-follow-up-banner";
+import { ClientNotesSection, ClientNotesSkeleton } from "@/components/clients/client-notes-section";
+import { ClientEnquiriesSection, ClientEnquiriesSkeleton } from "@/components/clients/client-enquiries-section";
+import { ClientSalesSection, ClientSalesSkeleton } from "@/components/clients/client-sales-section";
 import { extractRoleData, canMutate as canMutateCheck, canDelete as canDeleteCheck } from "@/lib/permissions";
 
 export default async function ClientProfilePage({
@@ -36,6 +32,7 @@ export default async function ClientProfilePage({
 
   if (!profile?.organization_id) redirect("/onboarding");
 
+  const orgId = profile.organization_id;
   const { role, permissions: perms } = extractRoleData(profile);
   const userCanMutate = canMutateCheck(role, perms);
   const userCanDelete = canDeleteCheck(role, perms);
@@ -44,45 +41,10 @@ export default async function ClientProfilePage({
     .from("clients")
     .select("*")
     .eq("id", id)
-    .eq("organization_id", profile.organization_id)
+    .eq("organization_id", orgId)
     .single();
 
   if (!client) notFound();
-
-  // Fetch all related data in parallel
-  const [
-    { data: notes },
-    { data: enquiries },
-    { data: sales },
-    inventoryItems,
-    currency,
-  ] = await Promise.all([
-    supabase
-      .from("notes")
-      .select("*")
-      .eq("client_id", id)
-      .eq("organization_id", profile.organization_id)
-      .order("created_at", { ascending: false }),
-    supabase
-      .from("enquiries")
-      .select("*, inventory(title)")
-      .eq("client_id", id)
-      .eq("organization_id", profile.organization_id)
-      .order("created_at", { ascending: false }),
-    supabase
-      .from("sales")
-      .select("*")
-      .eq("client_id", id)
-      .eq("organization_id", profile.organization_id)
-      .order("sale_date", { ascending: false }),
-    getAvailableInventoryItems(),
-    getOrgCurrency(),
-  ]);
-
-  // Active follow-up banner
-  const activeFollowUp = notes?.find(
-    (n) => n.follow_up_date && n.follow_up_status === "pending"
-  );
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
@@ -125,15 +87,9 @@ export default async function ClientProfilePage({
       </div>
 
       {/* Follow-up banner */}
-      {activeFollowUp ? (
-        <div className="mb-4 rounded-lg bg-amber-50 border border-amber-200 px-4 py-2.5 text-sm text-amber-700">
-          Follow-up due{" "}
-          {new Date(activeFollowUp.follow_up_date + "T00:00:00").toLocaleDateString(
-            "en-IN",
-            { month: "short", day: "numeric" }
-          )}
-        </div>
-      ) : null}
+      <Suspense>
+        <ClientFollowUpBanner clientId={id} orgId={orgId} />
+      </Suspense>
 
       {/* Contact info */}
       <div className="space-y-2 text-sm">
@@ -186,123 +142,36 @@ export default async function ClientProfilePage({
         </div>
       ) : null}
 
-      {/* Notes section */}
-      <section className="mt-8">
-        <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-wide mb-3">
-          Notes
-          {notes && notes.length > 0 ? (
-            <span className="ml-2 text-neutral-400">({notes.length})</span>
-          ) : null}
-        </h2>
+      {/* Notes */}
+      <Suspense fallback={<ClientNotesSkeleton />}>
+        <ClientNotesSection
+          clientId={id}
+          orgId={orgId}
+          canEdit={userCanMutate}
+          canDelete={userCanDelete}
+        />
+      </Suspense>
 
-        {userCanMutate && <NoteInput clientId={id} />}
+      {/* Enquiries */}
+      <Suspense fallback={<ClientEnquiriesSkeleton />}>
+        <ClientEnquiriesSection
+          clientId={id}
+          clientName={client.name}
+          orgId={orgId}
+          canEdit={userCanMutate}
+          canDelete={userCanDelete}
+        />
+      </Suspense>
 
-        <div className="mt-4 space-y-2">
-          {notes && notes.length > 0 ? (
-            notes.map((note) => (
-              <NoteCard
-                key={note.id}
-                id={note.id}
-                clientId={id}
-                content={note.content}
-                createdAt={note.created_at}
-                followUpDate={note.follow_up_date}
-                followUpStatus={note.follow_up_status}
-                canEdit={userCanMutate}
-                canDelete={userCanDelete}
-              />
-            ))
-          ) : (
-            <p className="text-sm text-neutral-400 py-4 text-center">
-              No notes yet. Add your first note above.
-            </p>
-          )}
-        </div>
-      </section>
-
-      {/* Enquiries section */}
-      <section className="mt-8">
-        <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-wide mb-3">
-          Enquiries
-          {enquiries && enquiries.length > 0 ? (
-            <span className="ml-2 text-neutral-400">({enquiries.length})</span>
-          ) : null}
-        </h2>
-
-        {userCanMutate && <EnquiryForm clientId={id} inventoryItems={inventoryItems} />}
-
-        <div className="mt-3">
-          {enquiries && enquiries.length > 0 ? (
-            <EnquiryGroupCard
-              clientId={id}
-              clientName={client.name}
-              enquiries={enquiries.map((enq) => ({
-                id: enq.id,
-                clientId: id,
-                size: enq.size,
-                budget: enq.budget,
-                artist: enq.artist,
-                timeline: enq.timeline,
-                workType: enq.work_type,
-                notes: enq.notes,
-                createdAt: enq.created_at,
-                inventoryItemId: enq.inventory_item_id ?? null,
-                inventoryTitle: (enq.inventory as any)?.title ?? null,
-              }))}
-              canEdit={userCanMutate}
-              canDelete={userCanDelete}
-              inventoryItems={inventoryItems}
-            />
-          ) : (
-            <p className="text-sm text-neutral-400 py-4 text-center">
-              No enquiries yet.
-            </p>
-          )}
-        </div>
-      </section>
-
-      {/* Sales section */}
-      <section className="mt-8">
-        <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-wide mb-3">
-          Sales
-          {sales && sales.length > 0 ? (
-            <span className="ml-2 text-neutral-400">
-              ({sales.length}
-              {sales.length > 0 ? (
-                <> &middot; {formatCurrency(sales.reduce((sum, s) => sum + (Number(s.amount) || 0), 0), currency)}</>
-              ) : null})
-            </span>
-          ) : null}
-        </h2>
-
-        {userCanMutate && <SaleForm clientId={id} inventoryItems={inventoryItems} />}
-
-        <div className="mt-3 space-y-2">
-          {sales && sales.length > 0 ? (
-            sales.map((sale) => (
-              <SaleCard
-                key={sale.id}
-                id={sale.id}
-                clientId={id}
-                artworkName={sale.artwork_name}
-                artistName={sale.artist_name ?? null}
-                amount={sale.amount}
-                saleDate={sale.sale_date}
-                notes={sale.notes}
-                currency={currency}
-                canEdit={userCanMutate}
-                canDelete={userCanDelete}
-                inventoryItems={inventoryItems}
-                inventoryItemId={sale.inventory_item_id ?? null}
-              />
-            ))
-          ) : (
-            <p className="text-sm text-neutral-400 py-4 text-center">
-              No sales logged yet.
-            </p>
-          )}
-        </div>
-      </section>
+      {/* Sales */}
+      <Suspense fallback={<ClientSalesSkeleton />}>
+        <ClientSalesSection
+          clientId={id}
+          orgId={orgId}
+          canEdit={userCanMutate}
+          canDelete={userCanDelete}
+        />
+      </Suspense>
     </div>
   );
 }

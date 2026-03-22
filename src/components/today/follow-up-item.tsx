@@ -14,7 +14,7 @@ const avatarColors = [
   "bg-emerald-100 text-emerald-700",
   "bg-amber-100 text-amber-700",
   "bg-cyan-100 text-cyan-700",
-  "bg-indigo-100 text-indigo-700",
+  "bg-[#735a3a]/10 text-[#735a3a]",
   "bg-pink-100 text-pink-700",
   "bg-orange-100 text-orange-700",
   "bg-teal-100 text-teal-700",
@@ -87,14 +87,14 @@ export function FollowUpItem({
   return (
     <div
       className={cn(
-        "group flex items-start gap-3 rounded-xl border bg-white p-4 transition-opacity",
-        isOverdue ? "border-red-200" : "border-neutral-200",
+        "group flex items-start gap-3 border bg-[#fcf9f8] p-4 transition-opacity",
+        isOverdue ? "border-red-200" : "border-[#b2b2b1]/15",
         isPending && "opacity-50"
       )}
     >
       <div
         className={cn(
-          "flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold",
+          "flex h-10 w-10 shrink-0 items-center justify-center text-sm font-semibold",
           getAvatarColor(clientName)
         )}
       >
@@ -107,21 +107,21 @@ export function FollowUpItem({
             <div className="flex items-center gap-1.5">
               <Link
                 href={`/clients/${clientId}`}
-                className="text-sm font-semibold text-neutral-900 hover:underline"
+                className="font-body text-sm font-semibold text-[#323233] hover:underline"
               >
                 {clientName}
               </Link>
               {type === "enquiry" && (
-                <span className="rounded-full bg-violet-50 px-2 py-0.5 text-[10px] font-medium text-violet-700">
+                <span className="bg-violet-50 px-2 py-0.5 text-[10px] font-medium text-violet-700">
                   Enquiry
                 </span>
               )}
             </div>
-            <p className="mt-0.5 text-sm text-neutral-500 line-clamp-2">
+            <p className="mt-0.5 font-body text-sm text-[#5f5f5f] line-clamp-2">
               {content}
             </p>
             {isOverdue && (
-              <p className="mt-1 text-xs font-medium text-red-500">
+              <p className="mt-1 font-body text-xs font-medium text-red-500">
                 Overdue ·{" "}
                 {new Date(followUpDate + "T00:00:00").toLocaleDateString(
                   "en-IN",
@@ -136,7 +136,7 @@ export function FollowUpItem({
               <button
                 onClick={() => setShowReschedule(!showReschedule)}
                 disabled={isPending}
-                className="rounded-md p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600"
+                className="p-1.5 text-[#9e9c9c] hover:bg-[#f0eded] hover:text-neutral-600"
                 title="Reschedule"
               >
                 <CalendarClock className="h-3.5 w-3.5" />
@@ -144,7 +144,7 @@ export function FollowUpItem({
               <button
                 onClick={handleDone}
                 disabled={isPending}
-                className="rounded-md p-1.5 text-neutral-400 hover:bg-green-50 hover:text-green-600"
+                className="p-1.5 text-[#9e9c9c] hover:bg-green-50 hover:text-green-600"
                 title="Mark done"
               >
                 <Check className="h-3.5 w-3.5" />
@@ -160,12 +160,12 @@ export function FollowUpItem({
               value={newDate}
               onChange={(e) => setNewDate(e.target.value)}
               min={new Date().toISOString().split("T")[0]}
-              className="rounded-md border border-neutral-300 px-2 py-1.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+              className="border border-[#b2b2b1]/20 px-2 py-1.5 text-sm focus:border-[#735a3a] focus:outline-none focus:ring-1 focus:ring-[#735a3a]"
             />
             <button
               onClick={handleReschedule}
               disabled={!newDate || isPending}
-              className="rounded-md bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+              className="bg-[#735a3a] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#664e30] disabled:opacity-50"
             >
               Reschedule
             </button>

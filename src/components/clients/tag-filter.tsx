@@ -37,10 +37,10 @@ export function TagFilter({ tags }: TagFilterProps) {
           key={tag}
           onClick={() => toggleTag(tag)}
           className={cn(
-            "rounded-full px-3 py-1 text-xs font-medium transition-colors",
+            "px-3 py-1 text-xs font-medium font-body transition-colors",
             activeTags.includes(tag)
-              ? "bg-indigo-600 text-white"
-              : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
+              ? "bg-[#735a3a] text-white"
+              : "bg-[#f0eded] text-neutral-600 hover:bg-[#b2b2b1]/15"
           )}
         >
           {tag}

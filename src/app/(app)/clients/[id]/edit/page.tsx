@@ -47,11 +47,11 @@ export default async function EditClientPage({
       <div className="flex items-center gap-3 mb-6">
         <Link
           href={`/clients/${id}`}
-          className="rounded-md p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600"
+          className="p-1.5 text-[#9e9c9c] hover:bg-[#f0eded] hover:text-neutral-600"
         >
           <ArrowLeft className="h-5 w-5" />
         </Link>
-        <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
+        <h1 className="text-2xl font-bold font-serif tracking-tight text-[#323233]">
           Edit client
         </h1>
       </div>

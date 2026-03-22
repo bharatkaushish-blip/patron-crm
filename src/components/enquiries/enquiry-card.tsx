@@ -111,13 +111,13 @@ function EnquiryRow({ enquiry, canEdit, canDelete, isLast, inventoryItems = [] }
     return (
       <form
         onSubmit={handleSaveEdit}
-        className={`py-3 space-y-2 ${!isLast ? "border-b border-neutral-100" : ""}`}
+        className={`py-3 space-y-2 ${!isLast ? "border-b border-[#f0eded]" : ""}`}
       >
         {inventoryItems.length > 0 && (
           <select
             value={editInventoryItemId}
             onChange={handleInventorySelect}
-            className="w-full rounded-md border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+            className="w-full border border-[#b2b2b1]/20 px-3 py-1.5 text-sm font-body text-neutral-700 focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
           >
             <option value="">Link artwork (optional)</option>
             {inventoryItems.map((item) => (
@@ -133,13 +133,13 @@ function EnquiryRow({ enquiry, canEdit, canDelete, isLast, inventoryItems = [] }
             value={editSize}
             onChange={(e) => setEditSize(e.target.value)}
             placeholder="Size"
-            className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+            className="border border-[#b2b2b1]/20 px-3 py-1.5 text-sm font-body placeholder:text-[#9e9c9c] focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
           />
           <input
             value={editBudget}
             onChange={(e) => setEditBudget(e.target.value)}
             placeholder="Budget"
-            className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+            className="border border-[#b2b2b1]/20 px-3 py-1.5 text-sm font-body placeholder:text-[#9e9c9c] focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
           />
         </div>
         <div className="grid grid-cols-2 gap-2">
@@ -147,33 +147,33 @@ function EnquiryRow({ enquiry, canEdit, canDelete, isLast, inventoryItems = [] }
             value={editArtist}
             onChange={(e) => setEditArtist(e.target.value)}
             placeholder="Artist"
-            className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+            className="border border-[#b2b2b1]/20 px-3 py-1.5 text-sm font-body placeholder:text-[#9e9c9c] focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
           />
           <input
             value={editTimeline}
             onChange={(e) => setEditTimeline(e.target.value)}
             type="date"
-            className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+            className="border border-[#b2b2b1]/20 px-3 py-1.5 text-sm font-body text-neutral-700 focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
           />
         </div>
         <input
           value={editWorkType}
           onChange={(e) => setEditWorkType(e.target.value)}
           placeholder="Type of work"
-          className="w-full rounded-md border border-neutral-300 px-3 py-1.5 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+          className="w-full border border-[#b2b2b1]/20 px-3 py-1.5 text-sm font-body placeholder:text-[#9e9c9c] focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
         />
         <textarea
           value={editNotes}
           onChange={(e) => setEditNotes(e.target.value)}
           placeholder="Notes"
           rows={2}
-          className="w-full resize-none rounded-md border border-neutral-300 px-3 py-1.5 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+          className="w-full resize-none border border-[#b2b2b1]/20 px-3 py-1.5 text-sm font-body placeholder:text-[#9e9c9c] focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
         />
         <div className="flex gap-2">
           <button
             type="submit"
             disabled={isPending}
-            className="rounded-md bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+            className="bg-[#735a3a] px-3 py-1.5 text-xs font-medium font-body text-white hover:bg-[#664e30] disabled:opacity-50"
           >
             Save
           </button>
@@ -189,7 +189,7 @@ function EnquiryRow({ enquiry, canEdit, canDelete, isLast, inventoryItems = [] }
               setEditNotes(enquiry.notes || "");
               setEditInventoryItemId(enquiry.inventoryItemId || "");
             }}
-            className="rounded-md px-3 py-1.5 text-xs text-neutral-500 hover:bg-neutral-100"
+            className="px-3 py-1.5 text-xs font-body text-[#5f5f5f] hover:bg-[#f0eded]"
           >
             Cancel
           </button>
@@ -202,57 +202,57 @@ function EnquiryRow({ enquiry, canEdit, canDelete, isLast, inventoryItems = [] }
     <div
       className={`flex items-start justify-between gap-2 py-3 transition-opacity ${
         isPending ? "opacity-50" : ""
-      } ${!isLast ? "border-b border-neutral-100" : ""}`}
+      } ${!isLast ? "border-b border-[#f0eded]" : ""}`}
     >
       <div className="min-w-0 flex-1">
         {enquiry.inventoryTitle && (
-          <p className="text-xs font-medium text-indigo-600 mb-0.5">
-            <span className="text-neutral-400">Artwork:</span> {enquiry.inventoryTitle}
+          <p className="text-xs font-medium font-body text-[#735a3a] mb-0.5">
+            <span className="text-[#9e9c9c]">Artwork:</span> {enquiry.inventoryTitle}
           </p>
         )}
 
         {fields.length > 0 ? (
           <div className="flex flex-wrap gap-x-3 gap-y-1">
             {fields.map((f) => (
-              <span key={f.label} className="text-xs text-neutral-600">
-                <span className="text-neutral-400">{f.label}:</span> {f.value}
+              <span key={f.label} className="text-xs font-body text-neutral-600">
+                <span className="text-[#9e9c9c]">{f.label}:</span> {f.value}
               </span>
             ))}
           </div>
         ) : null}
 
         {timelineLabel ? (
-          <p className="mt-0.5 text-xs text-neutral-500">
-            <span className="text-neutral-400">Timeline:</span> {timelineLabel}
+          <p className="mt-0.5 text-xs font-body text-[#5f5f5f]">
+            <span className="text-[#9e9c9c]">Timeline:</span> {timelineLabel}
           </p>
         ) : null}
 
         {enquiry.notes ? (
-          <p className="mt-1 text-xs text-neutral-500 line-clamp-2">
+          <p className="mt-1 text-xs font-body text-[#5f5f5f] line-clamp-2">
             {enquiry.notes}
           </p>
         ) : null}
 
-        <p className="mt-1 text-[10px] text-neutral-400">{dateLabel}</p>
+        <p className="mt-1 text-[10px] font-body text-[#9e9c9c]">{dateLabel}</p>
       </div>
 
       {showMenuButton && (
         <div className="relative shrink-0">
           <button
             onClick={() => setShowMenu(!showMenu)}
-            className="rounded-md p-1 text-neutral-300 hover:bg-neutral-100 hover:text-neutral-500"
+            className="p-1 text-[#b2b2b1]/20 hover:bg-[#f0eded] hover:text-[#5f5f5f]"
           >
             <MoreHorizontal className="h-3.5 w-3.5" />
           </button>
           {showMenu ? (
-            <div className="absolute right-0 top-full z-10 mt-1 w-32 rounded-lg border border-neutral-200 bg-white py-1 shadow-lg">
+            <div className="absolute right-0 top-full z-10 mt-1 w-32 border border-[#b2b2b1]/15 bg-[#ffffff] py-1 shadow-lg">
               {canEdit && (
                 <button
                   onClick={() => {
                     setIsEditing(true);
                     setShowMenu(false);
                   }}
-                  className="flex w-full items-center gap-2 px-3 py-1.5 text-xs text-neutral-600 hover:bg-neutral-50"
+                  className="flex w-full items-center gap-2 px-3 py-1.5 text-xs font-body text-neutral-600 hover:bg-[#f6f3f2]"
                 >
                   <Pencil className="h-3 w-3" />
                   Edit
@@ -264,7 +264,7 @@ function EnquiryRow({ enquiry, canEdit, canDelete, isLast, inventoryItems = [] }
                     handleDelete();
                     setShowMenu(false);
                   }}
-                  className="flex w-full items-center gap-2 px-3 py-1.5 text-xs text-red-600 hover:bg-red-50"
+                  className="flex w-full items-center gap-2 px-3 py-1.5 text-xs font-body text-red-600 hover:bg-red-50"
                 >
                   <Trash2 className="h-3 w-3" />
                   Delete
@@ -288,7 +288,7 @@ const avatarColors = [
   "bg-teal-500",
   "bg-cyan-500",
   "bg-blue-500",
-  "bg-indigo-500",
+  "bg-[#735a3a]",
   "bg-violet-500",
   "bg-purple-500",
   "bg-pink-500",
@@ -338,25 +338,25 @@ export function EnquiryGroupCard({
       onDragOver={onDragOver}
       onDrop={onDrop}
       onDragEnd={onDragEnd}
-      className={`rounded-xl border border-neutral-200 bg-white p-4 shadow-sm transition hover:shadow-md ${
+      className={`border border-[#b2b2b1]/15 bg-[#ffffff] p-4 shadow-sm transition hover:shadow-md ${
         draggable ? "cursor-grab active:cursor-grabbing" : ""
       }`}
     >
       {/* Client header */}
       <div className="flex items-center gap-2.5 mb-2">
         <div
-          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-semibold text-white ${getAvatarColor(clientName)}`}
+          className={`flex h-9 w-9 shrink-0 items-center justify-center text-xs font-semibold text-white ${getAvatarColor(clientName)}`}
         >
           {initial}
         </div>
         <div className="min-w-0 flex-1">
           <a
             href={`/clients/${clientId}`}
-            className="text-sm font-semibold text-neutral-900 hover:underline truncate block"
+            className="text-sm font-semibold font-serif text-[#323233] hover:underline truncate block"
           >
             {clientName}
           </a>
-          <span className="text-[10px] text-neutral-400">
+          <span className="text-[10px] font-body text-[#9e9c9c]">
             {enquiries.length} enquir{enquiries.length === 1 ? "y" : "ies"}
           </span>
         </div>

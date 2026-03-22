@@ -10,13 +10,13 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variants: Record<ButtonVariant, string> = {
   primary:
-    "bg-indigo-600 text-white hover:bg-indigo-700 active:bg-indigo-800",
+    "bg-gradient-to-br from-[#735a3a] to-[#664e30] text-[#fff6f0] hover:from-[#664e30] hover:to-[#513b1e] active:from-[#513b1e] active:to-[#513b1e]",
   secondary:
-    "bg-white text-neutral-900 border border-neutral-300 hover:bg-neutral-50 active:bg-neutral-100",
+    "bg-transparent text-[#735a3a] border border-[#b2b2b1]/20 hover:bg-[#735a3a]/5 active:bg-[#735a3a]/10",
   ghost:
-    "bg-transparent text-neutral-600 hover:bg-neutral-100 active:bg-neutral-200",
+    "bg-transparent text-[#5f5f5f] hover:bg-[#f0eded] active:bg-[#e4e2e1]",
   danger:
-    "bg-red-600 text-white hover:bg-red-700 active:bg-red-800",
+    "bg-[#9e422c] text-white hover:bg-[#5c1202] active:bg-[#5c1202]",
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -25,7 +25,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={cn(
-          "inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none",
+          "inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#735a3a]/40 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none font-body",
           variants[variant],
           className
         )}

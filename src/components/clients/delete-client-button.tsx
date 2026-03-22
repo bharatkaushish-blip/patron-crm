@@ -52,7 +52,7 @@ export function DeleteClientButton({ clientId }: { clientId: string }) {
   return (
     <button
       onClick={() => setShowConfirm(true)}
-      className="rounded-md p-1.5 text-neutral-400 hover:bg-red-50 hover:text-red-500"
+      className="p-1.5 text-[#9e9c9c] hover:bg-red-50 hover:text-red-500"
       title="Delete client"
     >
       <Trash2 className="h-4 w-4" />

@@ -46,7 +46,7 @@ export default async function SettingsPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
-      <h1 className="text-2xl font-bold tracking-tight text-neutral-900 mb-6">
+      <h1 className="text-2xl font-serif font-bold tracking-tight text-[#323233] mb-6">
         Settings
       </h1>
 

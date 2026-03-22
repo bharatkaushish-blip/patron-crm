@@ -45,18 +45,18 @@ export default async function AppLayout({
   const { role, isSuperadmin, permissions } = extractRoleData(profile);
 
   return (
-    <div className="flex h-dvh flex-col md:flex-row">
+    <div className="flex h-dvh flex-col md:flex-row bg-[#fcf9f8]">
       <DesktopSidebar
         orgName={orgName}
         role={role}
         isSuperadmin={isSuperadmin}
         canAccessSettings={permissions.can_access_settings}
       />
-      <main className="flex-1 overflow-y-auto pb-16 md:pb-0">
+      <main className="flex-1 overflow-y-auto pb-16 md:pb-0 bg-[#fcf9f8]">
         {isExpired ? (
-          <div className="bg-red-50 border-b border-red-200 px-4 py-2.5 text-center text-sm text-red-700">
+          <div className="bg-[#9e422c]/10 px-4 py-2.5 text-center text-sm text-[#9e422c] font-body">
             Your trial has expired. Data is read-only.{" "}
-            <Link href="/settings" className="font-medium underline hover:text-red-800">
+            <Link href="/settings" className="font-medium underline hover:text-[#5c1202]">
               Upgrade now
             </Link>
           </div>

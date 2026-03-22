@@ -57,17 +57,17 @@ export function AnalyticsAllTimeSkeleton() {
         {Array.from({ length: 4 }).map((_, i) => (
           <div
             key={i}
-            className="rounded-lg border border-neutral-200 bg-white px-4 py-3"
+            className="border border-[#b2b2b1]/15 bg-[#ffffff] px-4 py-3"
           >
-            <div className="h-3 w-16 bg-neutral-200 rounded" />
-            <div className="mt-2 h-6 w-12 bg-neutral-200 rounded" />
+            <div className="h-3 w-16 bg-[#b2b2b1]/15" />
+            <div className="mt-2 h-6 w-12 bg-[#b2b2b1]/15" />
           </div>
         ))}
       </div>
       <div className="mt-3">
-        <div className="rounded-lg border border-neutral-200 bg-white px-4 py-3">
-          <div className="h-3 w-20 bg-neutral-200 rounded" />
-          <div className="mt-2 h-6 w-16 bg-neutral-200 rounded" />
+        <div className="border border-[#b2b2b1]/15 bg-[#ffffff] px-4 py-3">
+          <div className="h-3 w-20 bg-[#b2b2b1]/15" />
+          <div className="mt-2 h-6 w-16 bg-[#b2b2b1]/15" />
         </div>
       </div>
     </div>

@@ -68,7 +68,7 @@ export function AutocompleteInput({
 
   return (
     <div className="space-y-1.5">
-      <label className="block text-sm font-medium text-neutral-700">
+      <label className="block text-sm font-body font-medium text-neutral-700">
         {label}
       </label>
       <div className="relative">
@@ -86,11 +86,11 @@ export function AutocompleteInput({
             setTimeout(() => setShowSuggestions(false), 200);
           }}
           placeholder={placeholder}
-          className="block w-full rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-1"
+          className="block w-full border border-[#b2b2b1]/20 bg-[#fcf9f8] px-3 py-2.5 text-sm font-body text-[#323233] placeholder:text-[#9e9c9c] focus:border-[#735a3a] focus:outline-none focus:ring-2 focus-visible:ring-[#735a3a]/40 focus:ring-offset-1"
         />
 
         {showSuggestions && value && filtered.length > 0 ? (
-          <div className="absolute left-0 right-0 top-full z-10 mt-1 max-h-40 overflow-y-auto rounded-lg border border-neutral-200 bg-white shadow-lg">
+          <div className="absolute left-0 right-0 top-full z-10 mt-1 max-h-40 overflow-y-auto border border-[#b2b2b1]/15 bg-[#ffffff] shadow-lg">
             {filtered.slice(0, 8).map(({ text, matches }) => (
               <button
                 key={text}
@@ -101,11 +101,11 @@ export function AutocompleteInput({
                   setShowSuggestions(false);
                   inputRef.current?.focus();
                 }}
-                className="block w-full px-3 py-2 text-left text-sm text-neutral-700 hover:bg-neutral-50"
+                className="block w-full px-3 py-2 text-left text-sm font-body text-neutral-700 hover:bg-[#f6f3f2]"
               >
                 {text.split("").map((ch, i) =>
                   matches.includes(i) ? (
-                    <span key={i} className="font-semibold text-neutral-900">
+                    <span key={i} className="font-semibold text-[#323233]">
                       {ch}
                     </span>
                   ) : (

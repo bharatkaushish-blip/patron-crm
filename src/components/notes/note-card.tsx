@@ -79,12 +79,12 @@ export function NoteCard({
   return (
     <div
       className={cn(
-        "rounded-lg border bg-white p-3 transition-opacity",
+        "border bg-[#ffffff] p-3 transition-opacity",
         followUpDate && followUpStatus === "pending"
           ? isOverdue
             ? "border-red-200"
             : "border-amber-200"
-          : "border-neutral-200",
+          : "border-[#b2b2b1]/15",
         isPending && "opacity-50"
       )}
     >
@@ -93,7 +93,7 @@ export function NoteCard({
           <textarea
             value={editContent}
             onChange={(e) => setEditContent(e.target.value)}
-            className="w-full resize-none rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+            className="w-full resize-none border border-[#b2b2b1]/20 px-3 py-2 text-sm font-body focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
             rows={3}
             autoFocus
           />
@@ -101,7 +101,7 @@ export function NoteCard({
             <button
               onClick={handleSaveEdit}
               disabled={isPending}
-              className="rounded-md bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
+              className="bg-[#735a3a] px-3 py-1.5 text-xs font-medium font-body text-white hover:bg-[#664e30]"
             >
               Save
             </button>
@@ -110,7 +110,7 @@ export function NoteCard({
                 setIsEditing(false);
                 setEditContent(content);
               }}
-              className="rounded-md px-3 py-1.5 text-xs text-neutral-500 hover:bg-neutral-100"
+              className="px-3 py-1.5 text-xs font-body text-[#5f5f5f] hover:bg-[#f0eded]"
             >
               Cancel
             </button>
@@ -119,26 +119,26 @@ export function NoteCard({
       ) : (
         <>
           <div className="flex items-start justify-between gap-2">
-            <p className="text-sm text-neutral-700 whitespace-pre-wrap flex-1">
+            <p className="text-sm font-body text-neutral-700 whitespace-pre-wrap flex-1">
               {content}
             </p>
             {showMenuButton && (
               <div className="relative shrink-0">
                 <button
                   onClick={() => setShowMenu(!showMenu)}
-                  className="rounded-md p-1 text-neutral-300 hover:bg-neutral-100 hover:text-neutral-500"
+                  className="p-1 text-[#b2b2b1]/20 hover:bg-[#f0eded] hover:text-[#5f5f5f]"
                 >
                   <MoreHorizontal className="h-4 w-4" />
                 </button>
                 {showMenu ? (
-                  <div className="absolute right-0 top-full z-10 mt-1 w-32 rounded-lg border border-neutral-200 bg-white py-1 shadow-lg">
+                  <div className="absolute right-0 top-full z-10 mt-1 w-32 border border-[#b2b2b1]/15 bg-[#ffffff] py-1 shadow-lg">
                     {canEdit && (
                       <button
                         onClick={() => {
                           setIsEditing(true);
                           setShowMenu(false);
                         }}
-                        className="flex w-full items-center gap-2 px-3 py-1.5 text-xs text-neutral-600 hover:bg-neutral-50"
+                        className="flex w-full items-center gap-2 px-3 py-1.5 text-xs font-body text-neutral-600 hover:bg-[#f6f3f2]"
                       >
                         <Pencil className="h-3 w-3" />
                         Edit
@@ -150,7 +150,7 @@ export function NoteCard({
                           handleDelete();
                           setShowMenu(false);
                         }}
-                        className="flex w-full items-center gap-2 px-3 py-1.5 text-xs text-red-600 hover:bg-red-50"
+                        className="flex w-full items-center gap-2 px-3 py-1.5 text-xs font-body text-red-600 hover:bg-red-50"
                       >
                         <Trash2 className="h-3 w-3" />
                         Delete
@@ -162,12 +162,12 @@ export function NoteCard({
             )}
           </div>
 
-          <div className="mt-2 flex items-center gap-2 text-xs text-neutral-400">
+          <div className="mt-2 flex items-center gap-2 text-xs font-body text-[#9e9c9c]">
             <span>{dateLabel}</span>
             {followUpDate && followUpStatus === "pending" ? (
               <span
                 className={cn(
-                  "flex items-center gap-1 rounded-full px-2 py-0.5 font-medium",
+                  "flex items-center gap-1 px-2 py-0.5 font-medium",
                   isOverdue
                     ? "bg-red-50 text-red-500"
                     : "bg-amber-50 text-amber-600"
@@ -181,7 +181,7 @@ export function NoteCard({
               </span>
             ) : null}
             {followUpDate && followUpStatus === "done" ? (
-              <span className="flex items-center gap-1 rounded-full bg-green-50 px-2 py-0.5 font-medium text-green-600">
+              <span className="flex items-center gap-1 bg-green-50 px-2 py-0.5 font-medium text-green-600">
                 <Check className="h-3 w-3" />
                 Done
               </span>
@@ -190,11 +190,11 @@ export function NoteCard({
 
           {/* Follow-up actions */}
           {followUpDate && followUpStatus === "pending" && canEdit ? (
-            <div className="mt-2 flex items-center gap-2 border-t border-neutral-100 pt-2">
+            <div className="mt-2 flex items-center gap-2 border-t border-[#f0eded] pt-2">
               <button
                 onClick={handleMarkDone}
                 disabled={isPending}
-                className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-neutral-500 hover:bg-green-50 hover:text-green-600"
+                className="flex items-center gap-1 px-2 py-1 text-xs font-body text-[#5f5f5f] hover:bg-green-50 hover:text-green-600"
               >
                 <Check className="h-3 w-3" />
                 Done
@@ -202,7 +202,7 @@ export function NoteCard({
               <button
                 onClick={() => setShowReschedule(!showReschedule)}
                 disabled={isPending}
-                className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-neutral-500 hover:bg-neutral-100"
+                className="flex items-center gap-1 px-2 py-1 text-xs font-body text-[#5f5f5f] hover:bg-[#f0eded]"
               >
                 <CalendarClock className="h-3 w-3" />
                 Reschedule
@@ -217,18 +217,18 @@ export function NoteCard({
                 value={newDate}
                 onChange={(e) => setNewDate(e.target.value)}
                 min={new Date().toISOString().split("T")[0]}
-                className="rounded-md border border-neutral-300 px-2 py-1 text-xs focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+                className="border border-[#b2b2b1]/20 px-2 py-1 text-xs font-body focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
               />
               <button
                 onClick={handleReschedule}
                 disabled={!newDate || isPending}
-                className="rounded-md bg-indigo-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+                className="bg-[#735a3a] px-2.5 py-1 text-xs font-medium font-body text-white hover:bg-[#664e30] disabled:opacity-50"
               >
                 Save
               </button>
               <button
                 onClick={() => setShowReschedule(false)}
-                className="p-1 text-neutral-400 hover:text-neutral-600"
+                className="p-1 text-[#9e9c9c] hover:text-neutral-600"
               >
                 <X className="h-3 w-3" />
               </button>

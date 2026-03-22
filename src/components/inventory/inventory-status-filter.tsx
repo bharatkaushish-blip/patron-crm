@@ -33,10 +33,10 @@ export function InventoryStatusFilter() {
           key={s.value}
           onClick={() => select(s.value)}
           className={cn(
-            "shrink-0 rounded-full px-3 py-1 text-xs font-medium transition-colors",
+            "shrink-0 px-3 py-1 text-xs font-body font-medium transition-colors",
             current === s.value
-              ? "bg-indigo-600 text-white"
-              : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
+              ? "bg-[#735a3a] text-white"
+              : "bg-[#f0eded] text-neutral-600 hover:bg-[#b2b2b1]/15"
           )}
         >
           {s.label}

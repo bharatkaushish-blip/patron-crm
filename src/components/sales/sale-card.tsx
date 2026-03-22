@@ -107,13 +107,13 @@ export function SaleCard({
     return (
       <form
         onSubmit={handleSaveEdit}
-        className="rounded-lg border border-neutral-200 bg-white p-3 space-y-2"
+        className="border border-[#b2b2b1]/15 bg-[#ffffff] p-3 space-y-2"
       >
         {inventoryItems.length > 0 && (
           <select
             value={editInventoryItemId}
             onChange={handleInventorySelect}
-            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+            className="w-full border border-[#b2b2b1]/20 px-3 py-2 text-sm font-body text-neutral-700 focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
           >
             <option value="">Link artwork (optional)</option>
             {inventoryItems.map((item) => (
@@ -129,13 +129,13 @@ export function SaleCard({
             value={editArtwork}
             onChange={(e) => setEditArtwork(e.target.value)}
             placeholder="Artwork name"
-            className="flex-1 rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+            className="flex-1 border border-[#b2b2b1]/20 px-3 py-2 text-sm font-body placeholder:text-[#9e9c9c] focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
           />
           <input
             value={editArtist}
             onChange={(e) => setEditArtist(e.target.value)}
             placeholder="Artist name"
-            className="flex-1 rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+            className="flex-1 border border-[#b2b2b1]/20 px-3 py-2 text-sm font-body placeholder:text-[#9e9c9c] focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
           />
         </div>
         <div className="flex gap-3">
@@ -145,13 +145,13 @@ export function SaleCard({
             type="number"
             step="0.01"
             placeholder="Amount"
-            className="flex-1 rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+            className="flex-1 border border-[#b2b2b1]/20 px-3 py-2 text-sm font-body placeholder:text-[#9e9c9c] focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
           />
           <input
             value={editDate}
             onChange={(e) => setEditDate(e.target.value)}
             type="date"
-            className="rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+            className="border border-[#b2b2b1]/20 px-3 py-2 text-sm font-body text-neutral-700 focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
           />
         </div>
         <textarea
@@ -159,13 +159,13 @@ export function SaleCard({
           onChange={(e) => setEditNotes(e.target.value)}
           placeholder="Notes (optional)"
           rows={2}
-          className="w-full resize-none rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+          className="w-full resize-none border border-[#b2b2b1]/20 px-3 py-2 text-sm font-body placeholder:text-[#9e9c9c] focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
         />
         <div className="flex gap-2">
           <button
             type="submit"
             disabled={isPending}
-            className="rounded-md bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+            className="bg-[#735a3a] px-3 py-1.5 text-xs font-medium font-body text-white hover:bg-[#664e30] disabled:opacity-50"
           >
             Save
           </button>
@@ -180,7 +180,7 @@ export function SaleCard({
               setEditNotes(notes || "");
               setEditInventoryItemId(inventoryItemId || "");
             }}
-            className="rounded-md px-3 py-1.5 text-xs text-neutral-500 hover:bg-neutral-100"
+            className="px-3 py-1.5 text-xs font-body text-[#5f5f5f] hover:bg-[#f0eded]"
           >
             Cancel
           </button>
@@ -191,55 +191,55 @@ export function SaleCard({
 
   return (
     <div
-      className={`rounded-lg border border-neutral-200 bg-white p-3 transition-opacity ${
+      className={`border border-[#b2b2b1]/15 bg-[#ffffff] p-3 transition-opacity ${
         isPending ? "opacity-50" : ""
       }`}
     >
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-neutral-700 truncate">
+            <p className="text-sm font-medium font-body text-neutral-700 truncate">
               {artworkName || "Untitled sale"}
               {artistName ? (
-                <span className="font-normal text-neutral-400"> — {artistName}</span>
+                <span className="font-normal text-[#9e9c9c]"> — {artistName}</span>
               ) : null}
             </p>
             {amount ? (
-              <p className="text-sm font-medium text-neutral-900 shrink-0 ml-2">
+              <p className="text-sm font-medium font-body text-[#323233] shrink-0 ml-2">
                 {formatCurrency(Number(amount), currency)}
               </p>
             ) : null}
           </div>
           {linkedItem && (
-            <p className="mt-0.5 text-[10px] font-medium text-indigo-500">
+            <p className="mt-0.5 text-[10px] font-medium font-body text-[#735a3a]">
               Linked to inventory
             </p>
           )}
           {notes ? (
-            <p className="mt-1 text-xs text-neutral-500 line-clamp-2">
+            <p className="mt-1 text-xs font-body text-[#5f5f5f] line-clamp-2">
               {notes}
             </p>
           ) : null}
-          <p className="mt-1 text-xs text-neutral-400">{dateLabel}</p>
+          <p className="mt-1 text-xs font-body text-[#9e9c9c]">{dateLabel}</p>
         </div>
 
         {showMenuButton && (
           <div className="relative shrink-0">
             <button
               onClick={() => setShowMenu(!showMenu)}
-              className="rounded-md p-1 text-neutral-300 hover:bg-neutral-100 hover:text-neutral-500"
+              className="p-1 text-[#b2b2b1]/20 hover:bg-[#f0eded] hover:text-[#5f5f5f]"
             >
               <MoreHorizontal className="h-4 w-4" />
             </button>
             {showMenu ? (
-              <div className="absolute right-0 top-full z-10 mt-1 w-32 rounded-lg border border-neutral-200 bg-white py-1 shadow-lg">
+              <div className="absolute right-0 top-full z-10 mt-1 w-32 border border-[#b2b2b1]/15 bg-[#ffffff] py-1 shadow-lg">
                 {canEdit && (
                   <button
                     onClick={() => {
                       setIsEditing(true);
                       setShowMenu(false);
                     }}
-                    className="flex w-full items-center gap-2 px-3 py-1.5 text-xs text-neutral-600 hover:bg-neutral-50"
+                    className="flex w-full items-center gap-2 px-3 py-1.5 text-xs font-body text-neutral-600 hover:bg-[#f6f3f2]"
                   >
                     <Pencil className="h-3 w-3" />
                     Edit
@@ -251,7 +251,7 @@ export function SaleCard({
                       handleDelete();
                       setShowMenu(false);
                     }}
-                    className="flex w-full items-center gap-2 px-3 py-1.5 text-xs text-red-600 hover:bg-red-50"
+                    className="flex w-full items-center gap-2 px-3 py-1.5 text-xs font-body text-red-600 hover:bg-red-50"
                   >
                     <Trash2 className="h-3 w-3" />
                     Delete

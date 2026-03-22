@@ -99,7 +99,7 @@ export default async function EnquiriesPage({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6">
-      <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
+      <h1 className="text-2xl font-bold font-serif tracking-tight text-[#323233]">
         Enquiries
       </h1>
 
@@ -124,7 +124,7 @@ export default async function EnquiriesPage({
             inventoryItems={inventoryItems}
           />
         ) : (
-          <p className="text-sm text-neutral-400 py-8 text-center">
+          <p className="text-sm font-body text-[#9e9c9c] py-8 text-center">
             {query ? `No enquiries matching "${query}"` : "No enquiries yet."}
           </p>
         )}

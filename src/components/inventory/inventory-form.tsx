@@ -135,13 +135,13 @@ export function InventoryForm({ item, artistSuggestions = [], mediumSuggestions 
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-neutral-700">
+          <label className="block text-sm font-body font-medium text-neutral-700">
             Status
           </label>
           <select
             name="status"
             defaultValue={item?.status ?? "available"}
-            className="block w-full rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm text-neutral-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-1"
+            className="block w-full border border-[#b2b2b1]/20 bg-[#fcf9f8] px-3 py-2.5 text-sm font-body text-[#323233] focus:border-[#735a3a] focus:outline-none focus:ring-2 focus-visible:ring-[#735a3a]/40 focus:ring-offset-1"
           >
             <option value="available">Available</option>
             <option value="reserved">Reserved</option>
@@ -151,14 +151,14 @@ export function InventoryForm({ item, artistSuggestions = [], mediumSuggestions 
         </div>
 
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-neutral-700">
+          <label className="block text-sm font-body font-medium text-neutral-700">
             Source
           </label>
           <select
             name="source"
             value={source}
             onChange={(e) => setSource(e.target.value)}
-            className="block w-full rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm text-neutral-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-1"
+            className="block w-full border border-[#b2b2b1]/20 bg-[#fcf9f8] px-3 py-2.5 text-sm font-body text-[#323233] focus:border-[#735a3a] focus:outline-none focus:ring-2 focus-visible:ring-[#735a3a]/40 focus:ring-offset-1"
           >
             <option value="owned">Owned</option>
             <option value="consignment">Consignment</option>
@@ -176,7 +176,7 @@ export function InventoryForm({ item, artistSuggestions = [], mediumSuggestions 
       )}
 
       <div className="space-y-1.5">
-        <label className="block text-sm font-medium text-neutral-700">
+        <label className="block text-sm font-body font-medium text-neutral-700">
           Notes
         </label>
         <textarea
@@ -184,7 +184,7 @@ export function InventoryForm({ item, artistSuggestions = [], mediumSuggestions 
           placeholder="Additional notes"
           rows={3}
           defaultValue={item?.notes ?? ""}
-          className="block w-full resize-none rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-1"
+          className="block w-full resize-none border border-[#b2b2b1]/20 bg-[#fcf9f8] px-3 py-2.5 text-sm font-body text-[#323233] placeholder:text-[#9e9c9c] focus:border-[#735a3a] focus:outline-none focus:ring-2 focus-visible:ring-[#735a3a]/40 focus:ring-offset-1"
         />
       </div>
 

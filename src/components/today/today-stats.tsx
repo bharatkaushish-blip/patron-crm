@@ -84,12 +84,12 @@ export async function TodayStats({ orgId }: { orgId: string }) {
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="rounded-xl border border-neutral-200 bg-white px-4 py-4"
+          className="border border-[#b2b2b1]/15 bg-[#fcf9f8] px-4 py-4"
         >
-          <p className="text-[11px] text-neutral-400 uppercase tracking-wide font-medium">
+          <p className="font-body text-[11px] text-[#9e9c9c] uppercase tracking-[0.2em] font-medium">
             {stat.label}
           </p>
-          <p className="mt-1.5 text-2xl font-bold text-neutral-900 tracking-tight">
+          <p className="mt-1.5 font-serif text-2xl font-bold text-[#323233] tracking-tight">
             {stat.value}
           </p>
         </div>
@@ -104,10 +104,10 @@ export function TodayStatsSkeleton() {
       {Array.from({ length: 4 }).map((_, i) => (
         <div
           key={i}
-          className="rounded-xl border border-neutral-200 bg-white px-4 py-4"
+          className="border border-[#b2b2b1]/15 bg-[#fcf9f8] px-4 py-4"
         >
-          <div className="h-3 w-16 bg-neutral-200 rounded" />
-          <div className="mt-3 h-7 w-12 bg-neutral-200 rounded" />
+          <div className="h-3 w-16 bg-[#b2b2b1]/15" />
+          <div className="mt-3 h-7 w-12 bg-[#b2b2b1]/15" />
         </div>
       ))}
     </div>

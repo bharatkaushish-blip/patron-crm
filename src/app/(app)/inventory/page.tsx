@@ -51,7 +51,7 @@ export default async function InventoryPage({
   return (
     <div className="mx-auto max-w-4xl px-4 py-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
+        <h1 className="text-2xl font-serif font-bold tracking-tight text-[#323233]">
           Inventory
         </h1>
         {userCanMutate && (
@@ -59,7 +59,7 @@ export default async function InventoryPage({
             <InventoryCsvImport />
             <Link
               href="/inventory/new"
-              className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition-colors"
+              className="inline-flex items-center gap-1.5 bg-[#735a3a] px-4 py-2 text-sm font-body font-medium text-white hover:bg-[#664e30] transition-colors"
             >
               <Plus className="h-4 w-4" />
               Add artwork
@@ -97,7 +97,7 @@ export default async function InventoryPage({
           ))}
         </div>
       ) : (
-        <p className="text-sm text-neutral-400 py-16 text-center">
+        <p className="text-sm font-body text-[#9e9c9c] py-16 text-center">
           {query || statusFilter !== "all"
             ? "No artwork matching your filters."
             : "No artwork in your inventory yet. Add your first piece."}

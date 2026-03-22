@@ -53,7 +53,7 @@ export default async function ClientProfilePage({
         <div className="flex items-center gap-3">
           <Link
             href="/clients"
-            className="rounded-md p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600"
+            className="p-1.5 text-[#9e9c9c] hover:bg-[#f0eded] hover:text-neutral-600"
           >
             <ArrowLeft className="h-5 w-5" />
           </Link>
@@ -61,14 +61,14 @@ export default async function ClientProfilePage({
             <img
               src={client.photo_url}
               alt={client.name}
-              className="h-10 w-10 rounded-full object-cover"
+              className="h-10 w-10 object-cover"
             />
           ) : (
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-200 text-sm font-semibold text-neutral-600">
+            <div className="flex h-10 w-10 items-center justify-center bg-[#b2b2b1]/15 text-sm font-semibold text-neutral-600">
               {client.name.charAt(0).toUpperCase()}
             </div>
           )}
-          <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
+          <h1 className="text-2xl font-bold font-serif tracking-tight text-[#323233]">
             {client.name}
           </h1>
         </div>
@@ -76,7 +76,7 @@ export default async function ClientProfilePage({
           {userCanMutate && (
             <Link
               href={`/clients/${id}/edit`}
-              className="rounded-md p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600"
+              className="p-1.5 text-[#9e9c9c] hover:bg-[#f0eded] hover:text-neutral-600"
               title="Edit client"
             >
               <Pencil className="h-4 w-4" />
@@ -96,35 +96,35 @@ export default async function ClientProfilePage({
         {client.phone ? (
           <a
             href={`tel:${client.phone}`}
-            className="flex items-center gap-2 text-neutral-600 hover:text-neutral-900"
+            className="flex items-center gap-2 font-body text-neutral-600 hover:text-[#323233]"
           >
-            <Phone className="h-4 w-4 text-neutral-400" />
+            <Phone className="h-4 w-4 text-[#9e9c9c]" />
             {client.phone}
           </a>
         ) : null}
         {client.email ? (
           <a
             href={`mailto:${client.email}`}
-            className="flex items-center gap-2 text-neutral-600 hover:text-neutral-900"
+            className="flex items-center gap-2 font-body text-neutral-600 hover:text-[#323233]"
           >
-            <Mail className="h-4 w-4 text-neutral-400" />
+            <Mail className="h-4 w-4 text-[#9e9c9c]" />
             {client.email}
           </a>
         ) : null}
         {client.location ? (
-          <div className="flex items-center gap-2 text-neutral-600">
-            <MapPin className="h-4 w-4 text-neutral-400" />
+          <div className="flex items-center gap-2 font-body text-neutral-600">
+            <MapPin className="h-4 w-4 text-[#9e9c9c]" />
             {client.location}
           </div>
         ) : null}
         {client.country ? (
-          <div className="flex items-center gap-2 text-neutral-600">
-            <Globe className="h-4 w-4 text-neutral-400" />
+          <div className="flex items-center gap-2 font-body text-neutral-600">
+            <Globe className="h-4 w-4 text-[#9e9c9c]" />
             {client.country}
           </div>
         ) : null}
         {client.age_range ? (
-          <div className="text-neutral-400 text-xs">Age: {client.age_range}</div>
+          <div className="text-[#9e9c9c] text-xs font-body">Age: {client.age_range}</div>
         ) : null}
       </div>
 
@@ -134,7 +134,7 @@ export default async function ClientProfilePage({
           {client.tags.map((tag: string) => (
             <span
               key={tag}
-              className="rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-600"
+              className="bg-[#f0eded] px-3 py-1 text-xs font-medium font-body text-neutral-600"
             >
               {tag}
             </span>

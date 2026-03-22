@@ -23,7 +23,7 @@ export async function ClientFollowUpBanner({
   if (!followUp) return null;
 
   return (
-    <div className="mb-4 rounded-lg bg-amber-50 border border-amber-200 px-4 py-2.5 text-sm text-amber-700">
+    <div className="mb-4 bg-amber-50 border border-amber-200 px-4 py-2.5 text-sm font-body text-amber-700">
       Follow-up due{" "}
       {new Date(followUp.follow_up_date + "T00:00:00").toLocaleDateString(
         "en-IN",

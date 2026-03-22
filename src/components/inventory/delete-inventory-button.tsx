@@ -28,7 +28,7 @@ export function DeleteInventoryButton({ itemId }: { itemId: string }) {
     <button
       onClick={handleDelete}
       disabled={isPending}
-      className="rounded-md p-1.5 text-neutral-400 hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
+      className="p-1.5 text-[#9e9c9c] hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
       title="Delete"
     >
       <Trash2 className="h-4 w-4" />

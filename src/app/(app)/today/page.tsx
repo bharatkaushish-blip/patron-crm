@@ -54,7 +54,7 @@ export default async function TodayPage() {
         <div className="fixed bottom-20 right-4 flex flex-col gap-2 md:bottom-6">
           <Link
             href="/clients/new"
-            className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg hover:bg-indigo-700 transition-colors"
+            className="flex h-12 w-12 items-center justify-center bg-[#735a3a] text-white shadow-lg hover:bg-[#664e30] transition-colors"
             title="Add client"
           >
             <UserPlus className="h-5 w-5" />

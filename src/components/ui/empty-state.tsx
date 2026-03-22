@@ -13,9 +13,9 @@ interface EmptyStateProps {
 export function EmptyState({ title, description, action }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
-      <h3 className="text-lg font-medium text-neutral-900">{title}</h3>
+      <h3 className="text-lg font-bold text-[#323233] font-serif">{title}</h3>
       {description ? (
-        <p className="mt-1 text-sm text-neutral-500">{description}</p>
+        <p className="mt-1 text-sm text-[#5f5f5f] font-body">{description}</p>
       ) : null}
       {action ? (
         <Link href={action.href} className="mt-4">

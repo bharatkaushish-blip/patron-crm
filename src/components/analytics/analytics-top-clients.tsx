@@ -41,25 +41,25 @@ export async function AnalyticsTopClients({ orgId }: { orgId: string }) {
 
   return (
     <>
-      <h2 className="mt-8 text-sm font-medium text-neutral-500 uppercase tracking-wider">
+      <h2 className="mt-8 text-sm font-body font-medium text-[#5f5f5f] uppercase tracking-wider">
         Top clients by sales
       </h2>
-      <div className="mt-3 rounded-lg border border-neutral-200 bg-white divide-y divide-neutral-100">
+      <div className="mt-3 border border-[#b2b2b1]/15 bg-[#ffffff] divide-y divide-[#f0eded]">
         {topClients.map((client, i) => (
           <Link
             key={client.id}
             href={`/clients/${client.id}`}
-            className="flex items-center justify-between px-4 py-3 hover:bg-neutral-50 transition-colors"
+            className="flex items-center justify-between px-4 py-3 hover:bg-[#f6f3f2] transition-colors"
           >
             <div className="flex items-center gap-3">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-neutral-100 text-xs font-medium text-neutral-500">
+              <span className="flex h-6 w-6 items-center justify-center bg-[#f0eded] text-xs font-body font-medium text-[#5f5f5f]">
                 {i + 1}
               </span>
-              <span className="text-sm font-medium text-neutral-800">
+              <span className="text-sm font-body font-medium text-neutral-800">
                 {client.name}
               </span>
             </div>
-            <span className="text-sm text-neutral-600">
+            <span className="text-sm font-body text-neutral-600">
               {formatCurrencyCompact(client.total, currency)}
             </span>
           </Link>
@@ -72,18 +72,18 @@ export async function AnalyticsTopClients({ orgId }: { orgId: string }) {
 export function AnalyticsTopClientsSkeleton() {
   return (
     <div className="animate-pulse">
-      <div className="mt-8 h-4 w-32 bg-neutral-200 rounded" />
-      <div className="mt-3 rounded-lg border border-neutral-200 bg-white divide-y divide-neutral-100">
+      <div className="mt-8 h-4 w-32 bg-[#b2b2b1]/15" />
+      <div className="mt-3 border border-[#b2b2b1]/15 bg-[#ffffff] divide-y divide-[#f0eded]">
         {Array.from({ length: 3 }).map((_, i) => (
           <div
             key={i}
             className="flex items-center justify-between px-4 py-3"
           >
             <div className="flex items-center gap-3">
-              <div className="h-6 w-6 rounded-full bg-neutral-200" />
-              <div className="h-4 w-24 bg-neutral-200 rounded" />
+              <div className="h-6 w-6 bg-[#b2b2b1]/15" />
+              <div className="h-4 w-24 bg-[#b2b2b1]/15" />
             </div>
-            <div className="h-4 w-16 bg-neutral-200 rounded" />
+            <div className="h-4 w-16 bg-[#b2b2b1]/15" />
           </div>
         ))}
       </div>

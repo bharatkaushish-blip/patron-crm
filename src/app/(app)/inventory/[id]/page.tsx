@@ -22,8 +22,8 @@ const statusLabels: Record<string, string> = {
 const statusColors: Record<string, string> = {
   available: "bg-green-100 text-green-700",
   reserved: "bg-amber-100 text-amber-700",
-  sold: "bg-neutral-200 text-neutral-600",
-  not_for_sale: "bg-neutral-100 text-neutral-500",
+  sold: "bg-[#b2b2b1]/15 text-neutral-600",
+  not_for_sale: "bg-[#f0eded] text-[#5f5f5f]",
 };
 
 export default async function InventoryDetailPage({
@@ -92,16 +92,16 @@ export default async function InventoryDetailPage({
         <div className="flex items-center gap-3">
           <Link
             href="/inventory"
-            className="rounded-md p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600"
+            className="p-1.5 text-[#9e9c9c] hover:bg-[#f0eded] hover:text-neutral-600"
           >
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
+            <h1 className="text-2xl font-serif font-bold tracking-tight text-[#323233]">
               {item.title}
             </h1>
             <span
-              className={`mt-1 inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${
+              className={`mt-1 inline-block px-2.5 py-0.5 text-xs font-body font-medium ${
                 statusColors[item.status] || statusColors.available
               }`}
             >
@@ -113,7 +113,7 @@ export default async function InventoryDetailPage({
           {userCanMutate && (
             <Link
               href={`/inventory/${id}/edit`}
-              className="rounded-md p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600"
+              className="p-1.5 text-[#9e9c9c] hover:bg-[#f0eded] hover:text-neutral-600"
               title="Edit"
             >
               <Pencil className="h-4 w-4" />
@@ -133,8 +133,8 @@ export default async function InventoryDetailPage({
       {/* Details */}
       <div className="space-y-2">
         {fields.map((f) => (
-          <div key={f.label} className="flex text-sm">
-            <span className="w-28 shrink-0 text-neutral-400">{f.label}</span>
+          <div key={f.label} className="flex text-sm font-body">
+            <span className="w-28 shrink-0 text-[#9e9c9c]">{f.label}</span>
             <span className="text-neutral-700">{f.value}</span>
           </div>
         ))}
@@ -144,9 +144,9 @@ export default async function InventoryDetailPage({
       {showPricing && priceFields.length > 0 && (
         <div className="mt-4 space-y-2">
           {priceFields.map((f) => (
-            <div key={f.label} className="flex text-sm">
-              <span className="w-28 shrink-0 text-neutral-400">{f.label}</span>
-              <span className="font-medium text-neutral-900">{f.value}</span>
+            <div key={f.label} className="flex text-sm font-body">
+              <span className="w-28 shrink-0 text-[#9e9c9c]">{f.label}</span>
+              <span className="font-serif font-bold text-[#323233]">{f.value}</span>
             </div>
           ))}
         </div>
@@ -155,10 +155,10 @@ export default async function InventoryDetailPage({
       {/* Notes */}
       {item.notes && (
         <div className="mt-4">
-          <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-wide mb-1">
+          <h2 className="text-sm font-body font-medium text-[#5f5f5f] uppercase tracking-wide mb-1">
             Notes
           </h2>
-          <p className="text-sm text-neutral-600 whitespace-pre-wrap">
+          <p className="text-sm font-body text-neutral-600 whitespace-pre-wrap">
             {item.notes}
           </p>
         </div>

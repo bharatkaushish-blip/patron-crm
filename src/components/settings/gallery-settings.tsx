@@ -28,12 +28,12 @@ export function GallerySettings({ name, currency }: { name: string; currency: st
 
   return (
     <section>
-      <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-wide mb-3">
+      <h2 className="text-sm font-body font-medium text-[#5f5f5f] uppercase tracking-wide mb-3">
         Gallery
       </h2>
-      <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border border-neutral-200 bg-white p-4">
+      <form onSubmit={handleSubmit} className="space-y-4 border border-[#b2b2b1]/15 bg-[#ffffff] p-4">
         <div>
-          <label className="block text-sm font-medium text-neutral-700 mb-1">
+          <label className="block text-sm font-body font-medium text-neutral-700 mb-1">
             Gallery name
           </label>
           <input
@@ -41,18 +41,18 @@ export function GallerySettings({ name, currency }: { name: string; currency: st
             type="text"
             defaultValue={name}
             required
-            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+            className="w-full border border-[#b2b2b1]/20 px-3 py-2 text-sm font-body focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-neutral-700 mb-1">
+          <label className="block text-sm font-body font-medium text-neutral-700 mb-1">
             Currency
           </label>
           <select
             name="currency"
             defaultValue={currency}
-            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+            className="w-full border border-[#b2b2b1]/20 px-3 py-2 text-sm font-body focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
           >
             {currencies.map((c) => (
               <option key={c.code} value={c.code}>
@@ -65,9 +65,9 @@ export function GallerySettings({ name, currency }: { name: string; currency: st
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+          className="bg-[#735a3a] px-4 py-2 text-sm font-body font-medium text-white hover:bg-[#664e30] disabled:opacity-50"
         >
-          {isPending ? "Saving…" : "Save"}
+          {isPending ? "Saving..." : "Save"}
         </button>
       </form>
     </section>

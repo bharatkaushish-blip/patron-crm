@@ -44,7 +44,7 @@ export async function AnalyticsMonth({ orgId }: { orgId: string }) {
 
   return (
     <>
-      <h2 className="mt-8 text-sm font-medium text-neutral-500 uppercase tracking-wider">
+      <h2 className="mt-8 text-sm font-body font-medium text-[#5f5f5f] uppercase tracking-wider">
         {monthName} {now.getFullYear()}
       </h2>
       <div className="mt-3 grid grid-cols-3 gap-3">
@@ -62,15 +62,15 @@ export async function AnalyticsMonth({ orgId }: { orgId: string }) {
 export function AnalyticsMonthSkeleton() {
   return (
     <div className="animate-pulse">
-      <div className="mt-8 h-4 w-28 bg-neutral-200 rounded" />
+      <div className="mt-8 h-4 w-28 bg-[#b2b2b1]/15" />
       <div className="mt-3 grid grid-cols-3 gap-3">
         {Array.from({ length: 3 }).map((_, i) => (
           <div
             key={i}
-            className="rounded-lg border border-neutral-200 bg-white px-4 py-3"
+            className="border border-[#b2b2b1]/15 bg-[#ffffff] px-4 py-3"
           >
-            <div className="h-3 w-16 bg-neutral-200 rounded" />
-            <div className="mt-2 h-6 w-12 bg-neutral-200 rounded" />
+            <div className="h-3 w-16 bg-[#b2b2b1]/15" />
+            <div className="mt-2 h-6 w-12 bg-[#b2b2b1]/15" />
           </div>
         ))}
       </div>

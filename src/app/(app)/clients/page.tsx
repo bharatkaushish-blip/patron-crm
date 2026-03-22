@@ -64,13 +64,13 @@ export default async function ClientsPage({
   return (
     <div className="mx-auto max-w-6xl px-4 py-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
+        <h1 className="text-2xl font-bold font-serif tracking-tight text-[#323233]">
           Clients
         </h1>
         {userCanMutate && (
           <Link
             href="/clients/new"
-            className="flex h-9 items-center gap-1.5 rounded-lg bg-indigo-600 px-3 text-sm font-medium text-white hover:bg-indigo-700 transition-colors"
+            className="flex h-9 items-center gap-1.5 bg-[#735a3a] px-3 text-sm font-medium text-white hover:bg-[#664e30] transition-colors"
           >
             <Plus className="h-4 w-4" />
             Add

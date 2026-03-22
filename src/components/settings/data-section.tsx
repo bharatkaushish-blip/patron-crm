@@ -178,23 +178,23 @@ export function DataSection() {
 
   return (
     <section>
-      <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-wide mb-3">
+      <h2 className="text-sm font-body font-medium text-[#5f5f5f] uppercase tracking-wide mb-3">
         Data
       </h2>
       <div className="space-y-3">
         {/* Export */}
-        <div className="rounded-lg border border-neutral-200 bg-white p-4">
+        <div className="border border-[#b2b2b1]/15 bg-[#ffffff] p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-neutral-700">Export data</p>
-              <p className="text-xs text-neutral-400">
+              <p className="text-sm font-body font-medium text-neutral-700">Export data</p>
+              <p className="text-xs font-body text-[#9e9c9c]">
                 Download all clients, notes, and sales as CSV
               </p>
             </div>
             <button
               onClick={handleExport}
               disabled={isPending}
-              className="flex items-center gap-1.5 rounded-md border border-neutral-300 px-3 py-1.5 text-sm text-neutral-600 hover:bg-neutral-50 disabled:opacity-50"
+              className="flex items-center gap-1.5 border border-[#b2b2b1]/20 px-3 py-1.5 text-sm font-body text-neutral-600 hover:bg-[#f6f3f2] disabled:opacity-50"
             >
               <Download className="h-4 w-4" />
               Export
@@ -203,19 +203,19 @@ export function DataSection() {
         </div>
 
         {/* Import */}
-        <div className="rounded-lg border border-neutral-200 bg-white p-4">
+        <div className="border border-[#b2b2b1]/15 bg-[#ffffff] p-4">
           {importState === "idle" ? (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-neutral-700">
+                  <p className="text-sm font-body font-medium text-neutral-700">
                     Import clients
                   </p>
-                  <p className="text-xs text-neutral-400">
+                  <p className="text-xs font-body text-[#9e9c9c]">
                     Upload a CSV file with client data
                   </p>
                 </div>
-                <label className="flex cursor-pointer items-center gap-1.5 rounded-md border border-neutral-300 px-3 py-1.5 text-sm text-neutral-600 hover:bg-neutral-50">
+                <label className="flex cursor-pointer items-center gap-1.5 border border-[#b2b2b1]/20 px-3 py-1.5 text-sm font-body text-neutral-600 hover:bg-[#f6f3f2]">
                   <Upload className="h-4 w-4" />
                   Upload CSV
                   <input
@@ -230,7 +230,7 @@ export function DataSection() {
               <button
                 type="button"
                 onClick={handleDownloadTemplate}
-                className="flex items-center gap-1.5 text-xs text-neutral-400 hover:text-neutral-600 transition-colors"
+                className="flex items-center gap-1.5 text-xs font-body text-[#9e9c9c] hover:text-neutral-600 transition-colors"
               >
                 <FileDown className="h-3.5 w-3.5" />
                 Download template CSV
@@ -239,13 +239,13 @@ export function DataSection() {
           ) : importState === "mapping" ? (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-neutral-700">
+                <p className="text-sm font-body font-medium text-neutral-700">
                   <FileSpreadsheet className="inline h-4 w-4 mr-1" />
                   Map columns ({csvRows.length} rows)
                 </p>
                 <button
                   onClick={resetImport}
-                  className="text-xs text-neutral-400 hover:text-neutral-600"
+                  className="text-xs font-body text-[#9e9c9c] hover:text-neutral-600"
                 >
                   Cancel
                 </button>
@@ -255,10 +255,10 @@ export function DataSection() {
                 {csvHeaders.map((header) => (
                   <div
                     key={header}
-                    className="flex items-center gap-3 text-sm"
+                    className="flex items-center gap-3 text-sm font-body"
                   >
                     <span className="w-32 truncate text-neutral-600">{header}</span>
-                    <span className="text-neutral-300">&rarr;</span>
+                    <span className="text-[#b2b2b1]/20">&rarr;</span>
                     <select
                       value={columnMap[header] || ""}
                       onChange={(e) =>
@@ -267,7 +267,7 @@ export function DataSection() {
                           [header]: e.target.value,
                         }))
                       }
-                      className="flex-1 rounded-md border border-neutral-300 px-2 py-1 text-sm focus:border-indigo-500 focus:outline-none"
+                      className="flex-1 border border-[#b2b2b1]/20 px-2 py-1 text-sm font-body focus:border-[#735a3a] focus:outline-none"
                     >
                       <option value="">Skip</option>
                       <option value="name">Name</option>
@@ -292,20 +292,20 @@ export function DataSection() {
                 <button
                   onClick={handleImport}
                   disabled={!Object.values(columnMap).includes("name") || isPending}
-                  className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+                  className="bg-[#735a3a] px-4 py-2 text-sm font-body font-medium text-white hover:bg-[#664e30] disabled:opacity-50"
                 >
                   Import {csvRows.length} clients
                 </button>
                 <button
                   onClick={resetImport}
-                  className="rounded-md px-4 py-2 text-sm text-neutral-500 hover:bg-neutral-100"
+                  className="px-4 py-2 text-sm font-body text-[#5f5f5f] hover:bg-[#f0eded]"
                 >
                   Cancel
                 </button>
               </div>
             </div>
           ) : importState === "importing" ? (
-            <p className="text-sm text-neutral-500">Importing…</p>
+            <p className="text-sm font-body text-[#5f5f5f]">Importing...</p>
           ) : importState === "done" && importResult ? (
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-sm text-green-600">
@@ -322,7 +322,7 @@ export function DataSection() {
               ) : null}
               <button
                 onClick={resetImport}
-                className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm text-neutral-600 hover:bg-neutral-50"
+                className="border border-[#b2b2b1]/20 px-3 py-1.5 text-sm font-body text-neutral-600 hover:bg-[#f6f3f2]"
               >
                 Done
               </button>

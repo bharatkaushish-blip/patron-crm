@@ -29,10 +29,10 @@ export function FollowUpSection({
   return (
     <section className="space-y-3">
       <div className="flex items-center gap-2">
-        <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-wide">
+        <h2 className="font-body text-sm font-medium text-[#5f5f5f] uppercase tracking-[0.2em]">
           {title}
         </h2>
-        <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-600">
+        <span className="bg-[#f0eded] px-2 py-0.5 text-xs font-medium text-neutral-600">
           {items.length}
         </span>
       </div>

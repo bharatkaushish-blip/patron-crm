@@ -118,17 +118,17 @@ export function TeamSection({
     <section className="space-y-4">
       {/* Toast notification */}
       {toast && (
-        <div className="flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 px-4 py-2.5 text-sm text-green-800 animate-in fade-in slide-in-from-top-2">
+        <div className="flex items-center gap-2 border border-green-200 bg-green-50 px-4 py-2.5 text-sm font-body text-green-800 animate-in fade-in slide-in-from-top-2">
           <Check className="h-4 w-4 shrink-0" />
           {toast}
         </div>
       )}
 
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-neutral-900">Team</h2>
+        <h2 className="text-lg font-serif font-semibold text-[#323233]">Team</h2>
         <button
           onClick={() => setShowInviteForm(!showInviteForm)}
-          className="flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700 transition-colors"
+          className="flex items-center gap-1.5 bg-[#735a3a] px-3 py-1.5 text-xs font-body font-medium text-white hover:bg-[#664e30] transition-colors"
         >
           <Mail className="h-3.5 w-3.5" />
           Invite
@@ -137,24 +137,24 @@ export function TeamSection({
 
       {/* Invite form */}
       {showInviteForm && (
-        <div className="rounded-lg border border-neutral-200 bg-white p-4 space-y-3">
+        <div className="border border-[#b2b2b1]/15 bg-[#ffffff] p-4 space-y-3">
           <div className="flex gap-2">
             <input
               type="email"
               value={inviteEmail}
               onChange={(e) => setInviteEmail(e.target.value)}
               placeholder="Email address"
-              className="flex-1 rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+              className="flex-1 border border-[#b2b2b1]/20 px-3 py-2 text-sm font-body placeholder:text-[#9e9c9c] focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
             />
             <button
               onClick={() => setShowInviteForm(false)}
-              className="p-2 text-neutral-400 hover:text-neutral-600"
+              className="p-2 text-[#9e9c9c] hover:text-neutral-600"
             >
               <X className="h-4 w-4" />
             </button>
           </div>
           <div className="space-y-2">
-            <p className="text-xs font-medium text-neutral-500">Permissions</p>
+            <p className="text-xs font-body font-medium text-[#5f5f5f]">Permissions</p>
             {(
               [
                 { key: "can_delete" as const, label: "Can delete" },
@@ -163,14 +163,14 @@ export function TeamSection({
                 { key: "read_only" as const, label: "Read only" },
               ] as const
             ).map(({ key, label }) => (
-              <label key={key} className="flex items-center gap-2 text-sm text-neutral-700">
+              <label key={key} className="flex items-center gap-2 text-sm font-body text-neutral-700">
                 <input
                   type="checkbox"
                   checked={invitePerms[key]}
                   onChange={() =>
                     setInvitePerms((p) => ({ ...p, [key]: !p[key] }))
                   }
-                  className="rounded border-neutral-300"
+                  className="border-[#b2b2b1]/20"
                 />
                 {label}
               </label>
@@ -179,7 +179,7 @@ export function TeamSection({
           <button
             onClick={handleInvite}
             disabled={isPending || !inviteEmail.trim()}
-            className="rounded-md bg-indigo-600 px-4 py-1.5 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+            className="bg-[#735a3a] px-4 py-1.5 text-xs font-body font-medium text-white hover:bg-[#664e30] disabled:opacity-50"
           >
             {isPending ? "Sending..." : "Send invite"}
           </button>
@@ -189,24 +189,24 @@ export function TeamSection({
       {/* Admin members */}
       {adminMembers.length > 0 && (
         <div className="space-y-2">
-          <p className="text-xs font-medium text-neutral-400 uppercase tracking-wide">
+          <p className="text-xs font-body font-medium text-[#9e9c9c] uppercase tracking-wide">
             Admins
           </p>
           {adminMembers.map((m) => (
             <div
               key={m.id}
-              className="flex items-center justify-between rounded-lg border border-neutral-200 bg-white p-3"
+              className="flex items-center justify-between border border-[#b2b2b1]/15 bg-[#ffffff] p-3"
             >
               <div>
-                <p className="text-sm font-medium text-neutral-900">
+                <p className="text-sm font-body font-medium text-[#323233]">
                   {m.full_name || "Unnamed"}
                   {m.id === currentUserId && (
-                    <span className="ml-1 text-xs text-neutral-400">(you)</span>
+                    <span className="ml-1 text-xs text-[#9e9c9c]">(you)</span>
                   )}
                 </p>
-                <p className="text-xs text-neutral-500">{m.email}</p>
+                <p className="text-xs font-body text-[#5f5f5f]">{m.email}</p>
               </div>
-              <span className="rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+              <span className="bg-[#fff1bf] text-[#635a34] px-2.5 py-0.5 text-xs font-body font-medium">
                 {m.is_superadmin ? "Superadmin" : "Admin"}
               </span>
             </div>
@@ -217,25 +217,25 @@ export function TeamSection({
       {/* User members */}
       {userMembers.length > 0 && (
         <div className="space-y-2">
-          <p className="text-xs font-medium text-neutral-400 uppercase tracking-wide">
+          <p className="text-xs font-body font-medium text-[#9e9c9c] uppercase tracking-wide">
             Users
           </p>
           {userMembers.map((m) => (
             <div
               key={m.id}
-              className="rounded-lg border border-neutral-200 bg-white p-3 space-y-2"
+              className="border border-[#b2b2b1]/15 bg-[#ffffff] p-3 space-y-2"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-neutral-900">
+                  <p className="text-sm font-body font-medium text-[#323233]">
                     {m.full_name || "Unnamed"}
                   </p>
-                  <p className="text-xs text-neutral-500">{m.email}</p>
+                  <p className="text-xs font-body text-[#5f5f5f]">{m.email}</p>
                 </div>
                 <button
                   onClick={() => handleRemove(m.id)}
                   disabled={isPending}
-                  className="p-1.5 text-neutral-400 hover:text-red-500 hover:bg-red-50 rounded-md"
+                  className="p-1.5 text-[#9e9c9c] hover:text-red-500 hover:bg-red-50"
                   title="Remove user"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
@@ -254,10 +254,10 @@ export function TeamSection({
                     key={key}
                     onClick={() => handleTogglePermission(m.id, m.permissions, key)}
                     disabled={isPending}
-                    className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium transition-colors ${
+                    className={`px-2.5 py-0.5 text-[10px] font-body font-medium transition-colors ${
                       m.permissions[key]
-                        ? "bg-indigo-600 text-white"
-                        : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200"
+                        ? "bg-[#735a3a] text-white"
+                        : "bg-[#f0eded] text-[#5f5f5f] hover:bg-[#b2b2b1]/15"
                     } ${isPending ? "opacity-50" : ""}`}
                   >
                     {label}
@@ -272,17 +272,17 @@ export function TeamSection({
       {/* Pending invitations */}
       {pendingInvites.length > 0 && (
         <div className="space-y-2">
-          <p className="text-xs font-medium text-neutral-400 uppercase tracking-wide">
+          <p className="text-xs font-body font-medium text-[#9e9c9c] uppercase tracking-wide">
             Pending invitations
           </p>
           {pendingInvites.map((inv) => (
             <div
               key={inv.id}
-              className="flex items-center justify-between rounded-lg border border-dashed border-neutral-300 bg-neutral-50 p-3"
+              className="flex items-center justify-between border border-dashed border-[#b2b2b1]/20 bg-[#f6f3f2] p-3"
             >
               <div>
-                <p className="text-sm text-neutral-700">{inv.email}</p>
-                <p className="text-[10px] text-neutral-400">
+                <p className="text-sm font-body text-neutral-700">{inv.email}</p>
+                <p className="text-[10px] font-body text-[#9e9c9c]">
                   Invited{" "}
                   {new Date(inv.created_at).toLocaleDateString("en-IN", {
                     month: "short",
@@ -293,7 +293,7 @@ export function TeamSection({
               <button
                 onClick={() => handleCancelInvite(inv.id)}
                 disabled={isPending}
-                className="text-xs text-neutral-400 hover:text-red-500"
+                className="text-xs font-body text-[#9e9c9c] hover:text-red-500"
               >
                 Cancel
               </button>

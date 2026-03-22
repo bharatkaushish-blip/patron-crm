@@ -25,7 +25,7 @@ export default async function AnalyticsPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
-      <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
+      <h1 className="text-2xl font-serif font-bold tracking-tight text-[#323233]">
         Analytics
       </h1>
 

@@ -43,25 +43,25 @@ export function AccountSection({
 
   return (
     <section>
-      <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-wide mb-3">
+      <h2 className="text-sm font-body font-medium text-[#5f5f5f] uppercase tracking-wide mb-3">
         Account
       </h2>
-      <div className="rounded-lg border border-neutral-200 bg-white p-4 space-y-4">
+      <div className="border border-[#b2b2b1]/15 bg-[#ffffff] p-4 space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-neutral-700">Subscription</p>
-            <p className="text-xs text-neutral-400">{statusLabel}</p>
+            <p className="text-sm font-body font-medium text-neutral-700">Subscription</p>
+            <p className="text-xs font-body text-[#9e9c9c]">{statusLabel}</p>
           </div>
           {/* Billing integration (Razorpay) coming soon */}
         </div>
 
-        <div className="border-t border-neutral-100 pt-4">
+        <div className="border-t border-[#f0eded] pt-4">
           <button
             onClick={handleSignOut}
             disabled={isPending}
-            className="rounded-md border border-red-200 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 disabled:opacity-50"
+            className="border border-red-200 px-4 py-2 text-sm font-body font-medium text-red-600 hover:bg-red-50 disabled:opacity-50"
           >
-            {isPending ? "Signing out…" : "Sign out"}
+            {isPending ? "Signing out..." : "Sign out"}
           </button>
         </div>
       </div>

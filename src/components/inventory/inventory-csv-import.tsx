@@ -171,7 +171,7 @@ export function InventoryCsvImport() {
   if (importState === "idle") {
     return (
       <div className="flex items-center gap-2">
-        <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-neutral-300 px-3 py-2 text-sm font-medium text-neutral-600 hover:bg-neutral-50 transition-colors">
+        <label className="inline-flex cursor-pointer items-center gap-1.5 border border-[#b2b2b1]/20 px-3 py-2 text-sm font-body font-medium text-neutral-600 hover:bg-[#f6f3f2] transition-colors">
           <Upload className="h-4 w-4" />
           Import CSV
           <input
@@ -185,7 +185,7 @@ export function InventoryCsvImport() {
         <button
           type="button"
           onClick={handleDownloadTemplate}
-          className="rounded-lg p-2 text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100 transition-colors"
+          className="p-2 text-[#9e9c9c] hover:text-neutral-600 hover:bg-[#f0eded] transition-colors"
           title="Download template CSV"
         >
           <FileDown className="h-4 w-4" />
@@ -197,15 +197,15 @@ export function InventoryCsvImport() {
   if (importState === "mapping") {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-        <div className="mx-4 w-full max-w-md rounded-xl bg-white p-6 shadow-xl space-y-4">
+        <div className="mx-4 w-full max-w-md bg-[#ffffff] p-6 shadow-xl space-y-4">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-neutral-700">
+            <p className="text-sm font-body font-medium text-neutral-700">
               <FileSpreadsheet className="inline h-4 w-4 mr-1" />
               Map columns ({csvRows.length} rows)
             </p>
             <button
               onClick={resetImport}
-              className="text-xs text-neutral-400 hover:text-neutral-600"
+              className="text-xs font-body text-[#9e9c9c] hover:text-neutral-600"
             >
               Cancel
             </button>
@@ -213,9 +213,9 @@ export function InventoryCsvImport() {
 
           <div className="max-h-72 overflow-y-auto space-y-2">
             {csvHeaders.map((header) => (
-              <div key={header} className="flex items-center gap-3 text-sm">
+              <div key={header} className="flex items-center gap-3 text-sm font-body">
                 <span className="w-32 truncate text-neutral-600">{header}</span>
-                <span className="text-neutral-300">&rarr;</span>
+                <span className="text-[#b2b2b1]/20">&rarr;</span>
                 <select
                   value={columnMap[header] || ""}
                   onChange={(e) =>
@@ -224,7 +224,7 @@ export function InventoryCsvImport() {
                       [header]: e.target.value,
                     }))
                   }
-                  className="flex-1 rounded-md border border-neutral-300 px-2 py-1 text-sm focus:border-indigo-500 focus:outline-none"
+                  className="flex-1 border border-[#b2b2b1]/20 px-2 py-1 text-sm font-body focus:border-[#735a3a] focus:outline-none"
                 >
                   <option value="">Skip</option>
                   {INVENTORY_FIELDS.map((f) => (
@@ -248,13 +248,13 @@ export function InventoryCsvImport() {
             <button
               onClick={handleImport}
               disabled={!Object.values(columnMap).includes("title") || isPending}
-              className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+              className="bg-[#735a3a] px-4 py-2 text-sm font-body font-medium text-white hover:bg-[#664e30] disabled:opacity-50"
             >
               Import {csvRows.length} items
             </button>
             <button
               onClick={resetImport}
-              className="rounded-md px-4 py-2 text-sm text-neutral-500 hover:bg-neutral-100"
+              className="px-4 py-2 text-sm font-body text-[#5f5f5f] hover:bg-[#f0eded]"
             >
               Cancel
             </button>
@@ -267,8 +267,8 @@ export function InventoryCsvImport() {
   if (importState === "importing") {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-        <div className="mx-4 rounded-xl bg-white p-6 shadow-xl">
-          <p className="text-sm text-neutral-500">Importing...</p>
+        <div className="mx-4 bg-[#ffffff] p-6 shadow-xl">
+          <p className="text-sm font-body text-[#5f5f5f]">Importing...</p>
         </div>
       </div>
     );
@@ -277,7 +277,7 @@ export function InventoryCsvImport() {
   if (importState === "done" && importResult) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-        <div className="mx-4 w-full max-w-md rounded-xl bg-white p-6 shadow-xl space-y-3">
+        <div className="mx-4 w-full max-w-md bg-[#ffffff] p-6 shadow-xl space-y-3">
           <div className="flex items-center gap-2 text-sm text-green-600">
             <Check className="h-4 w-4" />
             Imported {importResult.imported} item
@@ -292,7 +292,7 @@ export function InventoryCsvImport() {
           ) : null}
           <button
             onClick={resetImport}
-            className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm text-neutral-600 hover:bg-neutral-50"
+            className="border border-[#b2b2b1]/20 px-3 py-1.5 text-sm font-body text-neutral-600 hover:bg-[#f6f3f2]"
           >
             Done
           </button>

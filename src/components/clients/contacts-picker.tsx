@@ -56,7 +56,7 @@ export function ContactsPicker({ onSelect }: ContactsPickerProps) {
       type="button"
       onClick={handlePick}
       disabled={isPicking}
-      className="flex items-center gap-1.5 rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-600 hover:bg-neutral-50 disabled:opacity-50 transition-colors"
+      className="flex items-center gap-1.5 border border-[#b2b2b1]/20 px-3 py-2 text-sm text-neutral-600 hover:bg-[#f6f3f2] disabled:opacity-50 transition-colors"
     >
       <Contact className="h-4 w-4" />
       {isPicking ? "Picking…" : "From contacts"}

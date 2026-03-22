@@ -96,7 +96,7 @@ export default async function SearchPage({
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
-      <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
+      <h1 className="text-2xl font-bold font-serif tracking-tight text-[#323233]">
         Search
       </h1>
 
@@ -116,11 +116,11 @@ export default async function SearchPage({
           currency={currency}
         />
       ) : query.length > 0 && query.length < 2 ? (
-        <p className="mt-8 text-center text-sm text-neutral-400">
+        <p className="mt-8 text-center text-sm font-body text-[#9e9c9c]">
           Type at least 2 characters to search.
         </p>
       ) : (
-        <p className="mt-8 text-center text-sm text-neutral-400">
+        <p className="mt-8 text-center text-sm font-body text-[#9e9c9c]">
           Search clients, notes, and sales.
         </p>
       )}

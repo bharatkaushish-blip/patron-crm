@@ -59,7 +59,7 @@ export function EnquiryForm({
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-1.5 rounded-lg border border-dashed border-neutral-300 px-3 py-2 text-sm text-neutral-500 hover:border-neutral-400 hover:text-neutral-600 transition-colors w-full justify-center"
+        className="flex items-center gap-1.5 border border-dashed border-[#b2b2b1]/20 px-3 py-2 text-sm font-body text-[#5f5f5f] hover:border-[#9e9c9c] hover:text-neutral-600 transition-colors w-full justify-center"
       >
         <Plus className="h-4 w-4" />
         Add enquiry
@@ -70,14 +70,14 @@ export function EnquiryForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-lg border border-neutral-200 bg-white p-4 space-y-3"
+      className="border border-[#b2b2b1]/15 bg-[#ffffff] p-4 space-y-3"
     >
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-medium text-neutral-700">New enquiry</h3>
+        <h3 className="text-sm font-medium font-serif text-neutral-700">New enquiry</h3>
         <button
           type="button"
           onClick={() => setIsOpen(false)}
-          className="p-1 text-neutral-400 hover:text-neutral-600"
+          className="p-1 text-[#9e9c9c] hover:text-neutral-600"
         >
           <X className="h-4 w-4" />
         </button>
@@ -88,7 +88,7 @@ export function EnquiryForm({
           <select
             value={selectedItemId}
             onChange={handleInventorySelect}
-            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+            className="w-full border border-[#b2b2b1]/20 px-3 py-2 text-sm font-body text-neutral-700 focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
           >
             <option value="">Suggest artwork (optional)</option>
             {inventoryItems.map((item) => (
@@ -108,13 +108,13 @@ export function EnquiryForm({
           placeholder="Size (e.g. 4x6 ft)"
           value={size}
           onChange={(e) => setSize(e.target.value)}
-          className="rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+          className="border border-[#b2b2b1]/20 px-3 py-2 text-sm font-body placeholder:text-[#9e9c9c] focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
         />
         <input
           name="budget"
           type="text"
           placeholder="Budget (e.g. ₹2-5L)"
-          className="rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+          className="border border-[#b2b2b1]/20 px-3 py-2 text-sm font-body placeholder:text-[#9e9c9c] focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
         />
       </div>
 
@@ -125,15 +125,15 @@ export function EnquiryForm({
           placeholder="Artist preference"
           value={artist}
           onChange={(e) => setArtist(e.target.value)}
-          className="rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+          className="border border-[#b2b2b1]/20 px-3 py-2 text-sm font-body placeholder:text-[#9e9c9c] focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
         />
         <div>
           <input
             name="timeline"
             type="date"
-            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+            className="w-full border border-[#b2b2b1]/20 px-3 py-2 text-sm font-body text-neutral-700 focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
           />
-          <p className="mt-0.5 text-[10px] text-neutral-400">Timeline / deadline</p>
+          <p className="mt-0.5 text-[10px] font-body text-[#9e9c9c]">Timeline / deadline</p>
         </div>
       </div>
 
@@ -141,28 +141,28 @@ export function EnquiryForm({
         name="work_type"
         type="text"
         placeholder="Type of work (e.g. oil painting, sculpture)"
-        className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+        className="w-full border border-[#b2b2b1]/20 px-3 py-2 text-sm font-body placeholder:text-[#9e9c9c] focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
       />
 
       <textarea
         name="notes"
         placeholder="Notes (optional)"
         rows={2}
-        className="w-full resize-none rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+        className="w-full resize-none border border-[#b2b2b1]/20 px-3 py-2 text-sm font-body placeholder:text-[#9e9c9c] focus:border-[#735a3a] focus:outline-none focus:ring-1 focus-visible:ring-[#735a3a]/40"
       />
 
       <div className="flex gap-2">
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+          className="bg-[#735a3a] px-4 py-2 text-sm font-medium font-body text-white hover:bg-[#664e30] disabled:opacity-50"
         >
           {isPending ? "Saving…" : "Save enquiry"}
         </button>
         <button
           type="button"
           onClick={() => setIsOpen(false)}
-          className="rounded-md px-4 py-2 text-sm text-neutral-500 hover:bg-neutral-100"
+          className="px-4 py-2 text-sm font-body text-[#5f5f5f] hover:bg-[#f0eded]"
         >
           Cancel
         </button>

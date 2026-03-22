@@ -41,7 +41,7 @@ export function PhoneInput({ name, label, defaultValue }: PhoneInputProps) {
   return (
     <div className="space-y-1.5">
       {label ? (
-        <label className="block text-sm font-medium text-neutral-700">
+        <label className="block text-sm font-body font-medium text-neutral-700">
           {label}
         </label>
       ) : null}
@@ -50,7 +50,7 @@ export function PhoneInput({ name, label, defaultValue }: PhoneInputProps) {
         <select
           value={prefix}
           onChange={(e) => setPrefix(e.target.value)}
-          className="w-24 shrink-0 rounded-lg border border-neutral-300 bg-white px-2 py-2.5 text-sm text-neutral-700 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-1"
+          className="w-24 shrink-0 border border-[#b2b2b1]/20 bg-[#fcf9f8] px-2 py-2.5 text-sm font-body text-neutral-700 focus:border-[#735a3a] focus:outline-none focus:ring-2 focus-visible:ring-[#735a3a]/40 focus:ring-offset-1"
         >
           {COUNTRY_CODES.map((c) => (
             <option key={c.code} value={c.code}>
@@ -63,7 +63,7 @@ export function PhoneInput({ name, label, defaultValue }: PhoneInputProps) {
           value={number}
           onChange={(e) => setNumber(e.target.value)}
           placeholder="Phone number"
-          className="flex-1 rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-1"
+          className="flex-1 border border-[#b2b2b1]/20 bg-[#fcf9f8] px-3 py-2.5 text-sm font-body text-[#323233] placeholder:text-[#9e9c9c] focus:border-[#735a3a] focus:outline-none focus:ring-2 focus-visible:ring-[#735a3a]/40 focus:ring-offset-1"
         />
       </div>
     </div>

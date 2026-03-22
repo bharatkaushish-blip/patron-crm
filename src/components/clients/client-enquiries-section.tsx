@@ -30,10 +30,10 @@ export async function ClientEnquiriesSection({
 
   return (
     <section className="mt-8">
-      <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-wide mb-3">
+      <h2 className="text-sm font-medium font-serif text-[#5f5f5f] uppercase tracking-wide mb-3">
         Enquiries
         {enquiries && enquiries.length > 0 ? (
-          <span className="ml-2 text-neutral-400">({enquiries.length})</span>
+          <span className="ml-2 text-[#9e9c9c]">({enquiries.length})</span>
         ) : null}
       </h2>
 
@@ -62,7 +62,7 @@ export async function ClientEnquiriesSection({
             inventoryItems={inventoryItems}
           />
         ) : (
-          <p className="text-sm text-neutral-400 py-4 text-center">
+          <p className="text-sm font-body text-[#9e9c9c] py-4 text-center">
             No enquiries yet.
           </p>
         )}
@@ -74,10 +74,10 @@ export async function ClientEnquiriesSection({
 export function ClientEnquiriesSkeleton() {
   return (
     <section className="mt-8 animate-pulse">
-      <div className="h-4 w-24 bg-neutral-200 rounded mb-3" />
-      <div className="h-20 bg-neutral-100 rounded-lg" />
+      <div className="h-4 w-24 bg-[#b2b2b1]/15 mb-3" />
+      <div className="h-20 bg-[#f0eded]" />
       <div className="mt-3 space-y-2">
-        <div className="h-16 bg-neutral-100 rounded-lg" />
+        <div className="h-16 bg-[#f0eded]" />
       </div>
     </section>
   );

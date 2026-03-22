@@ -167,7 +167,7 @@ export function EnquiryGrid({ enquiries, canEdit, canDelete, inventoryItems = []
       {items.map((group, idx) => (
         <div
           key={group.clientId}
-          className={`transition-transform ${dragOverIdx === idx ? "scale-[1.02] ring-2 ring-neutral-300 rounded-xl" : ""}`}
+          className={`transition-transform ${dragOverIdx === idx ? "scale-[1.02] ring-2 ring-[#b2b2b1]/20" : ""}`}
         >
           <EnquiryGroupCard
             clientId={group.clientId}

@@ -78,7 +78,7 @@ export function ClientForm({ client, existingTags = [] }: ClientFormProps) {
       {/* Contacts picker - only show on new client form */}
       {!isEdit ? (
         <div className="flex items-center justify-between">
-          <p className="text-xs text-neutral-400">
+          <p className="text-xs font-body text-[#9e9c9c]">
             Fill in manually or import from your phone
           </p>
           <ContactsPicker onSelect={handleContactSelect} />

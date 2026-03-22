@@ -20,7 +20,7 @@ const avatarColors = [
   "bg-teal-500",
   "bg-cyan-500",
   "bg-blue-500",
-  "bg-indigo-500",
+  "bg-[#735a3a]",
   "bg-violet-500",
   "bg-purple-500",
   "bg-pink-500",
@@ -50,7 +50,7 @@ export function ClientCard({
   return (
     <Link
       href={`/clients/${id}`}
-      className="block rounded-xl border border-neutral-200 bg-white p-4 shadow-sm transition hover:shadow-md"
+      className="block border border-[#b2b2b1]/15 bg-[#ffffff] p-4 shadow-sm transition hover:shadow-md"
     >
       <div className="flex items-start gap-3">
         {/* Avatar */}
@@ -58,11 +58,11 @@ export function ClientCard({
           <img
             src={photoUrl}
             alt={name}
-            className="h-11 w-11 shrink-0 rounded-full object-cover"
+            className="h-11 w-11 shrink-0 object-cover"
           />
         ) : (
           <div
-            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white ${getAvatarColor(name)}`}
+            className={`flex h-11 w-11 shrink-0 items-center justify-center text-sm font-semibold text-white ${getAvatarColor(name)}`}
           >
             {initial}
           </div>
@@ -71,10 +71,10 @@ export function ClientCard({
         {/* Name + time */}
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-2">
-            <p className="truncate text-sm font-semibold text-neutral-900">
+            <p className="truncate text-sm font-semibold font-serif text-[#323233]">
               {name}
             </p>
-            <span className="shrink-0 text-[10px] text-neutral-400">
+            <span className="shrink-0 text-[10px] text-[#9e9c9c]">
               {timeAgo}
             </span>
           </div>
@@ -82,20 +82,20 @@ export function ClientCard({
           {/* Contact details */}
           <div className="mt-1.5 space-y-0.5">
             {phone ? (
-              <div className="flex items-center gap-1.5 text-xs text-neutral-500">
-                <Phone className="h-3 w-3 text-neutral-400" />
+              <div className="flex items-center gap-1.5 text-xs font-body text-[#5f5f5f]">
+                <Phone className="h-3 w-3 text-[#9e9c9c]" />
                 <span className="truncate">{phone}</span>
               </div>
             ) : null}
             {email ? (
-              <div className="flex items-center gap-1.5 text-xs text-neutral-500">
-                <Mail className="h-3 w-3 text-neutral-400" />
+              <div className="flex items-center gap-1.5 text-xs font-body text-[#5f5f5f]">
+                <Mail className="h-3 w-3 text-[#9e9c9c]" />
                 <span className="truncate">{email}</span>
               </div>
             ) : null}
             {location ? (
-              <div className="flex items-center gap-1.5 text-xs text-neutral-500">
-                <MapPin className="h-3 w-3 text-neutral-400" />
+              <div className="flex items-center gap-1.5 text-xs font-body text-[#5f5f5f]">
+                <MapPin className="h-3 w-3 text-[#9e9c9c]" />
                 <span className="truncate">{location}</span>
               </div>
             ) : null}
@@ -109,13 +109,13 @@ export function ClientCard({
           {tags.slice(0, 3).map((tag) => (
             <span
               key={tag}
-              className="rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-medium text-neutral-600"
+              className="bg-[#f0eded] px-2 py-0.5 text-[10px] font-medium font-body text-neutral-600"
             >
               {tag}
             </span>
           ))}
           {tags.length > 3 ? (
-            <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] text-neutral-400">
+            <span className="bg-[#f0eded] px-2 py-0.5 text-[10px] text-[#9e9c9c]">
               +{tags.length - 3}
             </span>
           ) : null}

@@ -27,19 +27,19 @@ const faqs = [
 
 export function FaqSection() {
   return (
-    <div className="mt-16 space-y-3 max-w-2xl mx-auto">
+    <div className="mt-16 space-y-px max-w-2xl mx-auto">
       {faqs.map((item) => (
         <details
           key={item.q}
-          className="group border border-neutral-200 bg-white rounded-xl overflow-hidden"
+          className="group bg-[#1a1a1a] overflow-hidden"
         >
-          <summary className="flex cursor-pointer items-center justify-between px-6 py-4 text-sm font-semibold text-neutral-900 marker:[content:''] [&::-webkit-details-marker]:hidden">
+          <summary className="flex cursor-pointer items-center justify-between px-6 py-5 text-sm font-semibold text-[#fcf9f8] font-body marker:[content:''] [&::-webkit-details-marker]:hidden hover:bg-[#222222] transition-colors duration-300">
             {item.q}
-            <span className="ml-4 shrink-0 text-neutral-400 transition-transform group-open:rotate-45 text-lg leading-none">
+            <span className="ml-4 shrink-0 text-[#9e9c9c] transition-transform duration-300 group-open:rotate-45 text-lg leading-none">
               +
             </span>
           </summary>
-          <div className="px-6 pb-5 text-sm text-neutral-600 leading-relaxed">
+          <div className="px-6 pb-5 text-sm text-[#9e9c9c] leading-relaxed font-body">
             {item.a}
           </div>
         </details>

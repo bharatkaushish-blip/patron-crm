@@ -41,19 +41,19 @@ const features = [
 
 export function FeatureGrid() {
   return (
-    <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#b2b2b1]/10">
       {features.map((feature) => (
         <div
           key={feature.title}
-          className="border border-neutral-200 bg-white rounded-xl p-6 hover:shadow-md transition-shadow"
+          className="bg-[#0e0e0e] p-8 hover:bg-[#1a1a1a] transition-colors duration-300"
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50">
-            <feature.icon className="h-5 w-5 text-indigo-600" />
+          <div className="flex h-10 w-10 items-center justify-center bg-[#735a3a]/15">
+            <feature.icon className="h-5 w-5 text-[#fddab2]" />
           </div>
-          <h3 className="mt-4 text-base font-semibold text-neutral-900">
+          <h3 className="mt-5 font-serif text-base font-bold text-[#fcf9f8]">
             {feature.title}
           </h3>
-          <p className="mt-2 text-sm text-neutral-600 leading-relaxed">
+          <p className="mt-2 text-sm text-[#9e9c9c] leading-relaxed font-body">
             {feature.description}
           </p>
         </div>

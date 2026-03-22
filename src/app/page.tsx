@@ -17,78 +17,94 @@ export default async function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-neutral-900">
+    <div className="min-h-screen bg-[#fcf9f8] text-[#323233] font-body">
       {/* ============ NAV ============ */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-neutral-100 bg-white/80 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <span className="text-xl font-bold tracking-tight text-neutral-900">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#fcf9f8]/80 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
+          <span className="font-serif text-xl font-bold tracking-tight text-[#323233]">
             Patron
           </span>
 
-          <div className="hidden md:flex items-center gap-8 text-sm text-neutral-400">
-            <a href="#about" className="hover:text-neutral-900 transition-colors">
-              About
+          <div className="hidden md:flex items-center gap-8 text-sm text-[#5f5f5f] font-body">
+            <a
+              href="#features"
+              className="hover:text-[#323233] transition-colors duration-300"
+            >
+              Features
             </a>
             <a
               href="#pricing"
-              className="hover:text-neutral-900 transition-colors"
+              className="hover:text-[#323233] transition-colors duration-300"
             >
               Pricing
             </a>
-            <a href="#faq" className="hover:text-neutral-900 transition-colors">
-              FAQ
-            </a>
             <a
-              href="#contact"
-              className="hover:text-neutral-900 transition-colors"
+              href="#faq"
+              className="hover:text-[#323233] transition-colors duration-300"
             >
-              Contact
+              FAQ
             </a>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <a
               href="/login"
-              className="text-sm text-neutral-400 hover:text-neutral-900 transition-colors"
+              className="text-sm text-[#5f5f5f] hover:text-[#323233] transition-colors duration-300"
             >
               Login
             </a>
             <a
               href="/signup"
-              className="rounded-full bg-indigo-600 px-5 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition-colors"
+              className="bg-gradient-to-br from-[#735a3a] to-[#664e30] px-6 py-2.5 text-sm font-medium text-[#fff6f0] hover:from-[#664e30] hover:to-[#513b1e] transition-all duration-300"
             >
-              Sign up
+              Start free trial
             </a>
           </div>
         </div>
       </nav>
 
       {/* ============ HERO ============ */}
-      <section className="flex flex-col items-center justify-center px-6 pt-40 pb-20">
-        <div className="text-center max-w-3xl">
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[0.95]">
-            Never Forget
-            <br />
-            <span className="text-indigo-600">a Client</span>
-          </h1>
-          <p className="mt-6 text-lg md:text-xl text-neutral-600 max-w-2xl mx-auto leading-relaxed">
-            The memory and follow-up assistant built for art galleries. Remember
-            every detail. Never miss a follow-up.
-          </p>
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="/signup"
-              className="group flex items-center gap-2 rounded-full bg-indigo-600 px-8 py-3.5 text-sm font-semibold text-white hover:bg-indigo-700 transition-all"
-            >
-              Start free trial
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </a>
-            <a
-              href="#about"
-              className="flex items-center gap-2 rounded-full border border-neutral-200 px-8 py-3.5 text-sm text-neutral-600 hover:border-neutral-300 hover:text-neutral-900 transition-all"
-            >
-              Learn more
-            </a>
+      <section className="relative px-6 pt-36 pb-24 md:pt-44 md:pb-32">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+            {/* Left: Text */}
+            <div>
+              <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[0.95] text-[#323233]">
+                Never Forget
+                <br />
+                <span className="italic text-[#735a3a]">a Client</span>
+              </h1>
+              <p className="mt-8 text-lg text-[#5f5f5f] max-w-lg leading-relaxed font-body">
+                The memory and follow-up assistant built for art galleries.
+                Remember every detail. Never miss a follow-up.
+              </p>
+              <div className="mt-10 flex flex-col sm:flex-row items-start gap-4">
+                <a
+                  href="/signup"
+                  className="group flex items-center gap-2 bg-gradient-to-br from-[#735a3a] to-[#664e30] px-8 py-3.5 text-sm font-semibold text-[#fff6f0] hover:from-[#664e30] hover:to-[#513b1e] transition-all duration-300"
+                >
+                  Start free trial
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                </a>
+                <a
+                  href="#features"
+                  className="flex items-center gap-2 px-8 py-3.5 text-sm text-[#5f5f5f] border border-[#b2b2b1]/15 hover:border-[#b2b2b1]/40 hover:text-[#323233] transition-all duration-300"
+                >
+                  Learn more
+                </a>
+              </div>
+            </div>
+
+            {/* Right: Abstract Artwork */}
+            <div className="relative aspect-[4/5] md:aspect-[3/4] overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1605478361938-2e562284e3d9?w=1080&q=80&fm=jpg&crop=entropy&cs=tinysrgb&fit=crop"
+                alt="Abstract painting with dark gold and copper swirls"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              {/* Warm overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#fcf9f8]/20 to-transparent" />
+            </div>
           </div>
         </div>
       </section>
@@ -98,18 +114,26 @@ export default async function LandingPage() {
         <CrmPreview />
       </section>
 
-      {/* ============ ABOUT / FEATURES ============ */}
-      <section id="about" className="py-32 px-6">
-        <div className="mx-auto max-w-5xl">
-          <p className="text-xs uppercase tracking-[0.3em] text-neutral-400 text-center">
-            About Patron
+      {/* ============ FEATURES ============ */}
+      <section
+        id="features"
+        className="relative bg-[#0e0e0e] py-32 px-6 overflow-hidden"
+      >
+        {/* Subtle top curve */}
+        <div className="absolute top-0 left-0 right-0 h-24 bg-[#fcf9f8]">
+          <div className="h-full w-full bg-[#0e0e0e] rounded-tl-[60px] md:rounded-tl-[120px]" />
+        </div>
+
+        <div className="relative mx-auto max-w-5xl">
+          <p className="font-body text-xs uppercase tracking-[0.3em] text-[#9e9c9c] text-center">
+            Features
           </p>
-          <h2 className="mt-4 text-center text-4xl md:text-5xl font-bold tracking-tight text-neutral-900">
+          <h2 className="mt-4 text-center font-serif text-4xl md:text-5xl font-bold tracking-tight text-[#fcf9f8]">
             Built for how art
             <br />
-            <span className="text-neutral-400">sellers actually work</span>
+            <span className="text-[#9e9c9c] italic">sellers actually work</span>
           </h2>
-          <p className="mt-6 text-center text-neutral-600 max-w-2xl mx-auto text-lg leading-relaxed">
+          <p className="mt-6 text-center text-[#9e9c9c] max-w-2xl mx-auto text-lg leading-relaxed font-body">
             Art sales are built on relationships that span months and years. A
             collector mentions they love a certain artist at a gallery opening,
             buys a piece six months later, and refers a friend a year after that.
@@ -121,27 +145,27 @@ export default async function LandingPage() {
       </section>
 
       {/* ============ SOCIAL PROOF STRIP ============ */}
-      <section className="bg-neutral-50 py-16 px-6">
-        <div className="mx-auto max-w-5xl text-center">
-          <p className="text-lg text-neutral-500">
-            Built for galleries, art advisors, and independent art sellers who
-            manage relationships — not spreadsheets.
+      <section className="bg-[#f0eded] py-20 px-6">
+        <div className="mx-auto max-w-4xl text-center">
+          <p className="font-serif text-xl md:text-2xl text-[#5f5f5f] italic leading-relaxed">
+            &ldquo;Built for galleries, art advisors, and independent art
+            sellers who manage relationships — not spreadsheets.&rdquo;
           </p>
         </div>
       </section>
 
       {/* ============ PRICING ============ */}
-      <section id="pricing" className="py-32 px-6">
+      <section id="pricing" className="bg-[#fcf9f8] py-32 px-6">
         <div className="mx-auto max-w-5xl">
-          <p className="text-xs uppercase tracking-[0.3em] text-neutral-400 text-center">
+          <p className="font-body text-xs uppercase tracking-[0.3em] text-[#5f5f5f] text-center">
             Pricing
           </p>
-          <h2 className="mt-4 text-center text-4xl md:text-5xl font-bold tracking-tight text-neutral-900">
+          <h2 className="mt-4 text-center font-serif text-4xl md:text-5xl font-bold tracking-tight text-[#323233]">
             Simple, transparent
             <br />
-            <span className="text-neutral-400">pricing</span>
+            <span className="text-[#9e9c9c] italic">pricing</span>
           </h2>
-          <p className="mt-6 text-center text-neutral-600 max-w-xl mx-auto">
+          <p className="mt-6 text-center text-[#5f5f5f] max-w-xl mx-auto font-body">
             Start with a 14-day free trial. No credit card required.
           </p>
 
@@ -150,15 +174,23 @@ export default async function LandingPage() {
       </section>
 
       {/* ============ FAQ ============ */}
-      <section id="faq" className="bg-neutral-50 py-32 px-6">
-        <div className="mx-auto max-w-3xl">
-          <p className="text-xs uppercase tracking-[0.3em] text-neutral-400 text-center">
+      <section
+        id="faq"
+        className="relative bg-[#0e0e0e] py-32 px-6 overflow-hidden"
+      >
+        {/* Subtle top curve */}
+        <div className="absolute top-0 left-0 right-0 h-24 bg-[#fcf9f8]">
+          <div className="h-full w-full bg-[#0e0e0e] rounded-tl-[60px] md:rounded-tl-[120px]" />
+        </div>
+
+        <div className="relative mx-auto max-w-3xl">
+          <p className="font-body text-xs uppercase tracking-[0.3em] text-[#9e9c9c] text-center">
             FAQ
           </p>
-          <h2 className="mt-4 text-center text-4xl md:text-5xl font-bold tracking-tight text-neutral-900">
+          <h2 className="mt-4 text-center font-serif text-4xl md:text-5xl font-bold tracking-tight text-[#fcf9f8]">
             Questions &amp;
             <br />
-            <span className="text-neutral-400">answers</span>
+            <span className="text-[#9e9c9c] italic">answers</span>
           </h2>
 
           <FaqSection />
@@ -166,15 +198,15 @@ export default async function LandingPage() {
       </section>
 
       {/* ============ CONTACT ============ */}
-      <section id="contact" className="py-32 px-6">
+      <section id="contact" className="bg-[#fcf9f8] py-32 px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs uppercase tracking-[0.3em] text-neutral-400">
+          <p className="font-body text-xs uppercase tracking-[0.3em] text-[#5f5f5f]">
             Contact
           </p>
-          <h2 className="mt-4 text-4xl md:text-5xl font-bold tracking-tight text-neutral-900">
+          <h2 className="mt-4 font-serif text-4xl md:text-5xl font-bold tracking-tight text-[#323233]">
             Get in touch
           </h2>
-          <p className="mt-6 text-neutral-600 max-w-lg mx-auto">
+          <p className="mt-6 text-[#5f5f5f] max-w-lg mx-auto font-body">
             Have questions, feedback, or want a demo? We&apos;d love to hear
             from you.
           </p>
@@ -182,7 +214,7 @@ export default async function LandingPage() {
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
               href="mailto:teampatroncollective@gmail.com"
-              className="group flex items-center gap-2 rounded-full border border-neutral-200 px-8 py-3.5 text-sm text-neutral-600 hover:border-neutral-300 hover:text-neutral-900 transition-all"
+              className="group flex items-center gap-2 px-8 py-3.5 text-sm text-[#5f5f5f] border border-[#b2b2b1]/15 hover:border-[#735a3a]/40 hover:text-[#735a3a] transition-all duration-300"
             >
               <Mail className="h-4 w-4" />
               teampatroncollective@gmail.com
@@ -192,57 +224,64 @@ export default async function LandingPage() {
       </section>
 
       {/* ============ FINAL CTA ============ */}
-      <section className="bg-neutral-50 py-32 px-6">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-neutral-900">
+      <section className="relative bg-[#0e0e0e] py-32 px-6 overflow-hidden">
+        {/* Subtle top curve */}
+        <div className="absolute top-0 left-0 right-0 h-24 bg-[#fcf9f8]">
+          <div className="h-full w-full bg-[#0e0e0e] rounded-tl-[60px] md:rounded-tl-[120px]" />
+        </div>
+        {/* Decorative warm gradient glow */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#735a3a]/10 blur-[120px] rounded-full" />
+
+        <div className="relative mx-auto max-w-3xl text-center">
+          <h2 className="font-serif text-4xl md:text-5xl font-bold tracking-tight text-[#fcf9f8]">
             Your clients deserve
             <br />
-            <span className="text-indigo-600">to be remembered</span>
+            <span className="italic text-[#fddab2]">to be remembered</span>
           </h2>
-          <p className="mt-6 text-neutral-600 text-lg">
+          <p className="mt-6 text-[#9e9c9c] text-lg font-body">
             Start your 14-day free trial today. No credit card required.
           </p>
           <a
             href="/signup"
-            className="group mt-10 inline-flex items-center gap-2 rounded-full bg-indigo-600 px-10 py-4 text-sm font-semibold text-white hover:bg-indigo-700 transition-all"
+            className="group mt-10 inline-flex items-center gap-2 bg-gradient-to-br from-[#735a3a] to-[#664e30] px-10 py-4 text-sm font-semibold text-[#fff6f0] hover:from-[#664e30] hover:to-[#513b1e] transition-all duration-300"
           >
             Get started
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
           </a>
         </div>
       </section>
 
       {/* ============ FOOTER ============ */}
-      <footer className="border-t border-neutral-100 py-8 px-6">
-        <div className="mx-auto max-w-7xl flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-neutral-400">
-          <span className="font-medium text-neutral-900">Patron</span>
-          <div className="flex items-center gap-6">
+      <footer className="bg-[#0e0e0e] py-8 px-6 border-t border-[#b2b2b1]/10">
+        <div className="mx-auto max-w-7xl flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#9e9c9c]">
+          <span className="font-serif font-bold text-[#fcf9f8]">Patron</span>
+          <div className="flex items-center gap-6 font-body">
             <a
-              href="#about"
-              className="hover:text-neutral-900 transition-colors"
+              href="#features"
+              className="hover:text-[#fcf9f8] transition-colors duration-300"
             >
-              About
+              Features
             </a>
             <a
               href="#pricing"
-              className="hover:text-neutral-900 transition-colors"
+              className="hover:text-[#fcf9f8] transition-colors duration-300"
             >
               Pricing
             </a>
             <a
               href="#faq"
-              className="hover:text-neutral-900 transition-colors"
+              className="hover:text-[#fcf9f8] transition-colors duration-300"
             >
               FAQ
             </a>
             <a
               href="#contact"
-              className="hover:text-neutral-900 transition-colors"
+              className="hover:text-[#fcf9f8] transition-colors duration-300"
             >
               Contact
             </a>
           </div>
-          <span>
+          <span className="font-body">
             &copy; {new Date().getFullYear()} Patron. All rights reserved.
           </span>
         </div>
